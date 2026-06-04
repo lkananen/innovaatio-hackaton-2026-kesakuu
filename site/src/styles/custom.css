@@ -1,0 +1,85 @@
+/* Agentic DataOps Hackathon — Custom Theme (Azure blue) */
+
+:root {
+  --font-display: "Space Grotesk", system-ui, sans-serif;
+  --font-body: "Manrope", system-ui, sans-serif;
+  --font-mono: "IBM Plex Mono", "Consolas", monospace;
+  --sl-font: var(--font-body);
+  --sl-color-accent-low: #002b4d;
+  --sl-color-accent: #0078d4;
+  --sl-color-accent-high: #6cb8f7;
+  --sl-hue-accent: 207;
+}
+
+:root[data-theme="light"] {
+  --sl-color-accent-low: #dbeafe;
+  --sl-color-accent: #0078d4;
+  --sl-color-accent-high: #004578;
+}
+
+body,
+button,
+input,
+select,
+textarea {
+  font-family: var(--font-body);
+}
+
+h1,
+h2,
+h3,
+.site-title {
+  font-family: var(--font-display);
+}
+
+code,
+pre,
+kbd,
+samp {
+  font-family: var(--font-mono);
+}
+
+/* Landing splash hero */
+.hero-tracks {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+  margin-block: 2rem;
+}
+
+.track-card {
+  border: 1px solid var(--sl-color-gray-5);
+  border-radius: 0.75rem;
+  padding: 1.25rem 1.4rem;
+  background: var(--sl-color-gray-6);
+  transition:
+    transform 0.15s ease,
+    border-color 0.15s ease;
+}
+
+.track-card:hover {
+  transform: translateY(-2px);
+  border-color: var(--sl-color-accent);
+}
+
+.track-card h3 {
+  margin-top: 0;
+}
+
+.track-badge {
+  display: inline-block;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  padding: 0.15rem 0.55rem;
+  border-radius: 999px;
+  background: var(--sl-color-accent-low);
+  color: var(--sl-color-accent-high);
+  margin-bottom: 0.6rem;
+}
+
+/* Make the Challenge Info note scannable */
+.sl-markdown-content .starlight-aside--note p {
+  margin: 0.2rem 0;
+}

@@ -1,0 +1,73 @@
+---
+title: "RAG on PostgreSQL"
+description: Deploy a retrieval-augmented chat app with one `azd up`, then make it agentic with GitHub Copilot.
+sidebar:
+  order: 1
+  label: Overview
+---
+
+import { CardGrid, LinkCard } from "@astrojs/starlight/components";
+
+**Primary hackathon.** Stand up a working **retrieval-augmented generation (RAG)** chat
+app on Azure with a single `azd up`, point it at **your own data**, then use an agent to
+**extend it and operationalise it** as a small DataOps pipeline.
+
+This track is the most self-contained of the three and runs in **any Azure subscription**
+(you only need Azure OpenAI quota — see Setup).
+
+## What you'll build
+
+```mermaid
+graph LR
+    U[User question] --> API[Chat API on Container Apps]
+    API --> EMB[Azure OpenAI embeddings]
+    EMB --> PG[(PostgreSQL + pgvector)]
+    PG --> API
+    API --> LLM[Azure OpenAI chat model]
+    LLM --> U
+    AGENT[DataOps agent loop] --> PG
+    style AGENT fill:#0078d4,color:#fff
+```
+
+A chat app that answers questions grounded in your documents, plus a small **agentic
+ingestion loop** that keeps the knowledge base fresh.
+
+## The challenge chain
+
+Each challenge emits a named artifact consumed by the next.
+
+```mermaid
+graph LR
+    C1[C1 Provision] --> C2[C2 Load data]
+    C2 --> C3[C3 Customise retrieval]
+    C3 --> C4[C4 Agentic ingestion]
+    C4 --> C5[C5 Operationalise]
+    C5 --> C6[C6 Demo]
+    style C4 fill:#0078d4,color:#fff
+```
+
+| Challenge | Time | Output artifact |
+|-----------|------|-----------------|
+| **C1 — Provision** | 25 min | `infra-output.json` (live endpoint) |
+| **C2 — Load your data** | 35 min | `dataset_manifest.json` + passing smoke test |
+| **C3 — Customise retrieval** | 40 min | `retrieval_config.md` + updated app |
+| **C4 — Agentic ingestion loop** | 40 min | `dataops_agent.py` + regression pass |
+| _C5 — Operationalise (optional)_ | 25 min | `dataops.yml` + run evidence |
+| _C6 — Demo prep (optional)_ | 15 min | `demo_script.md` + recording |
+
+:::tip[Core vs. optional]
+**C1–C4 are the core path** — finish those and you have a demoable result. **C5–C6 are
+optional polish.** Don't start C5 until C4 passes.
+:::
+
+## Base app
+
+This track builds on the well-tested
+[`Azure-Samples/rag-postgres-openai-python`](https://github.com/Azure-Samples/rag-postgres-openai-python)
+accelerator (FastAPI + React, PostgreSQL Flexible Server + `pgvector`, Azure OpenAI, on
+Azure Container Apps).
+
+<CardGrid>
+  <LinkCard title="Start here → Setup & pre-work" description="Complete the readiness checklist 7 days before the event." href="setup/" />
+  <LinkCard title="Then → C1: Provision" description="azd up and explore the infrastructure with Copilot." href="challenge-1-provision/" />
+</CardGrid>

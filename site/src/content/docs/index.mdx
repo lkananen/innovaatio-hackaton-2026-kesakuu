@@ -1,0 +1,93 @@
+---
+title: Agentic DataOps Hackathon
+description: "From idea to implementation — three standalone, hands-on hackathons for building agentic data platforms on Azure with GitHub Copilot."
+template: splash
+hero:
+  tagline: From idea to implementation — build an agentic data platform in a day, in your own Azure subscription, with GitHub Copilot.
+  actions:
+    - text: Pick a hackathon ↓
+      link: "#choose-your-hackathon"
+      variant: primary
+    - text: View on GitHub
+      link: https://github.com/lkananen/innovaatio-hackaton-2026-kesakuu
+      variant: minimal
+      icon: github
+---
+
+import { CardGrid, LinkCard } from "@astrojs/starlight/components";
+
+## How the day works
+
+This is a **hands-on**, team event. The theme is **agentic data platform development** —
+you use an AI coding agent (examples shown in **VS Code + GitHub Copilot**, but any
+agentic tool works) to go from an idea to a **running, demoable implementation**.
+
+Each team picks **one** of three **fully independent** hackathons below and runs it end to
+end. Every hackathon is built as an **artifact chain**: each challenge produces a named
+file that the next challenge consumes — so a team that stops early still has something to
+demo.
+
+:::note[Bring your own data]
+Bring a **non-sensitive / public / synthetic** dataset from your own world. No data? Each
+hackathon's **Setup** page lists **three ready-to-use open datasets** suited to that track.
+:::
+
+:::caution[Do the pre-work]
+The **#1 thing that derails the day is Azure readiness** — especially **zero Azure OpenAI
+quota** on fresh subscriptions (approval takes 1–3 business days). Each hackathon has a
+**Setup & pre-work** page with a checklist to complete **7 days before** the event.
+:::
+
+## Agenda
+
+| Time | What |
+|------|------|
+| 09:00 | Welcoming words |
+| 09:30 | Keynote — agentic development with Azure & GitHub Copilot in practice |
+| 10:15 | Break |
+| 10:30 | **Hands-on block 1** — opens with an inspiration session |
+| 11:30 | Lunch |
+| 12:30 | **Hands-on block 2** — inspiration session, then build continues |
+| 15:00 | Wrap-up & team demos |
+
+## Choose your hackathon
+
+<div id="choose-your-hackathon"></div>
+
+<CardGrid>
+  <LinkCard
+    title="🐘 RAG on PostgreSQL"
+    description="PRIMARY · Deploy a retrieval-augmented chat app with one azd up (Container Apps + PostgreSQL + Azure OpenAI), then make it agentic. Runs in any subscription."
+    href="rag-postgres/"
+  />
+  <LinkCard
+    title="🔎 Text-to-SQL Agent"
+    description="STRETCH A · Build a natural-language-to-SQL agent over PostgreSQL + pgvector with real guardrails and an evaluation harness. Runs in any subscription."
+    href="text-to-sql/"
+  />
+  <LinkCard
+    title="✨ Fabric AI Functions"
+    description="STRETCH B · Build a medallion lakehouse in Microsoft Fabric and enrich data with AI Functions. Requires pre-confirmed paid F2+ capacity."
+    href="fabric-ai/"
+  />
+</CardGrid>
+
+## Not sure which to pick?
+
+<CardGrid>
+  <LinkCard
+    title="I have a generic Azure subscription"
+    description="Start with RAG on PostgreSQL — it is the most self-contained and the fastest to a running app."
+    href="rag-postgres/"
+  />
+  <LinkCard
+    title="I work with relational/business data"
+    description="Text-to-SQL turns plain-English questions into safe SQL over your own tables."
+    href="text-to-sql/"
+  />
+  <LinkCard
+    title="My company already runs Microsoft Fabric"
+    description="If you have paid F2+ capacity, the Fabric AI Functions track enriches data at scale with AI."
+    href="fabric-ai/"
+  />
+</CardGrid>

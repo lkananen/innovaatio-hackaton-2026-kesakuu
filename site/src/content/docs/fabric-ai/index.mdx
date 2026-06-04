@@ -1,0 +1,69 @@
+---
+title: "Fabric AI Functions"
+description: Build a medallion lakehouse in Microsoft Fabric and enrich it with AI Functions — bronze to gold.
+sidebar:
+  order: 1
+  label: Overview
+---
+
+import { CardGrid, LinkCard } from "@astrojs/starlight/components";
+
+**Stretch hackathon B.** Build a **medallion lakehouse** (bronze → silver → gold) in
+**Microsoft Fabric** and use **AI Functions** to enrich your data with LLM-powered
+transformations — then curate a gold table and a report on top.
+
+This is the most platform-specific track. It needs a **paid Fabric capacity (F2 or higher)**
+and a tenant where **AI Functions are enabled**. Read the Setup carefully — the readiness
+gate is the difference between building and being stuck.
+
+## What you'll build
+
+```mermaid
+graph LR
+    SRC[Your raw data] --> B[Bronze: raw as-ingested]
+    B --> S[Silver: cleaned + AI-enriched]
+    S --> G[Gold: curated model]
+    G --> R[Report / semantic model]
+    AIF[AI Functions] --> S
+    style AIF fill:#0078d4,color:#fff
+```
+
+A working medallion pipeline where the **silver layer** uses AI Functions (e.g.
+classification, summarisation, extraction) to add columns no rule could — with a
+**PySpark rule-based fallback** if AI Functions are unavailable.
+
+## The challenge chain
+
+```mermaid
+graph LR
+    C1[C1 Readiness] --> C2[C2 Bronze]
+    C2 --> C3[C3 Silver + AI]
+    C3 --> C4[C4 Gold + report]
+    C4 --> C5[C5 Operationalise]
+    C5 --> C6[C6 Demo]
+    style C3 fill:#0078d4,color:#fff
+```
+
+| Challenge | Time | Output artifact |
+|-----------|------|-----------------|
+| **C1 — Readiness verification** | 20 min | `readiness_check.md` (all green) |
+| **C2 — Bronze ingestion** | 30 min | `bronze_manifest.json` |
+| **C3 — Silver + AI Functions** | 45 min | `silver_enrichment_spec.md` (+ PySpark fallback) |
+| **C4 — Gold + report** | 35 min | `gold_model_spec.md` + one report |
+| _C5 — Operationalise (optional)_ | 25 min | `pipeline_run_evidence.md` |
+| _C6 — Demo prep (optional)_ | 15 min | `demo_story.md` + recording |
+
+:::tip[Core vs. optional]
+**C1–C4 are the core path** — a medallion lakehouse with an AI-enriched silver layer and a
+gold report is a complete result. **C5–C6 are optional.**
+:::
+
+:::caution[This track has a hard prerequisite]
+You **must** complete the capacity + tenant-switch pre-work before the event. C1 only
+*verifies* readiness — it does not set up capacity. If C1 isn't green, you can't proceed.
+:::
+
+<CardGrid>
+  <LinkCard title="Start here → Setup & pre-work" description="Provision F2+ capacity and enable AI Functions before the day." href="setup/" />
+  <LinkCard title="Then → C1: Readiness" description="Verify capacity, workspace, lakehouse, and AI Functions visibility." href="challenge-1-readiness/" />
+</CardGrid>
