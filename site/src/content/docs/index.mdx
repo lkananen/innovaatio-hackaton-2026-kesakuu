@@ -60,6 +60,26 @@ jokainen kohta on kunnossa ennen kuin aloitat.
 
 <CardGrid>
   <LinkCard
+    title="💬 Fabric Data Agent"
+    description="Muuta lakehouse + Power BI -semanttinen malli keskustelevaksi analytiikka-agentiksi, joka vastaa liiketoimintakysymyksiin. Vaatii ennalta vahvistetun maksullisen F2+-kapasiteetin."
+    href="fabric-data-agent/"
+  />
+  <LinkCard
+    title="🔌 MCP-palvelin omalle datalle"
+    description="Rakenna Model Context Protocol -palvelin, jotta GitHub Copilot -agentit voivat tehdä turvallisia kyselyitä tietokantaasi. Toimii missä tahansa tilauksessa — tai täysin paikallisesti."
+    href="mcp-data-server/"
+  />
+  <LinkCard
+    title="✨ Fabric AI Functions"
+    description="Rakenna medallion-lakehouse Microsoft Fabriciin ja rikasta dataa AI Functions -toiminnoilla. Vaatii ennalta vahvistetun maksullisen F2+-kapasiteetin."
+    href="fabric-ai/"
+  />
+  <LinkCard
+    title="⚡ Reaaliaikainen analytiikka"
+    description="Suoratoista live-tapahtumia Eventstreamilla Eventhouseen/KQL:ään ja saa data toimimaan itsestään Activator-hälytyksillä. Vaatii ennalta vahvistetun maksullisen F2+-kapasiteetin."
+    href="real-time-intelligence/"
+  />
+  <LinkCard
     title="🐘 RAG PostgreSQL:llä"
     description="Ota käyttöön hakupohjainen (RAG) chat-sovellus yhdellä azd up -komennolla (Container Apps + PostgreSQL + Azure OpenAI) ja tee siitä agenttipohjainen. Toimii missä tahansa tilauksessa."
     href="rag-postgres/"
@@ -69,31 +89,31 @@ jokainen kohta on kunnossa ennen kuin aloitat.
     description="Rakenna luonnollisen kielen SQL-agentti PostgreSQL + pgvector -pohjalle oikeilla turvarajoilla ja arviointikehyksellä. Toimii missä tahansa tilauksessa."
     href="text-to-sql/"
   />
-  <LinkCard
-    title="✨ Fabric AI Functions"
-    description="Rakenna medallion-lakehouse Microsoft Fabriciin ja rikasta dataa AI Functions -toiminnoilla. Vaatii ennalta vahvistetun maksullisen F2+-kapasiteetin."
-    href="fabric-ai/"
-  />
-  <LinkCard
-    title="💬 Fabric Data Agent"
-    description="Muuta lakehouse + Power BI -semanttinen malli keskustelevaksi analytiikka-agentiksi, joka vastaa liiketoimintakysymyksiin. Vaatii ennalta vahvistetun maksullisen F2+-kapasiteetin."
-    href="fabric-data-agent/"
-  />
-  <LinkCard
-    title="⚡ Real-Time Intelligence"
-    description="Suoratoista live-tapahtumia Eventstreamilla Eventhouseen/KQL:ään ja saa data toimimaan itsestään Activator-hälytyksillä. Vaatii ennalta vahvistetun maksullisen F2+-kapasiteetin."
-    href="real-time-intelligence/"
-  />
-  <LinkCard
-    title="🔌 MCP-palvelin omalle datalle"
-    description="Rakenna Model Context Protocol -palvelin, jotta GitHub Copilot -agentit voivat tehdä turvallisia kyselyitä tietokantaasi. Toimii missä tahansa tilauksessa — tai täysin paikallisesti."
-    href="mcp-data-server/"
-  />
 </CardGrid>
 
 ## Etkö ole varma, minkä valitsisit?
 
 <CardGrid>
+  <LinkCard
+    title="Haluan keskustelevaa analytiikkaa liiketoimintakäyttäjille"
+    description="Fabric Data Agent muuttaa lakehousen + semanttisen mallin luonnollisen kielen kysymyksiksi ja vastauksiksi (vaatii maksullisen Fabric F2+:n)."
+    href="fabric-data-agent/"
+  />
+  <LinkCard
+    title="Haluan puhtaimman agenttikehitysharjoituksen"
+    description="MCP-palvelin omalle datalle — rakenna juuri se työkalu, jota Copilot-agenttisi käyttää datan turvalliseen kyselyyn. Ei vaadi Azure-kiintiötä tai Fabricia."
+    href="mcp-data-server/"
+  />
+  <LinkCard
+    title="Yritykseni käyttää jo Microsoft Fabricia"
+    description="Jos sinulla on maksullinen F2+-kapasiteetti, Fabric AI Functions -polku rikastaa dataa tekoälyllä laajassa mittakaavassa."
+    href="fabric-ai/"
+  />
+  <LinkCard
+    title="Työskentelen suoratoisto- tai tapahtumadatan parissa"
+    description="Reaaliaikainen analytiikka vie sisään live-tapahtumia ja toimii niiden perusteella Activatorilla (vaatii maksullisen Fabric F2+:n)."
+    href="real-time-intelligence/"
+  />
   <LinkCard
     title="Minulla on tavallinen Azure-tilaus"
     description="Aloita RAG PostgreSQL:llä — se on omavaraisin ja nopein tie toimivaan sovellukseen."
@@ -103,25 +123,5 @@ jokainen kohta on kunnossa ennen kuin aloitat.
     title="Työskentelen relaatio- tai liiketoimintadatan parissa"
     description="Text-to-SQL muuntaa selkokieliset kysymykset turvalliseksi SQL:ksi omiin tauluihisi."
     href="text-to-sql/"
-  />
-  <LinkCard
-    title="Yritykseni käyttää jo Microsoft Fabricia"
-    description="Jos sinulla on maksullinen F2+-kapasiteetti, Fabric AI Functions -polku rikastaa dataa tekoälyllä laajassa mittakaavassa."
-    href="fabric-ai/"
-  />
-  <LinkCard
-    title="Haluan keskustelevaa analytiikkaa liiketoimintakäyttäjille"
-    description="Fabric Data Agent muuttaa lakehousen + semanttisen mallin luonnollisen kielen kysymyksiksi ja vastauksiksi (vaatii maksullisen Fabric F2+:n)."
-    href="fabric-data-agent/"
-  />
-  <LinkCard
-    title="Työskentelen suoratoisto- tai tapahtumadatan parissa"
-    description="Real-Time Intelligence vie sisään live-tapahtumia ja toimii niiden perusteella Activatorilla (vaatii maksullisen Fabric F2+:n)."
-    href="real-time-intelligence/"
-  />
-  <LinkCard
-    title="Haluan puhtaimman agenttikehitysharjoituksen"
-    description="MCP-palvelin omalle datalle — rakenna juuri se työkalu, jota Copilot-agenttisi käyttää datan turvalliseen kyselyyn. Ei vaadi Azure-kiintiötä tai Fabricia."
-    href="mcp-data-server/"
   />
 </CardGrid>

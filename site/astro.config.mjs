@@ -37,14 +37,14 @@ export default defineConfig({
       },
       sidebar: [
         {
-          label: "🐘 RAG PostgreSQL:llä",
+          label: "💬 Fabric Data Agent",
           collapsed: false,
-          items: [{ autogenerate: { directory: "rag-postgres" } }],
+          items: [{ autogenerate: { directory: "fabric-data-agent" } }],
         },
         {
-          label: "🔎 Text-to-SQL-agentti",
+          label: "🔌 MCP-palvelin omalle datalle",
           collapsed: true,
-          items: [{ autogenerate: { directory: "text-to-sql" } }],
+          items: [{ autogenerate: { directory: "mcp-data-server" } }],
         },
         {
           label: "✨ Fabric AI Functions",
@@ -52,19 +52,19 @@ export default defineConfig({
           items: [{ autogenerate: { directory: "fabric-ai" } }],
         },
         {
-          label: "💬 Fabric Data Agent",
-          collapsed: true,
-          items: [{ autogenerate: { directory: "fabric-data-agent" } }],
-        },
-        {
-          label: "⚡ Real-Time Intelligence",
+          label: "⚡ Reaaliaikainen analytiikka",
           collapsed: true,
           items: [{ autogenerate: { directory: "real-time-intelligence" } }],
         },
         {
-          label: "🔌 MCP-palvelin omalle datalle",
+          label: "🐘 RAG PostgreSQL:llä",
           collapsed: true,
-          items: [{ autogenerate: { directory: "mcp-data-server" } }],
+          items: [{ autogenerate: { directory: "rag-postgres" } }],
+        },
+        {
+          label: "🔎 Text-to-SQL-agentti",
+          collapsed: true,
+          items: [{ autogenerate: { directory: "text-to-sql" } }],
         },
       ],
       customCss: [
