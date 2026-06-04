@@ -1,0 +1,44 @@
+---
+import Default from "@astrojs/starlight/components/Head.astro";
+---
+
+<Default><slot /></Default>
+
+<script>
+  import mermaid from "mermaid";
+
+  const mermaidTheme = () =>
+    document.documentElement.dataset.theme === "light" ? "neutral" : "dark";
+
+  async function renderMermaid() {
+    const blocks = Array.from(
+      document.querySelectorAll<HTMLElement>("pre.mermaid"),
+    );
+    if (blocks.length === 0) return;
+
+    for (const el of blocks) {
+      // Cache the original Mermaid source the first time we see the block so
+      // that re-renders (e.g. after a theme toggle) work from clean input.
+      if (!el.dataset.source) el.dataset.source = el.textContent ?? "";
+      el.removeAttribute("data-processed");
+      el.innerHTML = el.dataset.source;
+    }
+
+    mermaid.initialize({
+      startOnLoad: false,
+      theme: mermaidTheme(),
+      securityLevel: "loose",
+    });
+    await mermaid.run({ nodes: blocks });
+  }
+
+  // Initial load (MPA) and Astro client-side navigations (SPA).
+  if (document.readyState !== "loading") renderMermaid();
+  else document.addEventListener("DOMContentLoaded", () => renderMermaid());
+  document.addEventListener("astro:page-load", () => renderMermaid());
+
+  // Re-render when the user toggles light/dark mode.
+  new MutationObserver((mutations) => {
+    if (mutations.some((m) => m.attributeName === "data-theme")) renderMermaid();
+  }).observe(document.documentElement, { attributes: true });
+</script>

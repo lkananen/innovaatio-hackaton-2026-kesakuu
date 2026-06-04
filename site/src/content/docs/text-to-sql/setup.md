@@ -1,67 +1,75 @@
 ---
-title: "Setup & Pre-work"
-description: Relational data eligibility, a read-only database user, and Azure OpenAI quota — done 7 days ahead.
+title: "Valmistelu ja valmiustarkistus"
+description: Relaatiodatan kelpoisuus, vain luku -tietokantakäyttäjä ja Azure OpenAI -kiintiö — tarkista, että nämä ovat kunnossa ennen aloitusta.
 sidebar:
   order: 2
 ---
 
-:::danger[Do this **7 days** before the event]
-Two things sink this track on the day: **no Azure OpenAI quota** (1–3 business days to
-approve) and **non-relational data** that has no joins to reason over. Sort both now.
+:::caution[Vaatimukset — tarkista ennen aloitusta]
+Kaksi asiaa kaataa tämän polun: **puuttuva Azure OpenAI -kiintiö** (korotusta ei ehdi saada samana päivänä — hyväksyntä vie 1–3 arkipäivää)
+ja **ei-relaatiomuotoinen data**, jossa ei ole liitoksia pääteltäväksi. Tarkista, että molemmat ovat kunnossa.
 :::
 
-## 1. Pre-work checklist
-
-```text
-☐ az login && az account show
-☐ PostgreSQL available (local Docker, or Azure Database for PostgreSQL Flexible Server)
-☐ psql or a SQL client installed
-☐ Python 3.11+ and an OpenAI SDK
-☐ GitHub Copilot active in your IDE
-☐ Azure OpenAI quota in your region:
-      • chat: gpt-4o (or gpt-4.1)  ≥ 30K TPM   ← stronger model helps SQL accuracy
-☐ If quota = 0  →  request TODAY at https://aka.ms/oai/quotaincrease
-☐ A relational dataset loaded (see §3)
-☐ A read-only database user created (see §4)
-☐ 5 golden questions drafted (see §3)
-```
-
-:::note[No quota in time? Fallback]
-The facilitator hosts a **shared Azure OpenAI endpoint** as the sanctioned fallback. Your
-agent reads `AZURE_OPENAI_ENDPOINT` / `AZURE_OPENAI_API_KEY`, so switching is one line.
+:::note[Maksuton vs. maksullinen taso]
+- **Maksuton:** Paikallinen Postgres (Docker) ja SQL-/Python-työkalut ovat ilmaisia. Voit rakentaa skeeman ja kultaiset kysymykset ilman pilvikustannuksia.
+- **Vaadittu maksullinen taso:** **Azure OpenAI** laskutetaan käytön mukaan (token-kulutus) eikä sille ole maksutonta tasoa; se vaatii myönnetyn kiintiön. Suosi `gpt-4o`-luokan mallia tarkemman SQL:n vuoksi.
+- **Mitä maksullinen taso tuo:** luonnollisen kielen → SQL -päättely. Ilman omaa kiintiötä käytä fasilitaattorin jaettua Azure OpenAI -päätepistettä.
 :::
 
-## 2. Why a stronger chat model
+## 1. Valmiustarkistuslista
 
-Text-to-SQL is reasoning-heavy. A `gpt-4o`-class model produces materially better SQL than
-a `-mini` model on joins and aggregations. Use the strongest model you have quota for.
+Käy lista läpi ja varmista, että jokainen kohta on kunnossa ennen kuin aloitat:
 
-## 3. Bring your own data (or use a fallback)
+- [ ] `az login && az account show`
+- [ ] PostgreSQL käytettävissä (paikallinen Docker tai Azure Database for PostgreSQL Flexible Server)
+- [ ] `psql` tai muu SQL-asiakasohjelma asennettu
+- [ ] Python 3.11+ ja OpenAI SDK
+- [ ] GitHub Copilot aktiivinen IDE:ssä
+- [ ] Azure OpenAI -kiintiö alueellasi:
+  - chat: `gpt-4o` (tai `gpt-4.1`) ≥ 30K TPM — vahvempi malli parantaa SQL:n tarkkuutta
+- [ ] Jos kiintiö = 0 → polku ei toimi ilman korotusta (hyväksyntä 1–3 arkipäivää): https://aka.ms/oai/quotaincrease
+- [ ] Relaatiomuotoinen datajoukko ladattu (katso §3)
+- [ ] Vain luku -tietokantakäyttäjä luotu (katso §4)
+- [ ] 5 kultaista kysymystä laadittu (katso §3)
 
-**Eligibility for this track is stricter than RAG.** You need **genuinely relational** data
-so the agent has joins and keys to reason about.
+:::note[Eikö kiintiö ehdi ajoissa? Varavaihtoehto]
+Fasilitaattori ylläpitää **jaettua Azure OpenAI -päätepistettä** hyväksyttynä varavaihtoehtona. Agenttisi
+lukee `AZURE_OPENAI_ENDPOINT` / `AZURE_OPENAI_API_KEY`, joten vaihtaminen on yhden rivin muutos.
+:::
 
-**Rules:**
+## 2. Miksi vahvempi chat-malli
 
-- **2–5 tables** with **clear primary/foreign keys** and meaningful relationships.
-- **Non-sensitive only** — public, synthetic, or company-approved. No customer PII.
-- **Keep it modest** — thousands of rows is plenty; cap at the first N rows if large.
-- Draft **5 golden questions** in plain English that your data can answer, ranging from
-  simple (`how many X?`) to multi-table (`top 3 Y by Z last quarter`). You'll formalise
-  these in C2.
+Text-to-SQL vaatii paljon päättelyä. `gpt-4o`-luokan malli tuottaa liitoksissa ja aggregoinneissa
+selvästi parempaa SQL:ää kuin `-mini`-malli. Käytä vahvinta mallia, johon sinulla on kiintiötä.
 
-**No relational data? Pick one of these:**
+## 3. Tuo oma data (tai käytä varavaihtoehtoa)
 
-| Dataset | Why it fits | Source |
+**Tämän polun kelpoisuusehdot ovat tiukemmat kuin RAGissa.** Tarvitset **aidosti relaatiomuotoista** dataa,
+jotta agentilla on liitoksia ja avaimia pääteltäväksi.
+
+**Säännöt:**
+
+- **2–5 taulua**, joissa on **selkeät pää- ja viiteavaimet** sekä merkitykselliset suhteet.
+- **Vain ei-arkaluonteista** — julkista, synteettistä tai organisaation hyväksymää. Ei asiakkaiden henkilötietoja.
+- **Pidä koko maltillisena** — tuhannet rivit riittävät hyvin; rajaa ensimmäisiin N riviin, jos data on suuri.
+- Luonnostele **5 kultaista kysymystä** selkeällä englannilla, joihin datasi voi vastata, helposta
+  (`how many X?`) monen taulun kysymykseen (`top 3 Y by Z last quarter`). Muotoilet
+  nämä virallisesti H2:ssa.
+
+**Ei relaatiodataa? Suosi suomalaisia avoimia datalähteitä — yleisö on suomalainen:**
+
+| Datajoukko | Miksi se sopii | Lähde |
 |---------|-------------|--------|
-| **Chinook** | Classic music-store schema (11 tables, clear FKs); great golden questions | <https://github.com/lerocha/chinook-database> |
-| **Northwind (Postgres port)** | Orders/customers/products; business-flavoured | <https://github.com/pthom/northwind_psql> |
-| **A multi-table public CSV set** (e.g. Eurostat or NYC datasets) | Real, joinable, public | <https://data.europa.eu/> |
+| **Tilastokeskuksen StatFin-taulut** (PxWeb) | Useita toisiinsa liittyviä suomalaisia tilastotauluja liitettäväksi yhteisillä avaimilla (alue, vuosi) | <https://stat.fi/> · <https://pxdata.stat.fi/> |
+| **Avoindata.suomi.fi monitauluiset CSV-aineistot** | Suomen julkishallinnon avointa, liitettävää dataa | <https://avoindata.suomi.fi/> |
+| **Chinook** | Klassinen musiikkikaupan skeema (11 taulua, selkeät viiteavaimet); erinomainen kultaisiin kysymyksiin | <https://github.com/lerocha/chinook-database> |
+| **Northwind (Postgres port)** | Tilaukset/asiakkaat/tuotteet; liiketoimintahenkinen | <https://github.com/pthom/northwind_psql> |
+| **Monitauluinen julkinen CSV-joukko** (esim. Eurostat- tai NYC-datajoukot) | Todellinen, liitettävä, julkinen | <https://data.europa.eu/> |
 
-## 4. Create a read-only database user (do this now)
+## 4. Luo vain luku -tietokantakäyttäjä (tee tämä nyt)
 
-Guardrails start at the database. The agent must connect as a user that **physically
-cannot** modify data:
+Turvarajat alkavat tietokannasta. Agentin täytyy muodostaa yhteys käyttäjänä, joka **ei fyysisesti
+voi** muokata dataa:
 
 ```sql
 CREATE USER agent_ro WITH PASSWORD 'change-me';
@@ -72,12 +80,12 @@ ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT SELECT ON TABLES TO agent_ro;
 -- explicitly NO INSERT/UPDATE/DELETE/DDL
 ```
 
-Your agent connects **only** as `agent_ro`. This is your first and strongest guardrail.
+Agenttisi muodostaa yhteyden **vain** käyttäjänä `agent_ro`. Tämä on ensimmäinen ja vahvin turvarajasi.
 
-:::caution[Re-grant after loading tables]
-`ALTER DEFAULT PRIVILEGES` only covers objects created **by the role that runs it**. If you
-(or a different owner) load tables **after** this block, `agent_ro` won't have `SELECT` on
-them. After loading data, re-run the grant and verify:
+:::caution[Myönnä oikeudet uudelleen taulujen lataamisen jälkeen]
+`ALTER DEFAULT PRIVILEGES` kattaa vain objektit, jotka luo **komennon suorittava rooli**. Jos sinä
+(tai eri omistaja) lataat tauluja **tämän lohkon jälkeen**, `agent_ro`-käyttäjällä ei ole niihin `SELECT`-oikeutta.
+Kun data on ladattu, suorita oikeuksien myöntö uudelleen ja varmista:
 
 ```sql
 GRANT SELECT ON ALL TABLES IN SCHEMA public TO agent_ro;
@@ -88,14 +96,14 @@ RESET ROLE;
 ```
 :::
 
-## 5. Known failure modes
+## 5. Tunnetut virhetilanteet
 
-| Symptom | Fix |
+| Oire | Korjaus |
 |---------|-----|
-| Agent emits great SQL but wrong joins | Schema profile (C1) + glossary (C2) under-specified |
-| `permission denied` on SELECT | Re-run the GRANTs in §4; check the user owns no objects |
-| Model invents column names | Pass the real schema in the prompt context (C3) |
-| Slow / runaway query | C4 guardrails add `LIMIT` + `statement_timeout` |
-| Quota error | Request increase or use facilitator endpoint |
+| Agentti tuottaa hyvää SQL:ää mutta väärät liitokset | Skeemaprofiili (H1) + sanasto (H2) on määritelty liian niukasti |
+| `permission denied` SELECT-kyselyssä | Suorita §4:n GRANTit uudelleen; tarkista, ettei käyttäjä omista objekteja |
+| Malli keksii sarakenimiä | Välitä oikea skeema kehotteen kontekstissa (H3) |
+| Hidas / hallitsematon kysely | H4:n turvarajat lisäävät `LIMIT`-ehdon + `statement_timeout`-asetuksen |
+| Kiintiövirhe | Pyydä korotusta tai käytä fasilitaattorin päätepistettä |
 
-Once every box in §1 is ticked, you're ready for **C1**.
+Kun jokainen §1:n kohta on rastitettu, olet valmis **H1**:een.

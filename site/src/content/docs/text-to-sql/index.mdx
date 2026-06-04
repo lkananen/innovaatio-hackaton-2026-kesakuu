@@ -1,22 +1,30 @@
 ---
-title: "Text-to-SQL Agent"
-description: Build a natural-language-to-SQL agent over your own relational data, with guardrails and an eval harness.
+title: "Text-to-SQL-agentti"
+description: Rakenna luonnollisen kielen kysymykset SQL:ksi muuntava agentti omalle relaatiodatallesi, turvarajoilla ja arviointikehyksellä.
 sidebar:
   order: 1
-  label: Overview
+  label: Yleiskuva
 ---
 
 import { CardGrid, LinkCard } from "@astrojs/starlight/components";
 
-**Stretch hackathon A.** Build an agent that turns **plain-English questions** into **safe,
-correct SQL** over **your own relational database** — then prove it works with an evaluation
-harness instead of vibes.
+Rakenna agentti, joka muuttaa **luonnollisen kielen kysymykset** **turvalliseksi,
+oikeaksi SQL:ksi** **omassa relaatiotietokannassasi** — ja todista sen toimivuus arviointikehyksellä
+pelkän tuntuman sijaan.
 
-This track runs on **PostgreSQL** (local or Azure) and **Azure OpenAI**. The hard, valuable
-part isn't generating SQL — it's making it **safe** (read-only, bounded) and **measurably
-correct**.
+Tämä polku käyttää **PostgreSQL**-tietokantaa (paikallisesti tai Azuressa) ja **Azure OpenAI** -palvelua. Vaikea ja arvokas
+osa ei ole SQL:n tuottaminen — vaan sen tekeminen **turvalliseksi** (vain luku, rajattu) ja **mitattavasti
+oikeaksi**.
 
-## What you'll build
+:::note[Yhdellä silmäyksellä]
+- **Mitä luot:** Text-to-SQL-agentin, joka muuntaa luonnollisen kielen kysymykset turvalliseksi SQL:ksi, sekä arviointikehyksen sen oikeellisuuden todistamiseen.
+- **Ympäristö:** PostgreSQL (paikallinen tai Azure); Azure OpenAI -kiintiö (gpt-4o / gpt-4.1); Python ja GitHub Copilot.
+- **Käyttöoikeudet:** Oikeus luoda vain luku -tietokantakäyttäjä sekä käyttää Azure OpenAI -palvelua.
+
+Täydellinen tarkistuslista: **[Valmistelu ja valmiustarkistus](setup/)**.
+:::
+
+## Mitä rakennat
 
 ```mermaid
 graph LR
@@ -29,10 +37,10 @@ graph LR
     style GUARD fill:#0078d4,color:#fff
 ```
 
-An agent that answers business questions in natural language, **shows the SQL it ran**, and
-**refuses unsafe queries** — validated against a set of golden questions.
+Agentti, joka vastaa liiketoimintakysymyksiin luonnollisella kielellä, **näyttää suorittamansa SQL:n** ja
+**kieltäytyy vaarallisista kyselyistä** — validoituna kultaisten kysymysten joukolla.
 
-## The challenge chain
+## Haasteketju
 
 ```mermaid
 graph LR
@@ -44,27 +52,27 @@ graph LR
     style C4 fill:#0078d4,color:#fff
 ```
 
-| Challenge | Time | Output artifact |
+| Haaste | Aika | Tulos |
 |-----------|------|-----------------|
-| **C1 — Database & schema profile** | 35 min | `schema_profile.json` + read-only DB user |
-| **C2 — Business glossary & golden questions** | 30 min | `business_glossary.md` + 5 golden questions |
-| **C3 — NL→SQL prompt contract** | 40 min | `prompt_contract.md` + working agent |
-| **C4 — Guardrails** | 35 min | `sql_guardrails.py` (read-only, bounded) |
-| _C5 — Eval harness (optional)_ | 30 min | `eval_cases.json` + pass rate |
-| _C6 — Demo prep (optional)_ | 15 min | `demo_questions.md` + recording |
+| **H1 — Tietokanta ja skeemaprofiili** | 35 min | Tarkistettu skeemakäsitys + vain luku -tietokantakäyttäjä |
+| **H2 — Liiketoimintasanasto ja kultaiset kysymykset** | 30 min | Liiketoimintasanasto + 5 kultaista kysymystä |
+| **H3 — NL→SQL-kehotesopimus** | 40 min | Toistettava NL→SQL-silmukka + toimiva agentti |
+| **H4 — Turvarajat** | 35 min | Vain luku -suoritus, rajaus ja aikakatkaisu |
+| _H5 — Arviointikehys (valinnainen)_ | 30 min | Toistettava arviointi + läpäisyaste |
+| _H6 — Demon valmistelu (valinnainen)_ | 15 min | Harjoiteltu demo + tallenne |
 
-:::tip[Core vs. optional]
-**C1–C4 are the core path.** A safe agent that answers your golden questions is a complete
-result. **C5–C6 are optional.** Don't start C5 until C4 passes.
+:::tip[Ydin vs. valinnainen]
+**H1–H4 ovat ydinpolku.** Turvallinen agentti, joka vastaa kultaisiin kysymyksiisi, on valmis
+tulos. **H5–H6 ovat valinnaisia.** Älä aloita H5:tä ennen kuin H4 läpäisee.
 :::
 
-## Why guardrails first-class
+## Miksi turvarajat ovat keskeisiä
 
-An LLM that can emit `DROP TABLE` against your database is a liability. In this track,
-**read-only enforcement and query bounding are a graded deliverable**, not an afterthought —
-you create a read-only user in **pre-work**, and harden the layer in **C4**.
+LLM, joka voi tuottaa `DROP TABLE`-komennon tietokantaasi vastaan, on riski. Tässä polussa
+**vain luku -valvonta ja kyselyjen rajaaminen ovat arvioitava kyvykkyys**, eivät sivuseikka —
+luot vain luku -käyttäjän **valmistelussa** ja kovennat kerroksen **H4:ssä**.
 
 <CardGrid>
-  <LinkCard title="Start here → Setup & pre-work" description="Relational data rules, read-only user, and OpenAI quota." href="setup/" />
-  <LinkCard title="Then → C1: Database & profile" description="Load data and generate a machine-readable schema profile." href="challenge-1-database/" />
+  <LinkCard title="Aloita tästä → Valmistelu ja valmiustarkistus" description="Relaatiodatan säännöt, vain luku -käyttäjä ja OpenAI-kiintiö." href="setup/" />
+  <LinkCard title="Sitten → H1: Tietokanta ja profiili" description="Lataa data ja luo koneellisesti luettava skeemaprofiili." href="challenge-1-database/" />
 </CardGrid>

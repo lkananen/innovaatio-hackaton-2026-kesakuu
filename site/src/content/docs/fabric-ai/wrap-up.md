@@ -1,58 +1,56 @@
 ---
-title: Wrap-up & demos
-description: Team demos, award categories, and takeaways from the Fabric AI Functions track.
+title: Yhteenveto ja demot
+description: Tiimidemot, palkintokategoriat ja opit Fabric AI Functions -polulta.
 sidebar:
   order: 9
-  label: Wrap-up
+  label: Yhteenveto
   badge:
     text: Showcase
     variant: success
 prev:
   link: ../challenge-6-demo/
-  label: "C6: Demo prep"
+  label: "H6: Demon valmistelu"
 ---
 
-## You built an AI-enriched medallion lakehouse
+## Rakensit AI-rikastetun medallion lakehousen
 
-From raw files to a curated report, your team built a **bronze → silver → gold** lakehouse in
-Microsoft Fabric and used **AI Functions** (or a documented PySpark fallback) to add a column
-no rule could — then turned it into a business insight.
+Tiimisi rakensi raakadatasta kuratoituun raporttiin **bronze → silver → gold** lakehousen Microsoft Fabricissa ja käytti **AI Functions** -toimintoja (tai PySpark fallbackia) lisätäkseen sarakkeen, jota mikään sääntö ei voisi tuottaa — ja muutti sen liiketoimintaoivallukseksi.
 
 ```mermaid
 flowchart LR
-  A[readiness_check.md] --> B[bronze_manifest.json]
-  B --> C[silver_enrichment_spec.md]
-  C --> D[gold_model_spec.md]
-  D --> E[pipeline_run_evidence.md]
-  E --> F[demo_story.md]
+  A[Ympäristövalmius] --> B[Bronze-lataus]
+  B --> C[AI-rikastettu silver]
+  C --> D[Kuratoitu gold-malli]
+  D --> E[Orkestroitu ajo]
+  E --> F[Ytimekäs demo]
 ```
 
-## Demo format
+## Demoformaatti
 
-- **3 minutes per team**, then 1 minute of questions.
-- Show the hero shot: **raw text → AI-enriched column → report visual.**
-- State whether you used AI Functions or the fallback — both count.
+- **Lyhyt demo per tiimi**, sitten aikaa muutamalle kysymykselle.
+- Näytä kärkikuva: **raakateksti → AI-rikastettu sarake → raporttivisuaali.**
+- Kerro, käytitkö AI Functions -toimintoja vai fallbackia — molemmat kelpaavat.
 
-## Award categories
+## Palkintokategoriat
 
-| Award | What it recognises |
+| Palkinto | Mitä se tunnistaa |
 | --- | --- |
-| ✨ **Best AI enrichment** | Most valuable AI-derived column |
-| 🏗️ **Cleanest medallion** | Best bronze/silver/gold separation & discipline |
-| 📊 **Best insight** | Report that tells the clearest business story |
-| 🔁 **Best pipeline** | Most robust, well-orchestrated end-to-end run |
+| ✨ **Paras AI-rikastus** | Arvokkain AI-johdettu sarake |
+| 🏗️ **Siistein medallion** | Paras bronze/silver/gold-erottelu ja kurinalaisuus |
+| 📊 **Paras oivallus** | Raportti, joka kertoo selkeimmän liiketoimintatarinan |
+| 🔁 **Paras putki** | Kestävin ja hyvin orkestroitu päästä päähän -ajo |
 
-## What to take home
+## Mitä viet mukanasi
 
-- **Bronze stays raw** — every early "fix" is a transformation you can't undo.
-- AI Functions shine when the enriched column is **impossible with rules** — pick those use cases.
-- Always have a **fallback**: a paid-capacity feature dependency is a real operational risk.
-- Cap AI calls during dev; know the **full-scale cost** before you schedule it.
+- **Bronze pysyy raakana** — jokainen varhainen "korjaus" on muunnos, jota et voi perua.
+- AI Functions loistaa, kun rikastettu sarake on **mahdoton säännöillä** — valitse sellaiset käyttötapaukset.
+- Pidä aina **fallback**: maksullisen kapasiteetin ominaisuusriippuvuus on todellinen operatiivinen riski.
+- Rajaa AI-kutsut kehityksen aikana; tunne **täyden mittakaavan kustannus** ennen ajastamista.
 
-## Keep going after the event
+## Jatka tapahtuman jälkeen
 
-- Add data quality checks between layers (row counts, null thresholds).
-- Promote the silver enrichment to a reusable function across datasets.
-- Track AI enrichment cost per run and add alerting on spend.
+- Lisää datan laatutarkistuksia kerrosten väliin (rivimäärät, null-kynnysarvot).
+- Muuta silver-rikastus uudelleenkäytettäväksi funktioksi eri datajoukoille.
+- Seuraa AI-rikastuksen kustannusta ajoa kohti ja lisää kuluhälytykset.
 
-Thanks for hacking. 🎉
+Kiitos hackaamisesta. 🎉

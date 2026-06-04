@@ -1,110 +1,98 @@
 ---
-title: "C3: Silver + AI Functions"
-description: Clean bronze into silver and add columns only AI can produce — with a PySpark rule-based fallback.
+title: "H3: Silver + AI Functions"
+description: Puhdista bronze silveriksi ja lisää sarakkeita, joita vain AI voi tuottaa — mukana PySpark-sääntöpohjainen fallback.
 sidebar:
   order: 5
-  label: "C3: Silver + AI"
+  label: "H3: Silver + AI"
   badge:
     text: 45 min
     variant: note
 prev:
   link: ../challenge-2-bronze/
-  label: "C2: Bronze ingestion"
+  label: "H2: Bronze-tuonti"
 next:
   link: ../challenge-4-gold/
-  label: "C4: Gold + report"
+  label: "H4: Gold + raportti"
 ---
 
-:::note[Challenge Info]
-⏱️ **45 min** · 🧩 **Core (the payoff)** · 🤖 agent: enrichment engineer · 📄 output: `silver_enrichment_spec.md`
+:::note[Haasteen tiedot]
+⏱️ **45 min** · 🧩 **Ydin (hyöty realisoituu)** · 🤖 agentti: rikastusinsinööri
 :::
 
-## Objective
+## Tavoite
 
-- **Do now:** Clean bronze and add **AI-enriched** columns to build silver.
-- **Input:** `bronze` table + `bronze_manifest.json` (C2).
-- **Output:** A `silver` table + `silver_enrichment_spec.md` (incl. fallback).
-- **Required to move on:** Silver has at least **one enriched column** populated for your rows (AI Functions path **or** documented PySpark fallback — both count).
-- **Decisions now:** Which enrichment, how to handle errors/nulls, AI vs. fallback path.
-- **Next:** C4 curates silver into a gold model + report.
+- **Tee nyt:** Puhdista bronze ja lisää **AI-rikastettuja** sarakkeita silverin rakentamiseksi.
+- **Lähtötiedot:** Kyseltävä `bronze`-taulu ja jäljitettävä lataus (H2).
+- **Tulos:** Toimiva `silver`-taulu, jossa on AI-rikastettu sarake ja selkeä fallback-polku.
+- **Vaaditaan etenemiseen:** Silverissä on vähintään **yksi rikastettu sarake**, joka on täytetty riveillesi (AI Functions -polku **tai** PySpark fallback — molemmat kelpaavat).
+- **Päätökset nyt:** Mikä rikastus, miten käsitellään virheet/null-arvot, AI vai fallback-polku.
+- **Seuraavaksi:** H4 kuratoi silverin gold-malliksi + raportiksi.
 
-## The Business Challenge
+## Liiketoimintahaaste
 
-Silver is where data becomes **useful**: cleaned, typed, and — uniquely in this track —
-**augmented with intelligence**. AI Functions let you add a column (a category, a summary, a
-sentiment) that **no deterministic rule could produce**. That enriched column is the
-centrepiece of your demo.
+Silverissä datasta tulee **hyödyllistä**: puhdistettua, tyypitettyä ja — ainutlaatuisesti tällä polulla — **älyllä täydennettyä**. AI Functions antaa lisätä sarakkeen (kategoria, tiivistelmä, sentimentti), jota **mikään deterministinen sääntö ei voisi tuottaa**. Tämä rikastettu sarake on demosi keskipiste.
 
-## Your Tasks
+## Tehtäväsi
 
-1. Clean bronze → silver: fix types, handle nulls, drop junk rows. Standard medallion work.
-2. Add your **AI enrichment** on a text column using an **AI Function** (`ai.classify`,
-   `ai.summarize`, or an extract), writing the result to a new silver column.
-3. Handle **errors and rate limits**: nulls/failures shouldn't crash the job — capture them.
-4. Write `silver_enrichment_spec.md`: the enrichment, the prompt/function used, expected
-   output, and **how the fallback works**.
+1. Puhdista bronze → silver: korjaa tyypit, käsittele null-arvot, poista roskarivit. Perustason medallion-työtä.
+2. Lisää **AI-rikastus** tekstisarakkeeseen käyttämällä **AI Function** -toimintoa (`ai.classify`, `ai.summarize` tai poiminta) ja kirjoita tulos uuteen silver-sarakkeeseen.
+3. Käsittele **virheet ja kutsurajoitukset**: null-arvot/epäonnistumiset eivät saa kaataa ajoa — tallenna ne.
+4. Varmista, että rikastus, käytetty kehote/toiminto, odotettu tulos ja **fallbackin toiminta** ovat ymmärrettäviä tiimille ja tuomareille.
 
-:::tip[Fallback path (no AI Functions?)]
-If C1 sent you to the fallback, implement the enrichment as a **PySpark rule-based**
-transformation (keyword rules, regex, simple heuristics) into the same silver column. The
-spec must document **both** the AI approach and the rule-based one. This is a valid
-completion.
+:::tip[Fallback-polku (ei AI Functions -toimintoja?)]
+Jos H1 ohjasi sinut fallbackiin, toteuta rikastus **PySpark-sääntöpohjaisena** muunnoksena (avainsanasäännöt, regex, yksinkertaiset heuristiikat) samaan silver-sarakkeeseen. Toteutuksen täytyy tehdä **sekä** AI-lähestymistapa että sääntöpohjainen tapa ymmärrettäviksi. Tämä on hyväksytty suoritus.
 :::
 
-## Key Decisions
+## Keskeiset päätökset
 
-- **Enrichment choice:** classify / summarise / extract — pick the one with demo punch.
-- **Batch vs. row:** call the AI Function over the column efficiently, not one-by-one if avoidable.
-- **Error policy:** null-on-failure + a flag column, so you can see coverage.
-- **Cost control:** cap rows enriched during the event; note full-scale cost in the spec.
+- **Rikastusvalinta:** luokittele / tiivistä / poimi — valitse se, jolla on paras demovaikutus.
+- **Erä vs. rivi:** kutsu AI Function -toimintoa koko sarakkeelle tehokkaasti, älä rivi kerrallaan, jos sen voi välttää.
+- **Virhekäytäntö:** null epäonnistuessa + lippusarake, jotta näet kattavuuden.
+- **Kustannusten hallinta:** rajaa tapahtuman aikana rikastettavat rivit; arvioi täyden mittakaavan kustannus.
 
-## Deliverables
+## Tuotokset
 
-- A `silver` Delta table with the enriched column (AI path or fallback) populated.
-- `silver_enrichment_spec.md` documenting AI **and** fallback approaches.
+- `silver` Delta -taulu, jossa rikastettu sarake (AI-polku tai fallback) on täytetty.
+- Ymmärrettävä rikastuslogiikka: AI- **ja** fallback-lähestymistavat ovat selitettävissä.
 
-## Success Criteria
+## Onnistumisen kriteerit
 
-| Focus | What good looks like | Evidence |
+| Painopiste | Miltä hyvä näyttää | Näyttö |
 | --- | --- | --- |
-| Cleaned | Silver is typed, de-nulled, deduped | Schema + preview |
-| Enriched | A column only AI/rules could produce, populated | Sample rows |
-| Resilient | Failures captured, job doesn't crash | Error/coverage handling |
+| Puhdistettu | Silver on tyypitetty, null-arvot käsitelty, duplikaatit poistettu | Skeema + esikatselu |
+| Rikastettu | Sarake, jonka vain AI/säännöt voisivat tuottaa, on täytetty | Esimerkkirivit |
+| Kestävä | Epäonnistumiset tallennetaan, ajo ei kaadu | Virheiden/kattavuuden käsittely |
 
-## Tips / Hints
+## Vinkit
 
 <details>
-<summary>Show the value, not just the call</summary>
+<summary>Näytä arvo, älä pelkkää kutsua</summary>
 
-The wow isn't "I called an AI Function" — it's the **new column**: messy free text turned
-into a clean category or one-line summary. Make that contrast visible (raw text next to
-derived value) for your demo.
+Vaikuttavaa ei ole "kutsuin AI Function -toimintoa" — vaan **uusi sarake**: sotkuinen vapaateksti muuttuu siistiksi kategoriaksi tai yhden rivin tiivistelmäksi. Tee tämä kontrasti näkyväksi (raakateksti johdetun arvon vieressä) demoasi varten.
 
 </details>
 
 <details>
-<summary>Cap rows to control time and cost</summary>
+<summary>Rajaa rivit ajan ja kustannusten hallitsemiseksi</summary>
 
-Enrich a representative slice (e.g. first 500 rows) during the event. Note the cost/time to
-enrich the full dataset in the spec — that's the honest operational story.
+Rikasta tapahtuman aikana edustava otos (esim. ensimmäiset 500 riviä). Arvioi kustannus ja aika koko datajoukon rikastamiselle — se on rehellinen operatiivinen tarina.
 
 </details>
 
-## Watch Out
+## Huomioi nämä
 
-- Don't enrich the whole dataset blindly — AI calls cost money and time; cap first.
-- Don't let one failed row kill the pipeline — null-and-flag instead.
-- Don't skip the fallback documentation even if AI Functions worked — it shows you understood
-  the dependency.
+- Älä rikasta koko datajoukkoa sokkona — AI-kutsut maksavat rahaa ja aikaa; rajaa ensin.
+- Älä anna yhden epäonnistuneen rivin kaataa putkea — käytä null-arvoa ja lippua.
+- Älä ohita fallback-ajattelua, vaikka AI Functions toimisi — se osoittaa, että ymmärsit riippuvuuden.
 
-## Artifact Handoff
+## Tuotosten luovutus
 
-| Item | Value |
+| Kohta | Arvo |
 | --- | --- |
-| **Input from** | `bronze` table (C2) |
-| **Your output** | `silver` table + `silver_enrichment_spec.md` |
-| **Next challenge uses** | C4 curates silver into a gold model + report |
+| **Lähtötieto** | `bronze`-taulu (H2) |
+| **Sinun tuotoksesi** | AI-rikastettu `silver`-taulu ja toimiva fallback-polku |
+| **Seuraava vaihe** | H4 kuratoi silverin gold-malliksi + raportiksi |
 
-## Next Step
+## Seuraava vaihe
 
-Your data is enriched. In **C4** you curate it into a **gold** model and put a report on top.
+Datasi on rikastettu. **H4** kuratoi sen **gold**-malliksi ja rakentaa raportin sen päälle.

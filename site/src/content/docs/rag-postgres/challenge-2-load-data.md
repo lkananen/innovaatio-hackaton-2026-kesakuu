@@ -1,107 +1,96 @@
 ---
-title: "C2: Load your data"
-description: Ingest your own dataset, generate embeddings, and prove retrieval works with a smoke test.
+title: "H2: Lataa oma data"
+description: Ingestoi oma datajoukkosi, luo upotukset (embedding) ja todista smoke-testillä, että haku toimii.
 sidebar:
   order: 4
-  label: "C2: Load your data"
+  label: "H2: Lataa oma data"
   badge:
     text: 35 min
     variant: note
 prev:
   link: ../challenge-1-provision/
-  label: "C1: Provision"
+  label: "H1: Resurssien käyttöönotto"
 next:
   link: ../challenge-3-customise-retrieval/
-  label: "C3: Customise retrieval"
+  label: "H3: Mukauta hakua"
 ---
 
-:::note[Challenge Info]
-⏱️ **35 min** · 🧩 **Core** · 🤖 agent: ingestion + test author · 📄 output: `dataset_manifest.json`, `smoke_test.py`
+:::note[Haasteen tiedot]
+⏱️ **35 min** · 🧩 **Ydin** · 🤖 agentti: ingestio ja testin kirjoittaja
 :::
 
-## Objective
+## Tavoite
 
-- **Do now:** Replace the sample data with **your** dataset and verify retrieval.
-- **Input:** `infra-output.json` (C1) + your dataset from [Setup](../setup/).
-- **Output:** `dataset_manifest.json` describing what you loaded + a passing `smoke_test.py`.
-- **Required to move on:** The app answers a question using **your** content, with a citation.
-- **Decisions now:** Chunk size, how many chunks, which fields become searchable text.
-- **Next:** C3 tunes *how* that content is retrieved and presented.
+- **Tee nyt:** Korvaa esimerkkidata **omalla** datajoukollasi ja varmista haku.
+- **Lähtötiedot:** Käyttöön otetun sovelluksen päätepistetiedot (H1) + datajoukkosi kohdasta [Valmistelu](../setup/).
+- **Tulos:** Oma data on ladattu, haettavissa ja suojattu läpäisevällä smoke-testillä.
+- **Vaaditaan etenemiseen:** Sovellus vastaa kysymykseen **oman** sisältösi perusteella ja näyttää viittauksen.
+- **Päätökset nyt:** Tekstikatkelman koko, tekstikatkelmien määrä ja mitkä kentät muuttuvat haettavaksi tekstiksi.
+- **Seuraavaksi:** H3 hienosäätää, *miten* sisältö haetaan ja esitetään.
 
-## The Business Challenge
+## Liiketoimintahaaste
 
-A RAG app is only as good as the data behind it. Your job is to get **your** documents in,
-embedded, and provably retrievable — and to lock that in with an automated check so later
-changes can't silently break it.
+RAG-sovellus on vain niin hyvä kuin sen taustalla oleva data. Sinun tehtäväsi on saada **omat** dokumenttisi sisään, upotettua ja todistettavasti haettaviksi — ja lukita tämä automaattisella tarkistuksella, jotta myöhemmät muutokset eivät voi rikkoa sitä huomaamatta.
 
-## Your Tasks
+## Tehtäväsi
 
-1. Prepare your dataset to the track rules: **non-sensitive**, **≤ 50 MB**, **~50–200
-   chunks**. (No data? Use a fallback from [Setup §3](../setup/#3-bring-your-own-data-or-use-a-fallback).)
-2. Use the repo's ingestion script (and your agent) to **chunk → embed → upsert** into
-   PostgreSQL. Confirm row counts in the `pgvector` table.
-3. Ask **2–3 questions** in the UI that should be answerable from your data. Confirm the
-   answers cite your sources.
-4. Have your agent write `smoke_test.py`: a `pytest` that hits the `/chat` (or `/ask`)
-   endpoint with **one known question** and asserts the response contains an **expected
-   fact or source filename**. Make it pass.
-5. Record what you loaded in `dataset_manifest.json`.
+1. Valmistele datajoukkosi polun sääntöjen mukaisesti: **ei-arkaluonteinen**, **≤ 50 MB**, **noin 50–200 tekstikatkelmaa**. (Eikö sinulla ole dataa? Käytä varavaihtoehtoa kohdasta [Valmistelu §3](../setup/#3-bring-your-own-data-or-use-a-fallback).)
+2. Käytä repositorion ingestiokomentosarjaa (ja agenttiasi) tekemään **pilkkominen → upotus (embedding) → upsert** PostgreSQL:ään. Varmista rivimäärät `pgvector`-taulussa.
+3. Kysy käyttöliittymässä **2–3 kysymystä**, joihin datasi pitäisi pystyä vastaamaan. Varmista, että vastaukset viittaavat lähteisiisi.
+4. Pyydä agenttiasi tekemään smoke-testi: `pytest`, joka kutsuu `/chat`- (tai `/ask`-) päätepistettä **yhdellä tunnetulla kysymyksellä** ja tarkistaa, että vastaus sisältää **odotetun faktan tai lähdetiedoston nimen**. Varmista, että testi läpäisee.
+5. Kirjaa lataamasi datan lähde, määrä, tekstikatkelmien koko ja upotusmalli talteen.
 
-## Key Decisions
+## Keskeiset päätökset
 
-- **Chunk size vs. recall:** small chunks = precise but fragmented; large = context-rich but noisy.
-- Which **fields** of your data are worth embedding vs. keeping as metadata filters?
-- What is a **deterministic** success signal for the smoke test (a fact? a source name?)?
-- How many chunks is "enough" to be useful without blowing embedding cost/time?
+- **Tekstikatkelman koko vs. recall:** pienet katkelmat = tarkkoja mutta sirpaleisia; suuret = kontekstirikkaita mutta kohinaisia.
+- Mitkä datasi **kentät** kannattaa upottaa ja mitkä säilyttää metadatasuodattimina?
+- Mikä on **deterministinen** onnistumissignaali smoke-testille (fakta? lähteen nimi?)?
+- Kuinka monta tekstikatkelmaa on “riittävästi”, jotta ratkaisu on hyödyllinen ilman että upotuskustannus tai -aika karkaa?
 
-## Deliverables
+## Tuotokset
 
-- `dataset_manifest.json` — source, record/chunk count, chunk size, embedding model.
-- `smoke_test.py` — passing test against your endpoint.
-- 2–3 screenshot/transcript examples of grounded answers with citations.
+- Selkeä tieto siitä, mikä lähde ladattiin, kuinka paljon sisältöä siitä syntyi, millä tekstikatkelmakoolla ja millä upotusmallilla.
+- Päätepistettä vasten läpäisevä smoke-testi.
+- 2–3 kuvakaappaus-/transkriptiesimerkkiä lähteisiin perustuvista vastauksista viittauksineen.
 
-## Success Criteria
+## Onnistumisen kriteerit
 
-| Focus | What good looks like | Evidence |
+| Painopiste | Miltä hyvä näyttää | Näyttö |
 | --- | --- | --- |
-| Your data in | Retrieval returns *your* passages, not the sample | UI answer cites your source |
-| Deterministic test | One known Q→A pair asserted automatically | `pytest` passes |
-| Reproducible load | Anyone can see what was ingested | `dataset_manifest.json` |
+| Oma data sisällä | Haku palauttaa *omia* tekstikatkelmiasi, ei esimerkkiä | Käyttöliittymän vastaus viittaa lähteeseesi |
+| Deterministinen testi | Yksi tunnettu K→V-pari tarkistetaan automaattisesti | `pytest` läpäisee |
+| Toistettava lataus | Kuka tahansa näkee, mitä on ingestoitu | Ingestion yhteenveto |
 
-## Tips / Hints
+## Vinkit
 
 <details>
-<summary>Make the smoke test deterministic</summary>
+<summary>Tee smoke-testistä deterministinen</summary>
 
-LLM output varies, so don't assert on exact wording. Assert on something stable:
-the **source filename** the app cites, or a **specific number/name** that only your data
-contains. Example: `assert "annual-report-2024" in response.json()["sources"]`.
+LLM:n tuotos vaihtelee, joten älä tarkista täsmällistä sanamuotoa. Tarkista jotain vakaata: sovelluksen viittaama **lähdetiedoston nimi** tai **tietty numero/nimi**, joka esiintyy vain sinun datassasi. Esimerkki: `assert "annual-report-2024" in response.json()["sources"]`.
 
 </details>
 
 <details>
-<summary>Embedding cost control</summary>
+<summary>Upotuskustannusten hallinta</summary>
 
-If your dataset is large, ingest only the **first N documents/chunks** for the event. The
-goal is a working demo, not full coverage. Note the limit in `dataset_manifest.json`.
+Jos datajoukkosi on suuri, ingestoi tapahtumaa varten vain **ensimmäiset N dokumenttia/tekstikatkelmaa**. Tavoite on toimiva demo, ei täysi kattavuus. Kirjaa rajaus talteen.
 
 </details>
 
-## Watch Out
+## Huomioi nämä
 
-- Don't ingest sensitive data "just to try it" — once embedded it's in the DB.
-- Don't assert on full answer text in the test; it will flake.
-- Don't forget to verify **row counts** — a silent embedding failure looks like "no results."
+- Älä ingestoi arkaluonteista dataa “vain kokeillaksesi” — kun se on upotettu, se on tietokannassa.
+- Älä tarkista testissä koko vastaustekstiä; testistä tulee epävakaa.
+- Älä unohda varmistaa **rivimääriä** — hiljainen upotusvirhe näyttää siltä kuin “tuloksia ei löytyisi”.
 
-## Artifact Handoff
+## Tuotosten luovutus
 
-| Item | Value |
+| Kohta | Arvo |
 | --- | --- |
-| **Input from** | `infra-output.json` (C1) + your dataset |
-| **Your output** | `dataset_manifest.json`, `smoke_test.py` |
-| **Next challenge uses** | C3 changes retrieval/prompting; the smoke test guards against regressions |
+| **Lähtötieto** | Käyttöön otetun sovelluksen päätepistetiedot (H1) + datajoukkosi |
+| **Sinun tuotoksesi** | Haettava oma data ja läpäisevä smoke-testi |
+| **Seuraava vaihe** | H3 muuttaa hakua ja kehotteita; smoke-testi suojaa regressioilta |
 
-## Next Step
+## Seuraava vaihe
 
-Retrieval works. C3 makes it *good* — better chunks, filters, and a domain-aware system
-prompt — with the smoke test catching any regression.
+Haku toimii. H3 tekee siitä *hyvän* — paremmat tekstikatkelmat, suodattimet ja toimialan tunteva järjestelmäkehote — ja smoke-testi havaitsee regressiot.

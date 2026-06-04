@@ -1,100 +1,93 @@
 ---
-title: "C2: Bronze ingestion"
-description: Land your raw data unchanged into the bronze layer of the lakehouse, with a manifest.
+title: "H2: Bronze-tuonti"
+description: Tuo raakadatasi muuttamattomana lakehousen bronze-kerrokseen jäljitettäväksi pohjaksi.
 sidebar:
   order: 4
-  label: "C2: Bronze ingestion"
+  label: "H2: Bronze-tuonti"
   badge:
     text: 30 min
     variant: note
 prev:
   link: ../challenge-1-readiness/
-  label: "C1: Readiness"
+  label: "H1: Valmius"
 next:
   link: ../challenge-3-silver/
-  label: "C3: Silver + AI"
+  label: "H3: Silver + AI"
 ---
 
-:::note[Challenge Info]
-⏱️ **30 min** · 🧩 **Core** · 🤖 agent: ingestion author · 📄 output: `bronze_manifest.json`
+:::note[Haasteen tiedot]
+⏱️ **30 min** · 🧩 **Ydin** · 🤖 agentti: datan tuonnin tekijä
 :::
 
-## Objective
+## Tavoite
 
-- **Do now:** Get your raw data into the lakehouse, **as-is**.
-- **Input:** Verified lakehouse (C1) + your dataset.
-- **Output:** A `bronze` Delta table + `bronze_manifest.json` describing it.
-- **Required to move on:** Bronze table queryable; row count matches the source.
-- **Decisions now:** File format, partitioning (or not), what counts as "raw".
-- **Next:** C3 cleans and AI-enriches this into silver.
+- **Tee nyt:** Vie raakadatasi lakehouseen **sellaisenaan**.
+- **Lähtötiedot:** Varmistettu lakehouse (H1) + datajoukkosi.
+- **Tulos:** Toimiva `bronze` Delta -taulu, jonka lähde, rivimäärä ja skeema ovat jäljitettävissä.
+- **Vaaditaan etenemiseen:** Bronze-taulu on kyseltävissä; rivimäärä vastaa lähdettä.
+- **Päätökset nyt:** Tiedostomuoto, osiointi (tai ei), mikä lasketaan "raakadataksi".
+- **Seuraavaksi:** H3 puhdistaa ja AI-rikastaa tämän silver-kerrokseen.
 
-## The Business Challenge
+## Liiketoimintahaaste
 
-The bronze layer is the **immutable landing zone** — raw data exactly as it arrived, so you
-can always reprocess. The discipline here is **don't transform yet**: capture faithfully,
-record provenance, and move on.
+Bronze-kerros on **muuttumaton laskeutumisalue** — raakadata täsmälleen sellaisena kuin se saapui, jotta voit aina käsitellä sen uudelleen. Tämän vaiheen kurinalaisuus on: **älä muunna vielä**. Tallenna uskollisesti, varmista alkuperän jäljitettävyys ja jatka eteenpäin.
 
-## Your Tasks
+## Tehtäväsi
 
-1. Load your CSV/Parquet into a **bronze** Delta table in the lakehouse (notebook or
-   Dataflow/pipeline — your choice).
-2. Keep it **raw**: no cleaning, no type-coercion beyond what's needed to land it.
-3. Validate: `count(*)` matches the source; spot-check a few rows.
-4. With your agent, write `bronze_manifest.json`: source, load time, row count, column list,
-   and the target table name.
+1. Lataa CSV/Parquet **bronze** Delta -tauluun lakehousessa (notebook tai Dataflow/pipeline — valitse itse).
+2. Pidä se **raakana**: ei puhdistusta eikä tyyppimuunnoksia enempää kuin lataaminen edellyttää.
+3. Varmista: `count(*)` vastaa lähdettä; tarkista muutama rivi pistokokein.
+4. Varmista agenttisi kanssa, että latauksen lähde, latausaika, rivimäärä, sarakelista ja kohdetaulun nimi ovat tiedossa.
 
-## Key Decisions
+## Keskeiset päätökset
 
-- **Format:** Delta is the lakehouse default — use it unless you have a reason not to.
-- **Partitioning:** only partition if the data is large enough to warrant it.
-- **Schema-on-read vs. enforced:** for bronze, prefer permissive ingestion.
+- **Muoto:** Delta on lakehousen oletus — käytä sitä, ellei sinulla ole syytä olla käyttämättä.
+- **Osiointi:** osioi vain, jos data on riittävän suurta perustelemaan sen.
+- **Schema-on-read vs. pakotettu skeema:** bronzeen kannattaa suosia sallivaa datan tuontia.
 
-## Deliverables
+## Tuotokset
 
-- A `bronze` Delta table in the lakehouse.
-- `bronze_manifest.json` documenting the load.
+- `bronze` Delta -taulu lakehousessa.
+- Jäljitettävä lataus: lähde, latausaika, rivimäärä, sarakelista ja kohdetaulu ovat selvillä.
 
-## Success Criteria
+## Onnistumisen kriteerit
 
-| Focus | What good looks like | Evidence |
+| Painopiste | Miltä hyvä näyttää | Näyttö |
 | --- | --- | --- |
-| Faithful landing | Row count matches source; data unaltered | `count(*)` + source count |
-| Queryable | Bronze table reads back correctly | A `SELECT` preview |
-| Documented | Manifest records provenance | `bronze_manifest.json` |
+| Uskollinen laskeutuminen | Rivimäärä vastaa lähdettä; dataa ei muutettu | `count(*)` + lähteen määrä |
+| Kyseltävissä | Bronze-taulu luetaan oikein takaisin | `SELECT`-esikatselu |
+| Jäljitettävä | Latauksen alkuperä, rivimäärä ja kohdetaulu ovat selvillä | Muistiinpano |
 
-## Tips / Hints
+## Vinkit
 
 <details>
-<summary>Resist the urge to clean</summary>
+<summary>Vastusta halua puhdistaa</summary>
 
-Every "small fix" you make in bronze is a transformation you can't undo without re-ingesting.
-Keep bronze raw; **silver** (C3) is where cleaning belongs.
+Jokainen "pieni korjaus", jonka teet bronzessa, on muunnos, jota et voi perua ilman uudelleentuontia. Pidä bronze raakana; **silver** (H3) on oikea paikka puhdistukselle.
 
 </details>
 
 <details>
-<summary>Let the agent write the manifest from the table</summary>
+<summary>Anna agentin kuvata toteutunut lataus taulusta</summary>
 
-Have Copilot read the loaded table's schema and row count to generate the manifest, so it
-reflects what actually landed rather than what you intended.
+Pyydä Copilotia lukemaan ladatun taulun skeema ja rivimäärä, jotta latauksen kuvaus perustuu toteumaan eikä vain aikomukseesi.
 
 </details>
 
-## Watch Out
+## Huomioi nämä
 
-- Don't transform in bronze — you'll regret it when you need to reprocess.
-- Don't lose source provenance; the manifest is part of the deliverable.
-- Don't ingest sensitive columns you don't need — drop them at the source instead.
+- Älä tee muunnoksia bronzessa — kadut sitä, kun tarvitset uudelleenkäsittelyä.
+- Älä hukkaa lähteen alkuperätietoa; latauksen pitää olla jäljitettävä.
+- Älä tuo arkaluonteisia sarakkeita, joita et tarvitse — poista ne jo lähteessä.
 
-## Artifact Handoff
+## Tuotosten luovutus
 
-| Item | Value |
+| Kohta | Arvo |
 | --- | --- |
-| **Input from** | Verified lakehouse (C1) |
-| **Your output** | `bronze` table + `bronze_manifest.json` |
-| **Next challenge uses** | C3 reads bronze, cleans it, and adds AI-enriched columns |
+| **Lähtötieto** | Varmistettu lakehouse (H1) |
+| **Sinun tuotoksesi** | Kyseltävä `bronze`-taulu ja jäljitettävä lataus |
+| **Seuraava vaihe** | H3 lukee bronzen, puhdistaa sen ja lisää AI-rikastetut sarakkeet |
 
-## Next Step
+## Seuraava vaihe
 
-Raw data has landed. In **C3** — the heart of the track — you clean it and **enrich it with
-AI Functions** into the silver layer.
+Raakadata on tuotu. **H3** — tämän polun ydin — puhdistaa sen ja **rikastaa sen AI Functions -toiminnoilla** silver-kerrokseen.

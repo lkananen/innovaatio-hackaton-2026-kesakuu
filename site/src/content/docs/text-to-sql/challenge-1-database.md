@@ -1,101 +1,100 @@
 ---
-title: "C1: Database & schema profile"
-description: Load your relational data and generate a machine-readable schema profile the agent can reason over.
+title: "H1: Tietokanta ja skeemaprofiili"
+description: Lataa relaatiodatasi ja varmista, että agentilla on luotettava käsitys skeemasta, jonka pohjalta se voi päätellä.
 sidebar:
   order: 3
-  label: "C1: Database & profile"
+  label: "H1: Tietokanta ja profiili"
   badge:
     text: 35 min
     variant: note
 prev:
   link: ../setup/
-  label: Setup & Pre-work
+  label: Valmistelu ja valmiustarkistus
 next:
   link: ../challenge-2-glossary/
-  label: "C2: Glossary & golden Qs"
+  label: "H2: Sanasto ja kultaiset kysymykset"
 ---
 
-:::note[Challenge Info]
-⏱️ **35 min** · 🧩 **Core** · 🤖 agent: schema profiler · 📄 output: `schema_profile.json`
+:::note[Haasteen tiedot]
+⏱️ **35 min** · 🧩 **Ydin** · 🤖 agentti: skeemaprofiloija
 :::
 
-## Objective
+## Tavoite
 
-- **Do now:** Get data into PostgreSQL and describe it for the agent.
-- **Input:** Your relational dataset + read-only user (pre-work).
-- **Output:** `schema_profile.json` — tables, columns, types, keys, relationships.
-- **Required to move on:** A query as `agent_ro` returns rows; profile lists every table.
-- **Decisions now:** Which tables are in scope, how to represent relationships.
-- **Next:** C2 adds business meaning on top of this structure.
+- **Tee nyt:** Vie data PostgreSQL-tietokantaan ja kuvaa se agentille.
+- **Lähtötiedot:** Relaatiodatajoukkosi + vain luku -käyttäjä (valmisteltu etukäteen).
+- **Tulos:** Agentilla on tarkka ja tarkistettu käsitys tauluista, sarakkeista, tyypeistä, avaimista ja suhteista.
+- **Vaaditaan etenemiseen:** Kysely käyttäjänä `agent_ro` palauttaa rivejä; profiili listaa jokaisen taulun.
+- **Päätökset nyt:** Mitkä taulut kuuluvat rajaukseen, miten suhteet kuvataan.
+- **Seuraavaksi:** H2 lisää liiketoimintamerkityksen tämän rakenteen päälle.
 
-## The Business Challenge
+## Liiketoimintahaaste
 
-An agent can't write correct SQL for a schema it can't see. Before any LLM call, you need a
-**faithful, machine-readable map** of your database — and proof the agent's **read-only**
-identity can actually query it.
+Agentti ei voi kirjoittaa oikeaa SQL:ää skeemalle, jota se ei näe. Ennen yhtään LLM-kutsua tarvitset
+**tarkan, koneellisesti luettavan kartan** tietokannastasi — ja todisteen siitä, että agentin **vain luku**
+-identiteetti voi oikeasti kysellä sitä.
 
-## Your Tasks
+## Tehtäväsi
 
-1. **If you loaded data in pre-work:** verify row counts and skip to step 2. **Otherwise:**
-   load your dataset (or a fallback) into PostgreSQL now and confirm row counts look right.
-2. Verify the **`agent_ro`** user can `SELECT` — and **cannot** `INSERT`/`UPDATE`/`DELETE`.
-3. With your agent, generate `schema_profile.json` containing, per table: columns + types,
-   primary keys, foreign keys, and a one-line description.
-4. Spot-check the profile against the real schema (`\d+` in psql) — fix any drift.
+1. **Jos latasit datan etukäteen:** varmista rivimäärät ja siirry vaiheeseen 2. **Muuten:**
+   lataa datajoukkosi (tai varavaihtoehto) PostgreSQL-tietokantaan nyt ja varmista, että rivimäärät näyttävät oikeilta.
+2. Varmista, että **`agent_ro`**-käyttäjä voi tehdä `SELECT`-kyselyjä — eikä voi tehdä `INSERT`/`UPDATE`/`DELETE`-toimintoja.
+3. Kuvaa agentillasi jokaisesta taulusta sarakkeet + tyypit, pääavaimet, viiteavaimet ja yhden rivin kuvaus.
+4. Tarkista profiili pistokokein oikeaa skeemaa vasten (`\d+` psql:ssä) — korjaa poikkeamat.
 
-## Key Decisions
+## Keskeiset päätökset
 
-- **Scope:** include all tables or just the 2–5 your golden questions touch?
-- **Relationships:** capture FKs explicitly so the model knows how to join.
-- **Descriptions:** auto-generate then correct, or write by hand for accuracy?
+- **Rajaus:** otatko mukaan kaikki taulut vai vain ne 2–5, joita kultaiset kysymykset koskevat?
+- **Suhteet:** tallenna viiteavaimet eksplisiittisesti, jotta malli tietää, miten taulut liitetään.
+- **Kuvaukset:** luotko automaattisesti ja korjaat, vai kirjoitatko käsin tarkkuuden vuoksi?
 
-## Deliverables
+## Tuotokset
 
-- Loaded database with sane row counts.
-- `schema_profile.json` covering every in-scope table.
-- A note confirming `agent_ro` is read-only (a denied write proves it).
+- Ladattu tietokanta, jossa on järkevät rivimäärät.
+- Tarkistettu skeemakäsitys, joka kattaa jokaisen rajaukseen kuuluvan taulun.
+- Merkintä, joka vahvistaa, että `agent_ro` on vain luku -käyttäjä (estetty kirjoitus todistaa sen).
 
-## Success Criteria
+## Onnistumisen kriteerit
 
-| Focus | What good looks like | Evidence |
+| Painopiste | Miltä hyvä näyttää | Näyttö |
 | --- | --- | --- |
-| Data loaded | Tables exist with expected row counts | `SELECT count(*)` output |
-| Read-only verified | A write attempt as `agent_ro` is denied | `permission denied` error |
-| Profile accurate | Keys & FKs match the real schema | Diff vs. `\d+` |
+| Data ladattu | Taulut ovat olemassa ja rivimäärät ovat odotetut | `SELECT count(*)` -tulos |
+| Vain luku varmistettu | Kirjoitusyritys käyttäjänä `agent_ro` estetään | `permission denied` -virhe |
+| Profiili tarkka | Avaimet ja viiteavaimet vastaavat oikeaa skeemaa | Vertailu `\d+`-tulokseen |
 
-## Tips / Hints
+## Vinkit
 
 <details>
-<summary>Generate the profile from the catalog, not from memory</summary>
+<summary>Luo profiili katalogista, älä muistista</summary>
 
-Have your agent query `information_schema` / `pg_catalog` to build the profile, rather than
-guessing from the DDL. That way the JSON reflects what's **actually** in the database.
+Pyydä agenttiasi kyselemään `information_schema` / `pg_catalog` -näkymiä profiilin rakentamiseksi sen sijaan,
+että se arvaisi DDL:stä. Näin kuvaus heijastaa sitä, mitä tietokannassa **oikeasti** on.
 
 </details>
 
 <details>
-<summary>Prove read-only on purpose</summary>
+<summary>Todista vain luku tarkoituksella</summary>
 
-Run `INSERT INTO <table> ...` as `agent_ro` and screenshot the denial. That denial is a
-deliverable — it's the foundation of every later guardrail.
+Suorita `INSERT INTO <table> ...` käyttäjänä `agent_ro` ja ota kuvakaappaus estosta. Esto on
+näyttö — se on jokaisen myöhemmän turvarajan perusta.
 
 </details>
 
-## Watch Out
+## Huomioi nämä
 
-- Don't connect the agent as a superuser "just to get going" — start read-only from minute one.
-- Don't let the profile drift from reality; the model will trust it literally.
-- Don't include tables full of PII even if synthetic-looking — confirm provenance.
+- Älä yhdistä agenttia pääkäyttäjänä "vain jotta pääset alkuun" — aloita vain luku -käyttäjällä heti ensimmäisestä minuutista.
+- Älä anna profiilin ajautua irti todellisuudesta; malli luottaa siihen kirjaimellisesti.
+- Älä sisällytä tauluja, jotka ovat täynnä henkilötietoja, vaikka ne näyttäisivät synteettisiltä — varmista alkuperä.
 
-## Artifact Handoff
+## Tuotosten luovutus
 
-| Item | Value |
+| Kohta | Arvo |
 | --- | --- |
-| **Input from** | Pre-work dataset + `agent_ro` |
-| **Your output** | `schema_profile.json` |
-| **Next challenge uses** | C2 layers a business glossary onto these tables/columns |
+| **Lähtötieto** | Valmis datajoukko + `agent_ro` |
+| **Sinun tuotoksesi** | Tarkistettu skeemakäsitys agentin käyttöön |
+| **Seuraava vaihe** | H2 lisää liiketoimintasanaston näiden taulujen/sarakkeiden päälle |
 
-## Next Step
+## Seuraava vaihe
 
-The agent can now see your schema. In **C2** you give it the *business meaning* and lock in
-five golden questions.
+Agentti näkee nyt skeemasi. **H2**:ssa annat sille *liiketoimintamerkityksen* ja lukitset
+viisi kultaista kysymystä.

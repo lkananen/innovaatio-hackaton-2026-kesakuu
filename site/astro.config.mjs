@@ -2,6 +2,7 @@
 import { defineConfig } from "astro/config";
 import starlight from "@astrojs/starlight";
 import rehypeMermaid from "rehype-mermaid-lite";
+import remarkGfm from "remark-gfm";
 
 // NOTE: `site` and `base` must match the final GitHub Pages URL.
 // For a project page the base is "/<repo-name>". Override via env when the
@@ -15,26 +16,33 @@ export default defineConfig({
   base: BASE,
   trailingSlash: "always",
   markdown: {
+    remarkPlugins: [remarkGfm],
     rehypePlugins: [rehypeMermaid],
   },
   integrations: [
     starlight({
-      title: "Agentic DataOps Hackathon",
+      title: "Agentic DataOps -hackathon",
       description:
-        "From idea to implementation — three standalone, hands-on hackathons for building agentic data platforms on Azure with GitHub Copilot.",
-      tagline: "From idea to implementation",
+        "Ideasta toteutukseen — kuusi itsenäistä, käytännönläheistä hackathonia agenttipohjaisten data-alustojen rakentamiseen Azuressa GitHub Copilotin avulla.",
+      tagline: "Ideasta toteutukseen",
       lastUpdated: true,
+      components: {
+        Head: "./src/components/Head.astro",
+      },
+      locales: {
+        root: { label: "Suomi", lang: "fi" },
+      },
       expressiveCode: {
         styleOverrides: { borderRadius: "0.5rem" },
       },
       sidebar: [
         {
-          label: "🐘 RAG on PostgreSQL",
+          label: "🐘 RAG PostgreSQL:llä",
           collapsed: false,
           items: [{ autogenerate: { directory: "rag-postgres" } }],
         },
         {
-          label: "🔎 Text-to-SQL Agent",
+          label: "🔎 Text-to-SQL-agentti",
           collapsed: true,
           items: [{ autogenerate: { directory: "text-to-sql" } }],
         },
@@ -42,6 +50,21 @@ export default defineConfig({
           label: "✨ Fabric AI Functions",
           collapsed: true,
           items: [{ autogenerate: { directory: "fabric-ai" } }],
+        },
+        {
+          label: "💬 Fabric Data Agent",
+          collapsed: true,
+          items: [{ autogenerate: { directory: "fabric-data-agent" } }],
+        },
+        {
+          label: "⚡ Real-Time Intelligence",
+          collapsed: true,
+          items: [{ autogenerate: { directory: "real-time-intelligence" } }],
+        },
+        {
+          label: "🔌 MCP-palvelin omalle datalle",
+          collapsed: true,
+          items: [{ autogenerate: { directory: "mcp-data-server" } }],
         },
       ],
       customCss: [

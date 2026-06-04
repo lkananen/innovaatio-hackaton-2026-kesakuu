@@ -1,105 +1,105 @@
 ---
-title: "C5: Eval harness"
-description: Turn your golden questions into an automated eval that scores the agent's accuracy.
+title: "H5: Arviointikehys"
+description: Muunna kultaiset kysymyksesi automaattiseksi arvioinniksi, joka pisteyttää agentin tarkkuuden.
 sidebar:
   order: 7
-  label: "C5: Eval harness"
+  label: "H5: Arviointikehys"
   badge:
     text: 30 min
     variant: tip
 prev:
   link: ../challenge-4-guardrails/
-  label: "C4: Guardrails"
+  label: "H4: Turvarajat"
 next:
   link: ../challenge-6-demo/
-  label: "C6: Demo prep"
+  label: "H6: Demon valmistelu"
 ---
 
-:::note[Challenge Info]
-⏱️ **30 min** · 🧩 **Optional** · 🤖 agent: eval author · 📄 output: `eval_cases.json` + pass rate
+:::note[Haasteen tiedot]
+⏱️ **30 min** · 🧩 **Valinnainen** · 🤖 agentti: arvioinnin tekijä
 :::
 
-:::tip[Skip-safe]
-Only start this if **C4 passes**. The output is a single number — your agent's accuracy on
-the golden set — plus the harness that produced it.
+:::tip[Turvallista ohittaa]
+Aloita tämä vain, jos **H4 läpäisee**. Tulos on yksi numero — agenttisi tarkkuus
+kultaisella joukolla — sekä sen tuottanut kehys.
 :::
 
-## Objective
+## Tavoite
 
-- **Do now:** Measure accuracy instead of guessing it.
-- **Input:** 5 golden questions + reference answers (C2), safe agent (C4).
-- **Output:** `eval_cases.json` + a printed **pass rate**.
-- **Required to move on:** The harness runs all cases and reports a score.
-- **Decisions now:** How to compare answers (exact, set-equal, tolerant).
-- **Next:** C6 puts the score in your demo.
+- **Tee nyt:** Mittaa tarkkuus arvaamisen sijaan.
+- **Lähtötiedot:** 5 kultaista kysymystä + viitevastaukset (H2), turvallinen agentti (H4).
+- **Tulos:** Toistettava arviointi, joka ajaa kultaisen joukon ja tulostaa **läpäisyasteen**.
+- **Vaaditaan etenemiseen:** Kehys ajaa kaikki tapaukset ja raportoi pisteet.
+- **Päätökset nyt:** Miten vastauksia verrataan (täsmällinen, joukko-samat, toleranssi).
+- **Seuraavaksi:** H6 tuo pisteet demoosi.
 
-## The Business Challenge
+## Liiketoimintahaaste
 
-"It worked when I tried it" is not evidence. An **eval harness** turns your golden questions
-into a repeatable score, so you can change the prompt and **know** whether it got better or
-worse — the DataOps discipline applied to an LLM agent.
+"Se toimi, kun kokeilin" ei ole näyttöä. **Arviointikehys** muuttaa kultaiset kysymyksesi
+toistettavaksi pisteeksi, jotta voit muuttaa kehotetta ja **tietää**, paraniko vai
+heikkenikö se — DataOps-kuri sovellettuna LLM-agenttiin.
 
-## Your Tasks
+## Tehtäväsi
 
-1. Encode your golden questions + expected answers into `eval_cases.json`.
-2. With your agent, build a runner that, per case: asks the agent → runs SQL via guardrails
-   → compares result to the expected answer → records pass/fail.
-3. Choose a sensible **comparison**: exact value, set equality (order-independent rows), or
-   numeric tolerance for aggregates.
-4. Print an overall **pass rate** (e.g. `4/5 = 80%`). Run it twice to check stability.
+1. Muuta kultaiset kysymyksesi ja odotetut vastaukset koneellisesti ajettavaksi arviointijoukoksi.
+2. Rakenna agenttisi avulla ajuri, joka kullekin tapaukselle: kysyy agentilta → ajaa SQL:n turvarajojen kautta
+   → vertaa tulosta odotettuun vastaukseen → kirjaa läpäisy/hylkäys.
+3. Valitse järkevä **vertailu**: täsmällinen arvo, joukkojen yhtäsuuruus (järjestyksestä riippumattomat rivit) tai
+   numeerinen toleranssi aggregoinneille.
+4. Tulosta kokonais-**läpäisyaste** (esim. `4/5 = 80%`). Aja se kahdesti vakauden tarkistamiseksi.
 
-## Key Decisions
+## Keskeiset päätökset
 
-- **Comparison strictness:** rows can come back in any order — compare as sets, not lists.
-- **Determinism:** LLMs vary run to run; do you average over N runs or accept one pass?
-- **Failure detail:** log the generated SQL for each failure so you can debug fast.
+- **Vertailun tiukkuus:** rivit voivat palautua missä tahansa järjestyksessä — vertaa joukkoina, älä listoina.
+- **Determinismi:** LLM:t vaihtelevat ajosta toiseen; keskiarvoistatko N ajoa vai hyväksytkö yhden läpäisyn?
+- **Virheen yksityiskohdat:** lokita jokaisen virheen tuotettu SQL, jotta vianetsintä on nopeaa.
 
-## Deliverables
+## Tuotokset
 
-- `eval_cases.json` — the golden set in machine-readable form.
-- An eval runner that prints a pass rate.
-- The current score recorded for your demo.
+- Koneellisesti ajettava kultainen joukko.
+- Arviointiajuri, joka tulostaa läpäisyasteen.
+- Nykyinen pistemäärä kirjattuna demoasi varten.
 
-## Success Criteria
+## Onnistumisen kriteerit
 
-| Focus | What good looks like | Evidence |
+| Painopiste | Miltä hyvä näyttää | Näyttö |
 | --- | --- | --- |
-| Automated | One command scores all golden questions | Runner output |
-| Fair comparison | Order-independent, tolerant where needed | Comparison logic |
-| Actionable | Failures show the SQL that was generated | Failure log |
+| Automaattinen | Yksi komento pisteyttää kaikki kultaiset kysymykset | Ajurin näyttö |
+| Reilu vertailu | Järjestyksestä riippumaton, tarvittaessa toleranssilla | Vertailulogiikka |
+| Toimintaan ohjaava | Virheet näyttävät tuotetun SQL:n | Virheloki |
 
-## Tips / Hints
+## Vinkit
 
 <details>
-<summary>Compare results, not SQL strings</summary>
+<summary>Vertaa tuloksia, älä SQL-merkkijonoja</summary>
 
-Two different SQL queries can be equally correct. Grade on the **result set** (as a set of
-rows), not on whether the SQL matches your reference text.
+Kaksi erilaista SQL-kyselyä voi olla yhtä oikein. Arvioi **tulosjoukkoa** (rivien joukkona),
+älä sitä, vastaako SQL viitetekstiäsi.
 
 </details>
 
 <details>
-<summary>Use it as a feedback loop</summary>
+<summary>Käytä sitä palautesilmukkana</summary>
 
-If you have time after a green eval, tweak `prompt_contract.md`, re-run, and watch the score.
-That loop — change, measure, keep or revert — is the whole point.
+Jos onnistuneen arvioinnin jälkeen jää aikaa, säädä kehotekäytäntöä, aja uudelleen ja seuraa pistemäärää.
+Tuo silmukka — muuta, mittaa, pidä tai palauta — on koko asian ydin.
 
 </details>
 
-## Watch Out
+## Huomioi nämä
 
-- Don't compare row lists by position — set-compare or you'll fail correct answers.
-- Don't average away a real regression; if a case flips to fail, investigate.
-- Don't expand the golden set mid-eval; freeze it so scores are comparable.
+- Älä vertaa rivilistoja sijainnin perusteella — vertaa joukkoina tai hylkäät oikeita vastauksia.
+- Älä keskiarvoista pois todellista regressiota; jos tapaus muuttuu hylätyksi, tutki syy.
+- Älä laajenna kultaista joukkoa kesken arvioinnin; jäädytä se, jotta pisteet ovat vertailukelpoisia.
 
-## Artifact Handoff
+## Tuotosten luovutus
 
-| Item | Value |
+| Kohta | Arvo |
 | --- | --- |
-| **Input from** | Golden questions (C2) + safe agent (C4) |
-| **Your output** | `eval_cases.json` + pass rate |
-| **Next challenge uses** | C6 features the score as proof of quality |
+| **Lähtötieto** | Kultaiset kysymykset (H2) + turvallinen agentti (H4) |
+| **Sinun tuotoksesi** | Toistettava arviointikehys + läpäisyaste |
+| **Seuraava vaihe** | H6 käyttää pistemäärää laadun todisteena |
 
-## Next Step
+## Seuraava vaihe
 
-You have a number. **C6** turns the whole thing into a 60-second demo.
+Sinulla on numero. **H6** muuttaa kokonaisuuden ytimekkääksi demoksi.

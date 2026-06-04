@@ -1,22 +1,26 @@
 ---
 title: "Fabric AI Functions"
-description: Build a medallion lakehouse in Microsoft Fabric and enrich it with AI Functions — bronze to gold.
+description: Rakenna medallion-lakehouse Microsoft Fabricissa ja rikasta sitä AI Functions -toiminnoilla — bronze-tasolta gold-tasolle.
 sidebar:
   order: 1
-  label: Overview
+  label: Yleiskatsaus
 ---
 
 import { CardGrid, LinkCard } from "@astrojs/starlight/components";
 
-**Stretch hackathon B.** Build a **medallion lakehouse** (bronze → silver → gold) in
-**Microsoft Fabric** and use **AI Functions** to enrich your data with LLM-powered
-transformations — then curate a gold table and a report on top.
+Rakenna **medallion lakehouse** (bronze → silver → gold) **Microsoft Fabricissa** ja käytä **AI Functions** -toimintoja datasi rikastamiseen LLM-pohjaisilla muunnoksilla — kuratoi sen jälkeen gold-taulu ja raportti sen päälle.
 
-This is the most platform-specific track. It needs a **paid Fabric capacity (F2 or higher)**
-and a tenant where **AI Functions are enabled**. Read the Setup carefully — the readiness
-gate is the difference between building and being stuck.
+Tämä on alustakohtaisin polku. Se vaatii **maksullisen Fabric-kapasiteetin (F2 tai suurempi)** ja tenantin, jossa **AI Functions on otettu käyttöön**. Lue Valmistelu huolellisesti — valmiusportti ratkaisee, pääsetkö rakentamaan vai jäätkö jumiin.
 
-## What you'll build
+:::note[Yhdellä silmäyksellä]
+- **Mitä luot:** Medallion-lakehousen (bronze → silver → gold) Microsoft Fabricissa, jossa silver-kerros käyttää AI Functions -rikastusta, sekä gold-raportin sen päälle.
+- **Ympäristö:** Maksullinen Fabric-kapasiteetti F2 tai suurempi (RUNNING; Trial ei riitä), kapasiteettiin liitetty työtila ja tenant, jossa AI Functions on otettu käyttöön.
+- **Käyttöoikeudet:** Kapasiteetin ylläpitäjän oikeudet (tai kollegan F2+-työtila); oikeus luoda Lakehouse; tenant-ylläpitäjä on ottanut AI-ominaisuudet käyttöön.
+
+Täydellinen tarkistuslista: **[Valmistelu ja valmiustarkistus](setup/)**.
+:::
+
+## Mitä rakennat
 
 ```mermaid
 graph LR
@@ -28,11 +32,9 @@ graph LR
     style AIF fill:#0078d4,color:#fff
 ```
 
-A working medallion pipeline where the **silver layer** uses AI Functions (e.g.
-classification, summarisation, extraction) to add columns no rule could — with a
-**PySpark rule-based fallback** if AI Functions are unavailable.
+Toimivan medallion-putken, jossa **silver-kerros** käyttää AI Functions -toimintoja (esim. luokittelu, tiivistäminen, poiminta) lisätäkseen sarakkeita, joita mikään sääntö ei pystyisi tuottamaan — mukana on **PySpark-sääntöpohjainen fallback**, jos AI Functions ei ole käytettävissä.
 
-## The challenge chain
+## Haasteketju
 
 ```mermaid
 graph LR
@@ -44,26 +46,24 @@ graph LR
     style C3 fill:#0078d4,color:#fff
 ```
 
-| Challenge | Time | Output artifact |
+| Haaste | Aika | Tulos |
 |-----------|------|-----------------|
-| **C1 — Readiness verification** | 20 min | `readiness_check.md` (all green) |
-| **C2 — Bronze ingestion** | 30 min | `bronze_manifest.json` |
-| **C3 — Silver + AI Functions** | 45 min | `silver_enrichment_spec.md` (+ PySpark fallback) |
-| **C4 — Gold + report** | 35 min | `gold_model_spec.md` + one report |
-| _C5 — Operationalise (optional)_ | 25 min | `pipeline_run_evidence.md` |
-| _C6 — Demo prep (optional)_ | 15 min | `demo_story.md` + recording |
+| **H1 — Valmiuden varmistus** | 20 min | Ympäristövalmius ja valittu toteutuspolku |
+| **H2 — Bronze-tuonti** | 30 min | Kyseltävä raakadata bronze-kerroksessa |
+| **H3 — Silver + AI Functions** | 45 min | AI-rikastettu silver-kerros ja fallback-polku |
+| **H4 — Gold + raportti** | 35 min | Kuratoitu gold-malli ja raporttivisuaali |
+| _H5 — Operationalisointi (valinnainen)_ | 25 min | Onnistunut orkestroitu päästä päähän -ajo |
+| _H6 — Demon valmistelu (valinnainen)_ | 15 min | Lyhyt demo, joka näyttää ratkaisun arvon |
 
-:::tip[Core vs. optional]
-**C1–C4 are the core path** — a medallion lakehouse with an AI-enriched silver layer and a
-gold report is a complete result. **C5–C6 are optional.**
+:::tip[Ydin vs. valinnainen]
+**H1–H4 ovat ydinpolku** — medallion lakehouse, AI-rikastettu silver-kerros ja gold-raportti muodostavat valmiin lopputuloksen. **H5–H6 ovat valinnaisia.**
 :::
 
-:::caution[This track has a hard prerequisite]
-You **must** complete the capacity + tenant-switch pre-work before the event. C1 only
-*verifies* readiness — it does not set up capacity. If C1 isn't green, you can't proceed.
+:::caution[Tällä polulla on ehdoton vaatimus]
+Maksullinen kapasiteetti ja tenant-asetukset ovat tämän polun edellytys. H1 vain *varmistaa* valmiuden — se ei määritä kapasiteettia. Jos H1 ei mene läpi, et voi edetä.
 :::
 
 <CardGrid>
-  <LinkCard title="Start here → Setup & pre-work" description="Provision F2+ capacity and enable AI Functions before the day." href="setup/" />
-  <LinkCard title="Then → C1: Readiness" description="Verify capacity, workspace, lakehouse, and AI Functions visibility." href="challenge-1-readiness/" />
+  <LinkCard title="Aloita tästä → Valmistelu ja valmiustarkistus" description="Tarkista, että F2+-kapasiteetti ja AI Functions ovat käytössä." href="setup/" />
+  <LinkCard title="Sitten → H1: Valmius" description="Varmista kapasiteetti, workspace, lakehouse ja AI Functions -näkyvyys." href="challenge-1-readiness/" />
 </CardGrid>

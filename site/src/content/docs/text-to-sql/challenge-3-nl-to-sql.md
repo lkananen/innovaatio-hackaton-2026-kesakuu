@@ -1,101 +1,101 @@
 ---
-title: "C3: NL→SQL prompt contract"
-description: Build the agent that turns natural-language questions into SQL, grounded in your schema and glossary.
+title: "H3: NL→SQL-kehotesopimus"
+description: Rakenna agentti, joka muuttaa luonnollisen kielen kysymykset SQL:ksi skeemaasi ja sanastoosi perustuen.
 sidebar:
   order: 5
-  label: "C3: NL→SQL contract"
+  label: "H3: NL→SQL-sopimus"
   badge:
     text: 40 min
     variant: note
 prev:
   link: ../challenge-2-glossary/
-  label: "C2: Glossary & golden Qs"
+  label: "H2: Sanasto ja kultaiset kysymykset"
 next:
   link: ../challenge-4-guardrails/
-  label: "C4: Guardrails"
+  label: "H4: Turvarajat"
 ---
 
-:::note[Challenge Info]
-⏱️ **40 min** · 🧩 **Core** · 🤖 agent: prompt engineer · 📄 output: `prompt_contract.md` + working agent
+:::note[Haasteen tiedot]
+⏱️ **40 min** · 🧩 **Ydin** · 🤖 agentti: kehotesuunnittelija
 :::
 
-## Objective
+## Tavoite
 
-- **Do now:** Build the question → SQL → answer loop.
-- **Input:** `schema_profile.json` + `business_glossary.md` (C1–C2).
-- **Output:** `prompt_contract.md` (the system prompt + I/O contract) + a runnable agent.
-- **Required to move on:** At least **3 of 5** golden questions return correct answers.
-- **Decisions now:** How much schema to inject, output format, whether to show the SQL.
-- **Next:** C4 makes the generated SQL safe to run.
+- **Tee nyt:** Rakenna kysymys → SQL → vastaus -silmukka.
+- **Lähtötiedot:** Tarkistettu skeemakäsitys + liiketoimintasanasto (H1–H2).
+- **Tulos:** Ajettava agentti, jolla on selkeä järjestelmäkehote ja I/O-sopimus kysymysten muuttamiseen SQL:ksi.
+- **Vaaditaan etenemiseen:** Vähintään **3/5** kultaista kysymystä palauttaa oikeat vastaukset.
+- **Päätökset nyt:** Kuinka paljon skeemaa syötetään, tuotosmuoto, näytetäänkö SQL.
+- **Seuraavaksi:** H4 tekee tuotetusta SQL:stä turvallista suorittaa.
 
-## The Business Challenge
+## Liiketoimintahaaste
 
-This is the heart of the agent: a **contract** with the model that reliably produces valid,
-grounded SQL. The schema and glossary you built are the grounding; the prompt is where you
-turn them into correct queries.
+Tämä on agentin ydin: **sopimus** mallin kanssa, joka tuottaa luotettavasti kelvollista,
+ankkuroitua SQL:ää. Rakentamasi skeema ja sanasto ovat ankkurointi; kehote on kohta, jossa
+muutat ne oikeiksi kyselyiksi.
 
-## Your Tasks
+## Tehtäväsi
 
-1. With your agent, write a system prompt that injects the **schema profile** and **glossary**
-   and instructs the model to return **only SQL** (plus a short rationale).
-2. Build the loop: `question → prompt → SQL → execute as agent_ro → format answer`.
-3. **Always surface the SQL** the agent ran, alongside the answer (trust + debugging).
-4. Run all **5 golden questions**. Record pass/fail. Iterate the prompt until **≥ 3 pass**.
-5. Capture the final prompt + contract in `prompt_contract.md`.
+1. Kirjoita agenttisi avulla järjestelmäkehote, joka syöttää **skeemaprofiilin** ja **sanaston**
+   ja ohjeistaa mallin palauttamaan **vain SQL:n** (sekä lyhyen perustelun).
+2. Rakenna silmukka: `question → prompt → SQL → execute as agent_ro → format answer`.
+3. **Näytä aina SQL**, jonka agentti suoritti, vastauksen rinnalla (luottamus + vianetsintä).
+4. Aja kaikki **5 kultaista kysymystä**. Kirjaa läpäisy/hylkäys. Iteroi kehotetta, kunnes **≥ 3 läpäisee**.
+5. Vakiinnuta lopullinen kehote ja sopimus niin, että sama toimintatapa on toistettavissa.
 
-## Key Decisions
+## Keskeiset päätökset
 
-- **Context size:** inject the full profile or only relevant tables? (Token vs. accuracy.)
-- **Output format:** SQL-only, or SQL + explanation? How do you parse it reliably?
-- **Dialect:** pin PostgreSQL syntax explicitly so the model doesn't drift to MySQL/T-SQL.
-- **Few-shot:** include 1–2 example question→SQL pairs from your glossary?
+- **Kontekstin koko:** syötätkö koko profiilin vai vain olennaiset taulut? (Tokenit vs. tarkkuus.)
+- **Tuotosmuoto:** vain SQL vai SQL + selitys? Miten jäsennät sen luotettavasti?
+- **Murre:** lukitse PostgreSQL-syntaksi eksplisiittisesti, jotta malli ei ajaudu MySQL/T-SQL-suuntaan.
+- **Few-shot:** lisäätkö 1–2 esimerkkiparia kysymys→SQL omasta sanastostasi?
 
-## Deliverables
+## Tuotokset
 
-- A runnable agent answering NL questions with the SQL shown.
-- `prompt_contract.md` — the system prompt, input format, output format, parsing rules.
-- A pass/fail table for the 5 golden questions.
+- Ajettava agentti, joka vastaa NL-kysymyksiin ja näyttää SQL:n.
+- Vakiintunut järjestelmäkehote, syötemuoto, tuotosmuoto ja jäsennyssäännöt.
+- Läpäisy/hylkäys-taulukko viidelle kultaiselle kysymykselle.
 
-## Success Criteria
+## Onnistumisen kriteerit
 
-| Focus | What good looks like | Evidence |
+| Painopiste | Miltä hyvä näyttää | Näyttö |
 | --- | --- | --- |
-| Grounded SQL | Uses real tables/columns, correct joins | SQL shown per answer |
-| Accuracy | ≥ 3/5 golden questions correct | Pass/fail table |
-| Transparent | The executed SQL is always visible | Agent output |
+| Ankkuroitu SQL | Käyttää oikeita tauluja/sarakkeita ja oikeita liitoksia | SQL näytetään jokaisessa vastauksessa |
+| Tarkkuus | ≥ 3/5 kultaista kysymystä oikein | Läpäisy/hylkäys-taulukko |
+| Läpinäkyvä | Suoritettu SQL on aina näkyvissä | Demo |
 
-## Tips / Hints
+## Vinkit
 
 <details>
-<summary>Make output parsing boring</summary>
+<summary>Tee tuotoksen jäsentämisestä yksinkertaista</summary>
 
-Ask the model to return SQL in a fenced ```sql block or a JSON field. Deterministic
-formatting beats clever regex. The agent can write this parser for you.
+Pyydä mallia palauttamaan SQL aidatussa ```sql-lohkossa tai JSON-kentässä. Deterministinen
+muotoilu voittaa nokkelan regexin. Agentti voi kirjoittaa tämän jäsentimen sinulle.
 
 </details>
 
 <details>
-<summary>Few-shot from your own glossary</summary>
+<summary>Few-shot omasta sanastostasi</summary>
 
-One or two worked question→SQL examples (taken from C2) dramatically improve join accuracy.
-Pick examples that show your trickiest relationship.
+Yksi tai kaksi valmista kysymys→SQL-esimerkkiä (H2:sta otettuna) parantaa liitosten tarkkuutta merkittävästi.
+Valitse esimerkit, jotka näyttävät hankalimman suhteesi.
 
 </details>
 
-## Watch Out
+## Huomioi nämä
 
-- Don't run the SQL as a privileged user yet — keep using `agent_ro`.
-- Don't hide the SQL; an answer you can't verify is worthless.
-- Don't over-stuff the prompt with all 50 columns if 8 matter — relevance beats volume.
+- Älä vielä suorita SQL:ää etuoikeutettuna käyttäjänä — jatka `agent_ro`-käyttäjällä.
+- Älä piilota SQL:ää; vastaus, jota et voi varmistaa, on arvoton.
+- Älä ahda kehotteeseen kaikkia 50 saraketta, jos 8 riittää — olennaisuus voittaa määrän.
 
-## Artifact Handoff
+## Tuotosten luovutus
 
-| Item | Value |
+| Kohta | Arvo |
 | --- | --- |
-| **Input from** | `schema_profile.json` + `business_glossary.md` |
-| **Your output** | `prompt_contract.md` + working agent |
-| **Next challenge uses** | C4 wraps execution in a guardrail layer |
+| **Lähtötieto** | Tarkistettu skeemakäsitys + liiketoimintasanasto |
+| **Sinun tuotoksesi** | Toimiva NL→SQL-agentti ja toistettava kehotekäytäntö |
+| **Seuraava vaihe** | H4 ympäröi suorituksen turvarajakerroksella |
 
-## Next Step
+## Seuraava vaihe
 
-Your agent answers questions. In **C4** you make sure it can **never** do harm.
+Agenttisi vastaa kysymyksiin. **H4**:ssä varmistat, ettei se voi **koskaan** aiheuttaa vahinkoa.

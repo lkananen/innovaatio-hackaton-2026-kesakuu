@@ -1,107 +1,107 @@
 ---
-title: "C4: Guardrails"
-description: Harden the execution layer so generated SQL is read-only, bounded, and validated before it runs.
+title: "H4: Turvarajat"
+description: Koveta suorituskerros niin, että tuotettu SQL on vain luku, rajattu ja validoitu ennen ajoa.
 sidebar:
   order: 6
-  label: "C4: Guardrails"
+  label: "H4: Turvarajat"
   badge:
     text: 35 min
     variant: note
 prev:
   link: ../challenge-3-nl-to-sql/
-  label: "C3: NL→SQL contract"
+  label: "H3: NL→SQL-sopimus"
 next:
   link: ../challenge-5-eval/
-  label: "C5: Eval harness"
+  label: "H5: Arviointikehys"
 ---
 
-:::note[Challenge Info]
-⏱️ **35 min** · 🧩 **Core (the safety payoff)** · 🤖 agent: safety engineer · 📄 output: `sql_guardrails.py`
+:::note[Haasteen tiedot]
+⏱️ **35 min** · 🧩 **Ydin (turvallisuushyöty)** · 🤖 agentti: turvallisuusinsinööri
 :::
 
-## Objective
+## Tavoite
 
-- **Do now:** Make it impossible for the agent to run unsafe or runaway queries.
-- **Input:** Working agent (C3) + read-only `agent_ro`.
-- **Output:** `sql_guardrails.py` — a validation + execution wrapper.
-- **Required to move on:** A malicious/destructive question is **refused**; golden questions still pass.
-- **Decisions now:** Allow-list vs. deny-list, row cap, timeout, what to do on violation.
-- **Next:** C5 measures accuracy now that execution is safe.
+- **Tee nyt:** Tee agentille mahdottomaksi suorittaa vaarallisia tai hallitsemattomia kyselyjä.
+- **Lähtötiedot:** Toimiva agentti (H3) + vain luku -käyttäjä `agent_ro`.
+- **Tulos:** Agentin SQL-suoritus kulkee validointi- ja turvarajakerroksen läpi.
+- **Vaaditaan etenemiseen:** Haitallinen/tuhoisa kysymys **torjutaan**; kultaiset kysymykset läpäisevät edelleen.
+- **Päätökset nyt:** Sallittujen lista vs. estolista, rivikatto, aikakatkaisu, mitä rikkomuksessa tehdään.
+- **Seuraavaksi:** H5 mittaa tarkkuuden nyt, kun suoritus on turvallinen.
 
-## The Business Challenge
+## Liiketoimintahaaste
 
-The read-only user (pre-work) stops writes at the database. But you still want **defence in
-depth**: reject obviously dangerous SQL *before* it runs, bound result size, and cap runtime
-so one question can't take down the database. This layer is what makes the agent
-**production-shaped**.
+Vain luku -käyttäjä (valmisteltu etukäteen) estää kirjoitukset tietokannassa. Haluat silti **syvyyssuuntaista
+puolustusta**: hylkää selvästi vaarallinen SQL *ennen* ajoa, rajaa tuloksen koko ja aseta suoritukselle aikaraja,
+jotta yksittäinen kysymys ei kaada tietokantaa. Tämä kerros tekee agentista
+**tuotantomaisen**.
 
-## Your Tasks
+## Tehtäväsi
 
-1. With your agent, build `sql_guardrails.py` that, before executing any generated SQL:
-   - **Rejects non-`SELECT`** statements (no DDL/DML — allow-list, not deny-list).
-   - **Rejects multiple statements** (no `;` chaining).
-   - **Injects/enforces a `LIMIT`** (e.g. 1000 rows) if absent.
-   - **Sets `statement_timeout`** on the session (e.g. 5s).
-2. On violation, **refuse with a clear message** — don't silently rewrite into something wrong.
-3. Test with adversarial prompts: *"delete all customers"*, *"drop the orders table"*,
-   *"select everything from every table"*. Confirm each is blocked.
-4. Re-run the 5 golden questions — guardrails must not break legitimate queries.
+1. Rakenna agenttisi avulla `sql_guardrails.py`, joka ennen minkä tahansa tuotetun SQL:n suorittamista:
+   - **Hylkää muut kuin `SELECT`**-lauseet (ei DDL/DML — sallittujen lista, ei estolista).
+   - **Hylkää useat lauseet** (ei `;`-ketjutusta).
+   - **Lisää/pakottaa `LIMIT`-ehdon** (esim. 1000 riviä), jos se puuttuu.
+   - **Asettaa `statement_timeout`-asetuksen** istunnolle (esim. 5 s).
+2. Rikkomuksen yhteydessä **kieltäydy selkeällä viestillä** — älä muunna hiljaa joksikin vääräksi.
+3. Testaa hyökkäävillä kehotteilla: *"delete all customers"*, *"drop the orders table"*,
+   *"select everything from every table"*. Varmista, että jokainen estetään.
+4. Aja 5 kultaista kysymystä uudelleen — turvarajat eivät saa rikkoa kelvollisia kyselyjä.
 
-## Key Decisions
+## Keskeiset päätökset
 
-- **Allow-list mindset:** only `SELECT` passes; everything else is denied by default.
-- **Row cap & timeout:** values that protect the DB without truncating real answers.
-- **Failure UX:** refuse and explain, or refuse and ask the user to rephrase?
-- **Parsing:** lightweight check vs. a real SQL parser (`sqlglot`) — how robust must it be?
+- **Sallittujen lista -ajattelu:** vain `SELECT` läpäisee; kaikki muu hylätään oletuksena.
+- **Rivikatto ja aikakatkaisu:** arvot, jotka suojaavat tietokantaa katkaisematta oikeita vastauksia.
+- **Virhekokemus:** kieltäydytkö ja selität, vai kieltäydytkö ja pyydät käyttäjää muotoilemaan uudelleen?
+- **Jäsentäminen:** kevyt tarkistus vai oikea SQL-jäsennin (`sqlglot`) — kuinka vankka sen täytyy olla?
 
-## Deliverables
+## Tuotokset
 
-- `sql_guardrails.py` wired into the agent's execution path.
-- An adversarial test log showing dangerous queries refused.
-- Re-run golden-question results (still ≥ 3/5).
+- Turvarajakerros kytkettynä agentin suorituspolkuun.
+- Hyökkäävä testiloki, joka näyttää vaarallisten kyselyjen torjunnan.
+- Uudelleen ajetut kultaisten kysymysten tulokset (edelleen ≥ 3/5).
 
-## Success Criteria
+## Onnistumisen kriteerit
 
-| Focus | What good looks like | Evidence |
+| Painopiste | Miltä hyvä näyttää | Näyttö |
 | --- | --- | --- |
-| Read-only enforced | Non-SELECT is refused before hitting the DB | Adversarial test log |
-| Bounded | LIMIT + timeout applied to every query | Code + a capped result |
-| Non-regressive | Golden questions still pass | Re-run results |
+| Vain luku pakotettu | Ei-SELECT torjutaan ennen tietokantaan osumista | Hyökkäävä testiloki |
+| Rajattu | LIMIT + aikakatkaisu käytössä jokaisessa kyselyssä | Koodi + rajattu tulos |
+| Ei regressiota | Kultaiset kysymykset läpäisevät edelleen | Uudelleenajon tulokset |
 
-## Tips / Hints
+## Vinkit
 
 <details>
-<summary>Allow-list, not deny-list</summary>
+<summary>Sallittujen lista, ei estolista</summary>
 
-Don't try to enumerate every dangerous keyword. **Permit only `SELECT`** (single statement)
-and reject everything else. Deny-lists always miss a case; allow-lists fail safe.
+Älä yritä luetella jokaista vaarallista avainsanaa. **Salli vain `SELECT`** (yksi lause)
+ja hylkää kaikki muu. Estolistoilta jää aina jokin tapaus huomaamatta; sallittujen listat epäonnistuvat turvallisesti.
 
 </details>
 
 <details>
-<summary>Use a SQL parser if you can</summary>
+<summary>Käytä SQL-jäsennintä, jos voit</summary>
 
-`sqlglot` can parse the statement and tell you its type and statement count far more
-reliably than string matching. Ask your agent to use it and to enforce the single-statement,
-SELECT-only rule on the parsed tree.
+`sqlglot` voi jäsentää lauseen ja kertoa sen tyypin ja lausemäärän paljon
+luotettavammin kuin merkkijonohaku. Pyydä agenttiasi käyttämään sitä ja pakottamaan yhden lauseen,
+vain SELECT -säännön jäsennettyyn puuhun.
 
 </details>
 
-## Watch Out
+## Huomioi nämä
 
-- Don't rely on the prompt alone to keep SQL safe — the model **will** occasionally comply
-  with a jailbreak. The guardrail is the real defence.
-- Don't strip the `LIMIT` a user explicitly asked for if it's smaller than your cap.
-- Don't break valid CTEs/subqueries with an over-eager regex — test real golden questions.
+- Älä luota pelkkään kehotteeseen SQL:n turvallisuuden varmistamisessa — malli **noudattaa** toisinaan
+  ohitusyritystä. Turvaraja on todellinen puolustus.
+- Älä poista käyttäjän eksplisiittisesti pyytämää `LIMIT`-ehtoa, jos se on pienempi kuin oma kattosi.
+- Älä riko kelvollisia CTE:itä/alakyselyjä liian innokkaalla regexillä — testaa oikeat kultaiset kysymykset.
 
-## Artifact Handoff
+## Tuotosten luovutus
 
-| Item | Value |
+| Kohta | Arvo |
 | --- | --- |
-| **Input from** | Working agent (C3) |
-| **Your output** | `sql_guardrails.py` + adversarial test log |
-| **Next challenge uses** | C5 runs the now-safe agent across the full eval set |
+| **Lähtötieto** | Toimiva agentti (H3) |
+| **Sinun tuotoksesi** | Toimivat SQL-turvarajat + hyökkäävä testiloki |
+| **Seuraava vaihe** | H5 ajaa nyt turvallisen agentin koko arviointijoukon läpi |
 
-## Next Step
+## Seuraava vaihe
 
-Your agent is safe. In **C5** (optional) you prove it's *accurate* with an eval harness.
+Agenttisi on turvallinen. **H5**:ssä (valinnainen) todistat sen *tarkkuuden* arviointikehyksellä.

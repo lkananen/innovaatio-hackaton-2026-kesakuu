@@ -1,83 +1,83 @@
 ---
-title: "C6: Demo prep"
-description: Package your Text-to-SQL agent into a 60-second demo that shows accuracy and safety.
+title: "H6: Demon valmistelu"
+description: Paketoi Text-to-SQL-agenttisi ytimekkääksi demoksi, joka näyttää tarkkuuden ja turvallisuuden.
 sidebar:
   order: 8
-  label: "C6: Demo prep"
+  label: "H6: Demon valmistelu"
   badge:
     text: 15 min
     variant: tip
 prev:
   link: ../challenge-5-eval/
-  label: "C5: Eval harness"
+  label: "H5: Arviointikehys"
 next:
   link: ../wrap-up/
-  label: Wrap-up
+  label: Yhteenveto
 ---
 
-:::note[Challenge Info]
-⏱️ **15 min** · 🧩 **Optional (but do it)** · 🤖 agent: storyteller · 📄 output: `demo_questions.md`
+:::note[Haasteen tiedot]
+⏱️ **15 min** · 🧩 **Valinnainen (mutta tee se)** · 🤖 agentti: tarinankertoja
 :::
 
-:::tip[This is a checklist, not a build]
-Assemble what you have. The two things to show: it's **accurate** and it's **safe**.
+:::tip[Tämä on tarkistuslista, ei rakennusvaihe]
+Kokoa se, mitä sinulla on. Näytä kaksi asiaa: se on **tarkka** ja **turvallinen**.
 :::
 
-## Objective
+## Tavoite
 
-- **Do now:** Prepare a 60-second team demo.
-- **Input:** Everything from C1–C4, plus C5 if you completed it.
-- **Output:** `demo_questions.md` + a short recording.
-- **Required to move on:** You can demo accuracy and a refused unsafe query without fumbling.
-- **Next:** Wrap-up and team demos.
+- **Tee nyt:** Valmistele lyhyt ja ytimekäs tiimidemo.
+- **Lähtötiedot:** Kaikki H1–H4:stä sekä H5, jos teit sen.
+- **Tulos:** Harjoiteltu demo, joka näyttää tarkkuuden, näkyvän SQL:n ja torjutun vaarallisen kyselyn.
+- **Vaaditaan etenemiseen:** Pystyt demoamaan tarkkuuden ja torjutun vaarallisen kyselyn takeltelematta.
+- **Seuraavaksi:** Yhteenveto ja tiimidemoja.
 
-## Your Tasks
+## Tehtäväsi
 
-1. Pick **3 demo questions**: one simple, one multi-table (the impressive one), and one
-   **unsafe** question that the guardrails refuse.
-2. Write `demo_questions.md`: the questions, the SQL the agent produces, and the expected
-   outcome (including the refusal).
-3. If you did C5, **lead with the pass rate** — a number is persuasive.
-4. Record a **60-second** capture: a hard question answered with visible SQL, then the
-   guardrail blocking a destructive request.
+1. Valitse **3 demokysymystä**: yksi helppo, yksi monitauluinen (vaikuttava) ja yksi
+   **vaarallinen** kysymys, jonka turvarajat torjuvat.
+2. Valitse ja harjoittele kysymykset, agentin tuottama SQL ja odotettu
+   lopputulos (mukaan lukien kieltäytyminen).
+3. Jos teit H5:n, **aloita läpäisyasteella** — numero vakuuttaa.
+4. Tallenna lyhyt kaappaus: vaikea kysymys vastattuna näkyvän SQL:n kanssa ja sitten
+   turvaraja estämässä tuhoisan pyynnön.
 
-## Deliverables
+## Tuotokset
 
-- `demo_questions.md` — 3 questions + expected behaviour.
-- A ≤ 60s recording showing accuracy **and** a refused unsafe query.
+- 3 harjoiteltua demokysymystä ja odotettu käyttäytyminen.
+- Lyhyt tallenne, joka näyttää tarkkuuden **ja** torjutun vaarallisen kyselyn.
 
-## Success Criteria
+## Onnistumisen kriteerit
 
-| Focus | What good looks like | Evidence |
+| Painopiste | Miltä hyvä näyttää | Näyttö |
 | --- | --- | --- |
-| Accurate | A non-trivial question answered correctly | Live/recorded answer + SQL |
-| Safe | A destructive request is refused | The refusal on screen |
-| Measured | Accuracy stated as a number (if C5 done) | Pass rate |
+| Tarkka | Ei-triviaali kysymys vastataan oikein | Live-/tallennettu vastaus + SQL |
+| Turvallinen | Tuhoisa pyyntö torjutaan | Kieltäytyminen näytöllä |
+| Mitattu | Tarkkuus kerrotaan numerona (jos H5 tehty) | Läpäisyaste |
 
-## Tips / Hints
+## Vinkit
 
 <details>
-<summary>The safety moment sells it</summary>
+<summary>Turvallisuushetki myy kokonaisuuden</summary>
 
-Typing "delete all customers" and watching the agent calmly refuse — while still answering
-real questions — is the most memorable 10 seconds you can show. Always include it.
+Kun kirjoitat "delete all customers" ja näet agentin kieltäytyvän rauhallisesti — samalla kun se edelleen vastaa
+oikeisiin kysymyksiin — se on demon mieleenpainuvin hetki. Sisällytä se aina.
 
 </details>
 
-## Watch Out
+## Huomioi nämä
 
-- Don't demo the build; demo answers + the refusal.
-- Don't exceed 60 seconds.
-- Don't claim accuracy you didn't measure — if you skipped C5, say "anecdotally".
+- Älä demoa rakennusprosessia; demoa vastaukset + kieltäytyminen.
+- Pidä demo lyhyenä ja ytimekkäänä.
+- Älä väitä tarkkuutta, jota et mitannut — jos ohitit H5:n, sano "havaintojen perusteella".
 
-## Artifact Handoff
+## Tuotosten luovutus
 
-| Item | Value |
+| Kohta | Arvo |
 | --- | --- |
-| **Input from** | C1–C5 artifacts |
-| **Your output** | `demo_questions.md` + recording |
-| **Next challenge uses** | The wrap-up showcase |
+| **Lähtötieto** | H1–H5:n toimiva kokonaisuus |
+| **Sinun tuotoksesi** | Harjoiteltu demo + tallenne |
+| **Seuraava vaihe** | Yhteenvedon showcase |
 
-## Next Step
+## Seuraava vaihe
 
-Head to the [Wrap-up](../wrap-up/) for team demos and awards.
+Siirry [Yhteenvetoon](../wrap-up/) tiimidemoja ja palkintoja varten.

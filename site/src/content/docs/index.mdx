@@ -1,14 +1,14 @@
 ---
-title: Agentic DataOps Hackathon
-description: "From idea to implementation — three standalone, hands-on hackathons for building agentic data platforms on Azure with GitHub Copilot."
+title: Agentic DataOps -hackathon
+description: "Ideasta toteutukseen — kuusi itsenäistä, käytännönläheistä hackathonia agenttipohjaisten data-alustojen rakentamiseen Azuressa GitHub Copilotin avulla."
 template: splash
 hero:
-  tagline: From idea to implementation — build an agentic data platform in a day, in your own Azure subscription, with GitHub Copilot.
+  tagline: Ideasta toteutukseen — rakenna agenttipohjainen data-alusta yhdessä päivässä omassa Azure-tilauksessasi GitHub Copilotin avulla.
   actions:
-    - text: Pick a hackathon ↓
+    - text: Valitse hackathon ↓
       link: "#choose-your-hackathon"
       variant: primary
-    - text: View on GitHub
+    - text: Katso GitHubissa
       link: https://github.com/lkananen/innovaatio-hackaton-2026-kesakuu
       variant: minimal
       icon: github
@@ -16,78 +16,112 @@ hero:
 
 import { CardGrid, LinkCard } from "@astrojs/starlight/components";
 
-## How the day works
+## Miten päivä etenee
 
-This is a **hands-on**, team event. The theme is **agentic data platform development** —
-you use an AI coding agent (examples shown in **VS Code + GitHub Copilot**, but any
-agentic tool works) to go from an idea to a **running, demoable implementation**.
+Tämä on **käytännönläheinen**, tiimipohjainen tapahtuma. Teemana on **agenttipohjainen
+data-alustakehitys** — käytät tekoälyavusteista koodausagenttia (esimerkit näytetään
+**VS Codessa GitHub Copilotin kanssa**, mutta mikä tahansa agenttityökalu käy) edetäksesi
+ideasta **toimivaan, demottavaan toteutukseen**.
 
-Each team picks **one** of three **fully independent** hackathons below and runs it end to
-end. Every hackathon is built as an **artifact chain**: each challenge produces a named
-file that the next challenge consumes — so a team that stops early still has something to
-demo.
+Jokainen tiimi valitsee **yhden** alla olevista kuudesta **täysin itsenäisestä**
+hackathonista ja vie sen läpi alusta loppuun. Jokainen hackathon on rakennettu
+**kyvykkyysketjuksi**: jokainen haaste tuottaa toimivan osan, jonka päälle seuraava
+rakentaa — joten aikaisin lopettavallakin tiimillä on jotain demottavaa.
 
-:::note[Bring your own data]
-Bring a **non-sensitive / public / synthetic** dataset from your own world. No data? Each
-hackathon's **Setup** page lists **three ready-to-use open datasets** suited to that track.
+:::note[Tuo oma datasi]
+Tuo **ei-arkaluonteinen / julkinen / synteettinen** datajoukko omasta maailmastasi.
+Eikö dataa ole? **Suosi suomalaisia avoimia datalähteitä** kuten **Tilastokeskusta
+(stat.fi)** ja **Avoindata.suomi.fi:tä** — jokaisen hackathonin **Valmistelu**-sivu
+listaa valmiit avoimet datajoukot, jotka sopivat kyseiseen polkuun.
 :::
 
-:::caution[Do the pre-work]
-The **#1 thing that derails the day is Azure readiness** — especially **zero Azure OpenAI
-quota** on fresh subscriptions (approval takes 1–3 business days). Each hackathon has a
-**Setup & pre-work** page with a checklist to complete **7 days before** the event.
+:::caution[Tarkista valmius ennen aloitusta]
+**Päivän suurin sudenkuoppa on Azure-valmius** — erityisesti **olematon Azure OpenAI
+-kiintiö** uusissa tilauksissa (hyväksyntä kestää 1–3 työpäivää). Jokaisella hackathonilla
+on **Valmistelu ja valmiustarkistus** -sivu; käy sen tarkistuslista läpi ja varmista, että
+jokainen kohta on kunnossa ennen kuin aloitat.
 :::
 
-## Agenda
+## Aikataulu
 
-| Time | What |
+| Aika | Ohjelma |
 |------|------|
-| 09:00 | Welcoming words |
-| 09:30 | Keynote — agentic development with Azure & GitHub Copilot in practice |
-| 10:15 | Break |
-| 10:30 | **Hands-on block 1** — opens with an inspiration session |
-| 11:30 | Lunch |
-| 12:30 | **Hands-on block 2** — inspiration session, then build continues |
-| 15:00 | Wrap-up & team demos |
+| 09:00 | Tervetulosanat |
+| 09:30 | Keynote — agenttipohjainen kehitys Azurella ja GitHub Copilotilla käytännössä |
+| 10:15 | Tauko |
+| 10:30 | **Käytännön työskentely, osa 1** — alkaa inspiraatiosessiolla |
+| 11:30 | Lounas |
+| 12:30 | **Käytännön työskentely, osa 2** — inspiraatiosessio, sitten rakentaminen jatkuu |
+| 15:00 | Yhteenveto ja tiimien demot |
 
-## Choose your hackathon
+## Valitse hackathon
 
 <div id="choose-your-hackathon"></div>
 
 <CardGrid>
   <LinkCard
-    title="🐘 RAG on PostgreSQL"
-    description="PRIMARY · Deploy a retrieval-augmented chat app with one azd up (Container Apps + PostgreSQL + Azure OpenAI), then make it agentic. Runs in any subscription."
+    title="🐘 RAG PostgreSQL:llä"
+    description="ENSISIJAINEN · Ota käyttöön hakupohjainen (RAG) chat-sovellus yhdellä azd up -komennolla (Container Apps + PostgreSQL + Azure OpenAI) ja tee siitä agenttipohjainen. Toimii missä tahansa tilauksessa."
     href="rag-postgres/"
   />
   <LinkCard
-    title="🔎 Text-to-SQL Agent"
-    description="STRETCH A · Build a natural-language-to-SQL agent over PostgreSQL + pgvector with real guardrails and an evaluation harness. Runs in any subscription."
+    title="🔎 Text-to-SQL-agentti"
+    description="LISÄHAASTE A · Rakenna luonnollisen kielen SQL-agentti PostgreSQL + pgvector -pohjalle oikeilla turvarajoilla ja arviointikehyksellä. Toimii missä tahansa tilauksessa."
     href="text-to-sql/"
   />
   <LinkCard
     title="✨ Fabric AI Functions"
-    description="STRETCH B · Build a medallion lakehouse in Microsoft Fabric and enrich data with AI Functions. Requires pre-confirmed paid F2+ capacity."
+    description="LISÄHAASTE B · Rakenna medallion-lakehouse Microsoft Fabriciin ja rikasta dataa AI Functions -toiminnoilla. Vaatii ennalta vahvistetun maksullisen F2+-kapasiteetin."
     href="fabric-ai/"
+  />
+  <LinkCard
+    title="💬 Fabric Data Agent"
+    description="LISÄHAASTE C · Muuta lakehouse + Power BI -semanttinen malli keskustelevaksi analytiikka-agentiksi, joka vastaa liiketoimintakysymyksiin. Vaatii ennalta vahvistetun maksullisen F2+-kapasiteetin."
+    href="fabric-data-agent/"
+  />
+  <LinkCard
+    title="⚡ Real-Time Intelligence"
+    description="LISÄHAASTE D · Suoratoista live-tapahtumia Eventstreamilla Eventhouseen/KQL:ään ja saa data toimimaan itsestään Activator-hälytyksillä. Vaatii ennalta vahvistetun maksullisen F2+-kapasiteetin."
+    href="real-time-intelligence/"
+  />
+  <LinkCard
+    title="🔌 MCP-palvelin omalle datalle"
+    description="LISÄHAASTE E · Rakenna Model Context Protocol -palvelin, jotta GitHub Copilot -agentit voivat tehdä turvallisia kyselyitä tietokantaasi. Toimii missä tahansa tilauksessa — tai täysin paikallisesti."
+    href="mcp-data-server/"
   />
 </CardGrid>
 
-## Not sure which to pick?
+## Etkö ole varma, minkä valitsisit?
 
 <CardGrid>
   <LinkCard
-    title="I have a generic Azure subscription"
-    description="Start with RAG on PostgreSQL — it is the most self-contained and the fastest to a running app."
+    title="Minulla on tavallinen Azure-tilaus"
+    description="Aloita RAG PostgreSQL:llä — se on omavaraisin ja nopein tie toimivaan sovellukseen."
     href="rag-postgres/"
   />
   <LinkCard
-    title="I work with relational/business data"
-    description="Text-to-SQL turns plain-English questions into safe SQL over your own tables."
+    title="Työskentelen relaatio- tai liiketoimintadatan parissa"
+    description="Text-to-SQL muuntaa selkokieliset kysymykset turvalliseksi SQL:ksi omiin tauluihisi."
     href="text-to-sql/"
   />
   <LinkCard
-    title="My company already runs Microsoft Fabric"
-    description="If you have paid F2+ capacity, the Fabric AI Functions track enriches data at scale with AI."
+    title="Yritykseni käyttää jo Microsoft Fabricia"
+    description="Jos sinulla on maksullinen F2+-kapasiteetti, Fabric AI Functions -polku rikastaa dataa tekoälyllä laajassa mittakaavassa."
     href="fabric-ai/"
+  />
+  <LinkCard
+    title="Haluan keskustelevaa analytiikkaa liiketoimintakäyttäjille"
+    description="Fabric Data Agent muuttaa lakehousen + semanttisen mallin luonnollisen kielen kysymyksiksi ja vastauksiksi (vaatii maksullisen Fabric F2+:n)."
+    href="fabric-data-agent/"
+  />
+  <LinkCard
+    title="Työskentelen suoratoisto- tai tapahtumadatan parissa"
+    description="Real-Time Intelligence vie sisään live-tapahtumia ja toimii niiden perusteella Activatorilla (vaatii maksullisen Fabric F2+:n)."
+    href="real-time-intelligence/"
+  />
+  <LinkCard
+    title="Haluan puhtaimman agenttikehitysharjoituksen"
+    description="MCP-palvelin omalle datalle — rakenna juuri se työkalu, jota Copilot-agenttisi käyttää datan turvalliseen kyselyyn. Ei vaadi Azure-kiintiötä tai Fabricia."
+    href="mcp-data-server/"
   />
 </CardGrid>

@@ -1,21 +1,26 @@
 ---
 title: "RAG on PostgreSQL"
-description: Deploy a retrieval-augmented chat app with one `azd up`, then make it agentic with GitHub Copilot.
+description: Ota hakua hyödyntävä chat-sovellus käyttöön yhdellä `azd up` -komennolla ja tee siitä agenttinen GitHub Copilotin avulla.
 sidebar:
   order: 1
-  label: Overview
+  label: Yleiskuva
 ---
 
 import { CardGrid, LinkCard } from "@astrojs/starlight/components";
 
-**Primary hackathon.** Stand up a working **retrieval-augmented generation (RAG)** chat
-app on Azure with a single `azd up`, point it at **your own data**, then use an agent to
-**extend it and operationalise it** as a small DataOps pipeline.
+**Suositeltu aloituspolku.** Pystytä toimiva **retrieval-augmented generation (RAG)** -chat-sovellus Azureen yhdellä `azd up` -komennolla, liitä siihen **oma datasi** ja käytä agenttia sen **laajentamiseen ja tuotantokuntoon viemiseen** pienenä DataOps-putkena.
 
-This track is the most self-contained of the three and runs in **any Azure subscription**
-(you only need Azure OpenAI quota — see Setup).
+Tämä polku on kolmesta vaihtoehdosta itsenäisin ja toimii **missä tahansa Azure-tilauksessa** (tarvitset vain Azure OpenAI -kiintiön — katso Valmistelu).
 
-## What you'll build
+:::note[Yhdellä silmäyksellä]
+- **Mitä luot:** Hakua hyödyntävän RAG-chat-sovelluksen (Container Apps + PostgreSQL/pgvector + Azure OpenAI) ja agenttisen DataOps-ingestiosilmukan.
+- **Ympäristö:** Mikä tahansa Azure-tilaus; Azure OpenAI -kiintiö (chat- ja upotusmalli); `azd`, Docker ja IDE, jossa GitHub Copilot.
+- **Käyttöoikeudet:** Oikeus luoda resursseja tilaukseen (`azd provision`, ~Contributor) sekä käyttää Azure OpenAI -palvelua.
+
+Täydellinen tarkistuslista: **[Valmistelu ja valmiustarkistus](setup/)**.
+:::
+
+## Mitä rakennat
 
 ```mermaid
 graph LR
@@ -29,12 +34,11 @@ graph LR
     style AGENT fill:#0078d4,color:#fff
 ```
 
-A chat app that answers questions grounded in your documents, plus a small **agentic
-ingestion loop** that keeps the knowledge base fresh.
+Chat-sovellus, joka vastaa kysymyksiin dokumentteihisi perustuen, sekä pieni **agenttinen ingestiosilmukka**, joka pitää tietopohjan ajan tasalla.
 
-## The challenge chain
+## Haasteketju
 
-Each challenge emits a named artifact consumed by the next.
+Jokainen haaste rakentaa toimivaa kyvykkyyttä, jota seuraava haaste hyödyntää.
 
 ```mermaid
 graph LR
@@ -46,28 +50,24 @@ graph LR
     style C4 fill:#0078d4,color:#fff
 ```
 
-| Challenge | Time | Output artifact |
+| Haaste | Aika | Tulos |
 |-----------|------|-----------------|
-| **C1 — Provision** | 25 min | `infra-output.json` (live endpoint) |
-| **C2 — Load your data** | 35 min | `dataset_manifest.json` + passing smoke test |
-| **C3 — Customise retrieval** | 40 min | `retrieval_config.md` + updated app |
-| **C4 — Agentic ingestion loop** | 40 min | `dataops_agent.py` + regression pass |
-| _C5 — Operationalise (optional)_ | 25 min | `dataops.yml` + run evidence |
-| _C6 — Demo prep (optional)_ | 15 min | `demo_script.md` + recording |
+| **H1 — Resurssien käyttöönotto** | 25 min | Saavutettava RAG-sovellus ja tunnistetut resurssit |
+| **H2 — Lataa oma data** | 35 min | Oma data haettavissa ja regressio suojattu |
+| **H3 — Mukauta hakua** | 40 min | Tarkempi ja turvallisempi hakukokemus |
+| **H4 — Agenttinen ingestiosilmukka** | 40 min | Itseään testaava ingestiosilmukka |
+| _H5 — Vie tuotantokuntoon (valinnainen)_ | 25 min | Ajastettu ja todennettu CI-ajo |
+| _H6 — Demon valmistelu (valinnainen)_ | 15 min | Lyhyt ja sujuva tiimidemo |
 
-:::tip[Core vs. optional]
-**C1–C4 are the core path** — finish those and you have a demoable result. **C5–C6 are
-optional polish.** Don't start C5 until C4 passes.
+:::tip[Ydin vs. valinnainen]
+**H1–H4 ovat ydinpolku** — kun saat ne valmiiksi, sinulla on demoamiskelpoinen tulos. **H5–H6 ovat valinnaista viimeistelyä.** Älä aloita H5:tä ennen kuin H4 läpäisee testit.
 :::
 
-## Base app
+## Perussovellus
 
-This track builds on the well-tested
-[`Azure-Samples/rag-postgres-openai-python`](https://github.com/Azure-Samples/rag-postgres-openai-python)
-accelerator (FastAPI + React, PostgreSQL Flexible Server + `pgvector`, Azure OpenAI, on
-Azure Container Apps).
+Tämä polku perustuu hyvin testattuun [`Azure-Samples/rag-postgres-openai-python`](https://github.com/Azure-Samples/rag-postgres-openai-python) -kiihdyttimeen (FastAPI + React, PostgreSQL Flexible Server + `pgvector`, Azure OpenAI Azure Container Apps -ympäristössä).
 
 <CardGrid>
-  <LinkCard title="Start here → Setup & pre-work" description="Complete the readiness checklist 7 days before the event." href="setup/" />
-  <LinkCard title="Then → C1: Provision" description="azd up and explore the infrastructure with Copilot." href="challenge-1-provision/" />
+  <LinkCard title="Aloita tästä → Valmistelu ja valmiustarkistus" description="Tarkista, että ympäristö ja Azure OpenAI -kiintiö ovat kunnossa." href="setup/" />
+  <LinkCard title="Sitten → H1: Resurssien käyttöönotto" description="Aja azd up ja tutki infrastruktuuria Copilotin kanssa." href="challenge-1-provision/" />
 </CardGrid>

@@ -1,106 +1,97 @@
 ---
-title: "C1: Readiness verification"
-description: Verify your Fabric capacity, workspace, lakehouse, and AI Functions visibility before building.
+title: "H1: Valmiuden varmistus"
+description: Varmista Fabric-kapasiteetti, workspace, lakehouse ja AI Functions -näkyvyys ennen rakentamista.
 sidebar:
   order: 3
-  label: "C1: Readiness"
+  label: "H1: Valmius"
   badge:
     text: 20 min
     variant: note
 prev:
   link: ../setup/
-  label: Setup & Pre-work
+  label: Valmistelu ja valmiustarkistus
 next:
   link: ../challenge-2-bronze/
-  label: "C2: Bronze ingestion"
+  label: "H2: Bronze-tuonti"
 ---
 
-:::note[Challenge Info]
-⏱️ **20 min** · 🧩 **Core (the gate)** · 🤖 agent: environment checker · 📄 output: `readiness_check.md`
+:::note[Haasteen tiedot]
+⏱️ **20 min** · 🧩 **Ydin (portti)** · 🤖 agentti: ympäristön tarkistaja
 :::
 
-:::caution[This challenge verifies — it does not provision]
-Capacity setup happens in **pre-work**. If something here is red and you don't have
-capacity-admin rights, switch to a colleague's F2+ workspace or plan for the **PySpark
-fallback** in C3. Don't burn the morning provisioning capacity.
+:::caution[Huomioi]
+Maksullinen kapasiteetti on tämän polun edellytys. Jos jokin kohta ei täyty eikä sinulla ole kapasiteetin ylläpitäjän oikeuksia, siirry kollegan F2+-workspaceen tai suunnittele **PySpark fallback** H3:ssa.
 :::
 
-## Objective
+## Tavoite
 
-- **Do now:** Confirm the environment can actually run AI Functions.
-- **Input:** Completed pre-work (F2+ capacity, tenant switches, workspace).
-- **Output:** `readiness_check.md` with every item green.
-- **Required to move on:** A notebook runs an AI Function (or you've committed to the fallback).
-- **Decisions now:** AI Functions path vs. PySpark fallback path.
-- **Next:** C2 lands your raw data into bronze.
+- **Tee nyt:** Varmista, että ympäristö pystyy oikeasti käyttämään AI Functions -toimintoja.
+- **Lähtötiedot:** Valmis ympäristö (F2+-kapasiteetti, tenant-kytkimet, työtila).
+- **Vaaditaan etenemiseen:** Notebook suorittaa AI Function -kutsun (tai olet sitoutunut fallbackiin).
+- **Päätökset nyt:** AI Functions -polku vai PySpark fallback -polku.
+- **Seuraavaksi:** H2 tuo raakadatasi bronze-kerrokseen.
 
-## The Business Challenge
+## Liiketoimintahaaste
 
-The most expensive failure in a platform hackathon is discovering at 11:00 that the feature
-you built around isn't enabled. This challenge **front-loads** that risk: verify everything,
-write it down, and pick your path **before** you build.
+Alustahackathonin kallein epäonnistuminen on huomata klo 11.00, ettei keskeinen ominaisuus ole käytössä. Tämä haaste **ottaa riskin etupainotteisesti haltuun**: varmista kaikki ja valitse polkusi **ennen** rakentamista.
 
-## Your Tasks
+## Tehtäväsi
 
-1. Confirm your **capacity is F2+ and Running** (Fabric admin / capacity settings).
-2. Open your **workspace**, confirm it's **bound to that capacity**.
-3. Create (or open) a **Lakehouse** and run a trivial **PySpark** cell in a notebook.
-4. Run a **one-row AI Function smoke test** (e.g. `ai.classify` on a literal string).
-5. Record results in `readiness_check.md`. If the AI smoke test fails, **mark the fallback
-   path** and continue — the track still completes via PySpark rules in C3.
+1. Varmista, että **kapasiteettisi on F2+ ja Running** (Fabric-ylläpito / kapasiteettiasetukset).
+2. Avaa **workspace** ja varmista, että se on **liitetty kyseiseen kapasiteettiin**.
+3. Luo (tai avaa) **lakehouse** ja suorita notebookissa yksinkertainen **PySpark**-solu.
+4. Suorita **yhden rivin AI Function -savukoe** (esim. `ai.classify` kiinteälle merkkijonolle).
+5. Varmista tulosten perusteella valittu polku. Jos AI-savukoe epäonnistuu, **valitse fallback-polku** ja jatka — polku valmistuu silti PySpark-säännöillä H3:ssa.
 
-## Key Decisions
+## Keskeiset päätökset
 
-- **Path:** AI Functions (preferred) or PySpark rule-based fallback?
-- **Workspace:** your own capacity or a teammate's F2+ workspace?
-- **Region:** does your capacity region support the AI feature you need?
+- **Polku:** AI Functions (suositus) vai PySpark-sääntöpohjainen fallback?
+- **Workspace:** oma kapasiteetti vai tiimikaverin F2+-workspace?
+- **Alue:** tukeeko kapasiteettisi alue tarvitsemaasi AI-ominaisuutta?
 
-## Deliverables
+## Tuotokset
 
-- `readiness_check.md` — checklist with pass/fail per item and your chosen path.
-- Evidence of a successful PySpark cell (and AI Function call, if available).
+- Todennettu ympäristövalmius ja selkeä päätös AI Functions -polusta tai fallbackista.
+- Näyttö onnistuneesta PySpark-solusta (ja AI Function -kutsusta, jos käytettävissä).
 
-## Success Criteria
+## Onnistumisen kriteerit
 
-| Focus | What good looks like | Evidence |
+| Painopiste | Miltä hyvä näyttää | Näyttö |
 | --- | --- | --- |
-| Capacity ready | F2+ Running, workspace bound | Capacity/workspace screenshot |
-| Compute works | A PySpark cell runs in a notebook | Cell output |
-| AI path decided | AI Function works **or** fallback chosen | Smoke-test result in the doc |
+| Kapasiteetti valmis | F2+ Running, workspace liitetty | Kapasiteetin/workspacen näyttökuva |
+| Compute toimii | PySpark-solu suoritetaan notebookissa | Solun tuloste |
+| AI-polku päätetty | AI Function toimii **tai** fallback valittu | Savukokeen tulos |
 
-## Tips / Hints
+## Vinkit
 
 <details>
-<summary>Smoke-test AI Functions on a literal first</summary>
+<summary>Testaa AI Functions ensin kiinteällä merkkijonolla</summary>
 
-Before touching your data, call the AI Function on a hard-coded string (e.g. classify
-`"the train was late again"`). If that works, the feature is enabled; if not, it's an
-environment problem, not a data problem — switch to the fallback path cleanly.
+Ennen kuin kosket dataasi, kutsu AI Function -toimintoa kovakoodatulla merkkijonolla (esim. luokittele `"the train was late again"`). Jos se toimii, ominaisuus on käytössä; jos ei, kyse on ympäristöongelmasta eikä dataongelmasta — siirry fallback-polulle hallitusti.
 
 </details>
 
 <details>
-<summary>Green-light, then go</summary>
+<summary>Valmis ja eteenpäin</summary>
 
-The goal is a **fast** gate. If everything's green in 10 minutes, move to C2 early. Don't
-gold-plate the readiness doc.
+Tavoitteena on **nopea** portti. Jos kaikki on kunnossa 10 minuutissa, siirry H2:een etuajassa. Älä jää hiomaan valmiuden kirjaamista liikaa.
 
 </details>
 
-## Watch Out
+## Huomioi nämä
 
-- Don't try to fix capacity provisioning now — that's pre-work; pivot to the fallback instead.
-- Don't assume a teammate's success means your tenant is enabled — verify your own.
-- Don't skip the PySpark cell — if compute is broken, AI Functions can't help you.
+- Älä yritä korjata kapasiteetin varausta nyt — se kuuluu etukäteisvalmisteluun; siirry mieluummin fallbackiin.
+- Älä oleta, että tiimikaverin onnistuminen tarkoittaa oman tenantisi olevan käytössä — varmista omasi.
+- Älä ohita PySpark-solua — jos compute on rikki, AI Functions ei auta.
 
-## Artifact Handoff
+## Tuotosten luovutus
 
-| Item | Value |
+| Kohta | Arvo |
 | --- | --- |
-| **Input from** | Pre-work environment |
-| **Your output** | `readiness_check.md` + chosen path |
-| **Next challenge uses** | C2 ingests into the verified lakehouse |
+| **Lähtötieto** | Valmis ympäristö |
+| **Sinun tuotoksesi** | Varmistettu ympäristö ja valittu toteutuspolku |
+| **Seuraava vaihe** | H2 tuo dataa varmistettuun lakehouseen |
 
-## Next Step
+## Seuraava vaihe
 
-Environment confirmed. In **C2** you land your raw data into the **bronze** layer.
+Ympäristö varmistettu. **H2** tuo raakadatasi **bronze**-kerrokseen.

@@ -1,85 +1,77 @@
 ---
-title: "C1: Provision"
-description: Use azd to provision the full RAG stack in your own subscription and explore the infra with Copilot.
+title: "H1: Resurssien käyttöönotto"
+description: Käytä azd:tä koko RAG-pinon käyttöönottoon omassa tilauksessasi ja tutki infraa Copilotin kanssa.
 sidebar:
   order: 3
-  label: "C1: Provision"
+  label: "H1: Resurssien käyttöönotto"
   badge:
     text: 25–45 min
     variant: note
 prev:
   link: ../setup/
-  label: Setup & Pre-work
+  label: Valmistelu ja valmiustarkistus
 next:
   link: ../challenge-2-load-data/
-  label: "C2: Load your data"
+  label: "H2: Lataa oma data"
 ---
 
-:::note[Challenge Info]
-⏱️ **25 min if pre-work validated; 45+ min on first deploy** · 🧩 **Core** · 🤖 agent: infra explainer · 📄 output: `infra-output.json`
+:::note[Haasteen tiedot]
+⏱️ **25 min, jos valmistelut on tehty; 45+ min ensimmäisessä käyttöönotossa** · 🧩 **Ydin** · 🤖 agentti: infran selittäjä
 :::
 
-## Objective
+## Tavoite
 
-- **Do now:** Provision the RAG stack and capture the live endpoint.
-- **Input:** Your copy of the base repo from [Setup](../setup/).
-- **Output:** `infra-output.json` with the deployed app URL + resource names.
-- **Required to move on:** A reachable chat endpoint (even with empty data).
-- **Decisions now:** Region, environment name, which models to deploy.
-- **Next:** C2 loads your data into the PostgreSQL you create here.
+- **Tee nyt:** Ota RAG-pino käyttöön ja tallenna toimiva päätepiste.
+- **Lähtötiedot:** Oma kopiosi perusrepositoriosta kohdasta [Valmistelu](../setup/).
+- **Tulos:** Käyttöön otettu sovellus, jonka päätepiste ja keskeiset resurssit ovat tiedossa.
+- **Vaaditaan etenemiseen:** Saavutettava chat-päätepiste (vaikka data olisi vielä tyhjä).
+- **Päätökset nyt:** Alue, ympäristön nimi ja käyttöön otettavat mallit.
+- **Seuraavaksi:** H2 lataa datasi tässä luotuun PostgreSQL:ään.
 
-If your pre-work `azd provision` already succeeded, this becomes **verify + explore**, not
-"wait for deploy."
+Jos valmistelun `azd provision` onnistui jo, tästä tulee **varmistus + tutkiminen**, ei “käyttöönoton odottelu”.
 
-## The Business Challenge
+## Liiketoimintahaaste
 
-Your team needs a production-shaped RAG platform **today**, not a notebook. The fastest
-credible path is an `azd` accelerator that wires up Container Apps, PostgreSQL with
-`pgvector`, and Azure OpenAI with managed identity — so you spend the day on **data and
-agentic behaviour**, not plumbing.
+Tiimisi tarvitsee tuotantomaisen RAG-alustan **tänään**, ei muistikirjaa. Nopein uskottava reitti on `azd`-kiihdytin, joka kytkee yhteen Container Apps, PostgreSQL:n `pgvector`-laajennuksella ja Azure OpenAI:n Managed Identity -tunnistautumisella — näin käytät päivän **dataan ja agenttiseen toimintaan**, et putkitöihin.
 
-## Your Tasks
+## Tehtäväsi
 
-1. From your repo, run `azd auth login` then `azd up`. Choose your region and environment.
-2. While it deploys, open `infra/` and ask your agent to **explain the Bicep**: what each
-   resource is, how the app authenticates to OpenAI and PostgreSQL, and where secrets live.
-3. When `azd up` finishes, open the app URL and confirm the chat UI loads.
-4. Record the endpoint and resource names in `infra-output.json` (azd prints these; or run
-   `azd env get-values`).
+1. Aja repositoriostasi `azd auth login` ja sitten `azd up`. Valitse alue ja ympäristö.
+2. Kun käyttöönotto on käynnissä, avaa `infra/` ja pyydä agenttiasi **selittämään Bicep**: mitä kukin resurssi tekee, miten sovellus tunnistautuu OpenAI:hin ja PostgreSQL:ään sekä missä salaisuudet sijaitsevat.
+3. Kun `azd up` valmistuu, avaa sovelluksen URL ja varmista, että chat-käyttöliittymä latautuu.
+4. Ota päätepiste ja resurssien nimet talteen (`azd` tulostaa ne; voit myös ajaa `azd env get-values`).
 
-## Key Decisions
+## Keskeiset päätökset
 
-- Which **region** has quota for *both* your chat and embedding models?
-- **Managed identity vs. keys** — which is the app using, and why does that matter for ops?
-- What is the **monthly cost shape** of what you just deployed (Container Apps + PG + OpenAI)?
-- Which resources are **stateful** (must be backed up) vs. **stateless** (recreatable)?
+- Millä **alueella** on kiintiö *sekä* chat- että upotus (embedding) -malleillesi?
+- **Managed Identity vai avaimet** — kumpaa sovellus käyttää, ja miksi sillä on merkitystä operoinnissa?
+- Millainen on juuri käyttöön ottamiesi resurssien **kuukausikustannusten muoto** (Container Apps + PG + OpenAI)?
+- Mitkä resurssit ovat **tilallisia** (varmuuskopioitava) ja mitkä **tilattomia** (uudelleen luotavissa)?
 
-## Deliverables
+## Tuotokset
 
-- `infra-output.json` — e.g. `{ "endpoint": "https://...", "resourceGroup": "...", "postgres": "...", "openai": "..." }`
-- A one-paragraph note (in your repo README) of what the agent taught you about the infra.
+- Saavutettava sovelluksen päätepiste ja tunnistetut keskeiset resurssit (esim. endpoint, resurssiryhmä, PostgreSQL ja OpenAI).
+- Yhden kappaleen huomio muistiin siitä, mitä agentti opetti sinulle infrasta.
 
-## Success Criteria
+## Onnistumisen kriteerit
 
-| Focus | What good looks like | Evidence |
+| Painopiste | Miltä hyvä näyttää | Näyttö |
 | --- | --- | --- |
-| Running app | The chat UI loads at a public URL | Endpoint opens in a browser |
-| Infra literacy | You can explain auth + data flow in 2 sentences | README note |
-| Captured output | Endpoint + resource names saved | `infra-output.json` exists |
+| Käynnissä oleva sovellus | Chat-käyttöliittymä latautuu julkisessa URL-osoitteessa | Päätepiste avautuu selaimessa |
+| Infran ymmärrys | Osaat selittää tunnistautumisen ja datavirran 2 virkkeessä | Infran selitys |
+| Käyttöönoton tiedot hallussa | Päätepiste ja resurssien nimet ovat löydettävissä | Päätepiste ja resurssilista |
 
-## Tips / Hints
+## Vinkit
 
 <details>
-<summary>Provisioning is slow — use the wait productively</summary>
+<summary>Käyttöönotto on hidas — käytä odotusaika hyödyksi</summary>
 
-`azd up` can take ~15–20 min cold. Don't watch the spinner — have the agent walk you
-through `infra/main.bicep` and the app's data-access code so you understand what you're
-shipping. Ask it: *"Trace one user question from the browser to PostgreSQL and back."*
+`azd up` voi kestää kylmäkäynnistyksellä noin 15–20 min. Älä tuijota pyörivää kuvaketta — pyydä agenttia käymään läpi `infra/main.bicep` ja sovelluksen datan käsittelykoodi, jotta ymmärrät, mitä olet toimittamassa. Kysy siltä: *"Trace one user question from the browser to PostgreSQL and back."*
 
 </details>
 
 <details>
-<summary>azd command cheatsheet</summary>
+<summary>azd-komentojen lunttilappu</summary>
 
 ```bash
 azd auth login
@@ -91,21 +83,20 @@ azd down               # tear everything down at the end of the day
 
 </details>
 
-## Watch Out
+## Huomioi nämä
 
-- Don't pick a region by latency — pick one where you **have model quota**.
-- Don't skip saving `infra-output.json`; later challenges reference the endpoint.
-- Don't commit secrets — `azd` keeps them in `.azure/`, which is git-ignored. Keep it that way.
+- Älä valitse aluetta viiveen perusteella — valitse alue, jossa sinulla **on mallikiintiötä**.
+- Älä hukkaa päätepistettä ja resurssien nimiä; myöhemmät haasteet tarvitsevat niitä.
+- Älä commitoi salaisuuksia — `azd` pitää ne `.azure/`-kansiossa, joka on git-ignored. Pidä se sellaisena.
 
-## Artifact Handoff
+## Tuotosten luovutus
 
-| Item | Value |
+| Kohta | Arvo |
 | --- | --- |
-| **Input from** | Your base repo ([Setup](../setup/)) |
-| **Your output** | `infra-output.json` |
-| **Next challenge uses** | C2 connects to the PostgreSQL provisioned here and loads your data |
+| **Lähtötieto** | Perusrepositoriosi ([Valmistelu](../setup/)) |
+| **Sinun tuotoksesi** | Käyttöön otettu RAG-sovellus ja talteen otetut päätepistetiedot |
+| **Seuraava vaihe** | H2 yhdistää tässä käyttöön otettuun PostgreSQL:ään ja lataa datasi |
 
-## Next Step
+## Seuraava vaihe
 
-You have a running but empty RAG app. C2 makes it *yours* by loading your data and proving
-retrieval works.
+Sinulla on käynnissä oleva mutta tyhjä RAG-sovellus. H2 tekee siitä *sinun omasi* lataamalla datasi ja todistamalla, että haku toimii.

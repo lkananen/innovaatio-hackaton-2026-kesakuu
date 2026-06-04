@@ -1,103 +1,97 @@
 ---
-title: "C5: Operationalise"
-description: Wire bronze→silver→gold into a Fabric pipeline and run it once end to end.
+title: "H5: Operationalisointi"
+description: Kytke bronze→silver→gold Fabric-putkeen ja suorita se kerran päästä päähän.
 sidebar:
   order: 7
-  label: "C5: Operationalise"
+  label: "H5: Operationalisointi"
   badge:
     text: 25 min
     variant: tip
 prev:
   link: ../challenge-4-gold/
-  label: "C4: Gold + report"
+  label: "H4: Gold + raportti"
 next:
   link: ../challenge-6-demo/
-  label: "C6: Demo prep"
+  label: "H6: Demon valmistelu"
 ---
 
-:::note[Challenge Info]
-⏱️ **25 min** · 🧩 **Optional** · 🤖 agent: pipeline author · 📄 output: `pipeline_run_evidence.md`
+:::note[Haasteen tiedot]
+⏱️ **25 min** · 🧩 **Valinnainen** · 🤖 agentti: pipeline-tekijä
 :::
 
-:::tip[Skip-safe]
-Only start this if **C4 is done**. The goal is to **orchestrate the layers into one pipeline
-and run it once** — not to wait for a schedule during the event.
+:::tip[Turvallinen ohittaa]
+Aloita tämä vain, jos **H4 on valmis**. Tavoitteena on **orkestroida kerrokset yhdeksi putkeksi ja suorittaa se kerran** — ei odottaa ajastettua ajoa tapahtuman aikana.
 :::
 
-## Objective
+## Tavoite
 
-- **Do now:** Orchestrate the medallion into a single repeatable pipeline.
-- **Input:** Working bronze→silver→gold notebooks (C2–C4).
-- **Output:** A Fabric **Data Pipeline** + `pipeline_run_evidence.md` of one successful run.
-- **Required to move on:** One green end-to-end run that rebuilds gold from bronze.
-- **Decisions now:** Orchestration order, parameters, what to schedule.
-- **Next:** C6 turns this into the "it's a platform, not a notebook" demo point.
+- **Tee nyt:** Orkestroi medallion yhdeksi toistettavaksi putkeksi.
+- **Lähtötiedot:** Toimivat bronze→silver→gold-notebookit (H2–H4).
+- **Tulos:** Fabric **Data Pipeline**, joka suorittaa yhden onnistuneen päästä päähän -ajon.
+- **Vaaditaan etenemiseen:** Yksi onnistunut päästä päähän -ajo, joka rakentaa goldin uudelleen bronzesta.
+- **Päätökset nyt:** Orkestrointijärjestys, parametrit, mitä ajastetaan.
+- **Seuraavaksi:** H6 muuttaa tämän "alusta, ei notebook" -demopisteeksi.
 
-## The Business Challenge
+## Liiketoimintahaaste
 
-Three notebooks you run by hand isn't a pipeline. Chaining them into a **Fabric Data
-Pipeline** (with an optional schedule) is the DataOps story: one orchestrated, observable,
-repeatable refresh from raw to report.
+Kolme käsin ajettavaa notebookia ei ole putki. Niiden ketjuttaminen **Fabric Data Pipeline** -putkeksi (valinnaisella ajastuksella) on DataOps-tarina: yksi orkestroitu, havainnoitava ja toistettava päivitys raakadatasta raporttiin.
 
-## Your Tasks
+## Tehtäväsi
 
-1. Create a **Fabric Data Pipeline** that runs bronze → silver → gold **in order**.
-2. Parameterise where it helps (e.g. row cap for the AI enrichment step).
-3. **Run it once** end to end. Confirm gold is rebuilt and the report reflects new data.
-4. Optionally add a **schedule**. Capture `pipeline_run_evidence.md`: run ID, duration,
-   per-stage status.
+1. Luo **Fabric Data Pipeline**, joka suorittaa bronze → silver → gold **järjestyksessä**.
+2. Parametrisoi siellä, missä siitä on hyötyä (esim. riviraja AI-rikastusvaiheelle).
+3. **Suorita se kerran** päästä päähän. Varmista, että gold rakentuu uudelleen ja raportti näyttää uuden datan.
+4. Lisää halutessasi **ajastus**. Varmista, että ajon tunnus, kesto ja vaihekohtainen tila ovat nähtävissä onnistuneesta ajosta.
 
-## Key Decisions
+## Keskeiset päätökset
 
-- **Granularity:** one pipeline with stages, or separate pipelines per layer?
-- **Failure handling:** does a silver failure stop gold, or continue with last-good?
-- **Cost:** the AI step dominates cost — keep the enrichment row cap in scheduled runs.
+- **Rakeisuus:** yksi putki vaiheilla vai erilliset putket per kerros?
+- **Virheenkäsittely:** pysäyttääkö silverin epäonnistuminen goldin vai jatketaanko viimeisellä toimivalla versiolla?
+- **Kustannus:** AI-vaihe hallitsee kustannusta — pidä rikastuksen riviraja myös ajastetuissa ajoissa.
 
-## Deliverables
+## Tuotokset
 
-- A Fabric Data Pipeline chaining the three layers.
-- `pipeline_run_evidence.md` from one successful run.
+- Fabric Data Pipeline, joka ketjuttaa kolme kerrosta.
+- Yksi onnistunut päästä päähän -ajo, jonka tunnus, kesto ja vaihekohtainen tila ovat nähtävissä.
 
-## Success Criteria
+## Onnistumisen kriteerit
 
-| Focus | What good looks like | Evidence |
+| Painopiste | Miltä hyvä näyttää | Näyttö |
 | --- | --- | --- |
-| Orchestrated | One pipeline runs all three layers in order | Pipeline graph |
-| Proven | A single run rebuilds gold successfully | Run evidence |
-| Observable | Per-stage status is visible | Run history screenshot |
+| Orkestroitu | Yksi putki suorittaa kaikki kolme kerrosta järjestyksessä | Putkikaavio |
+| Todistettu | Yksi ajo rakentaa goldin onnistuneesti uudelleen | Ajon näyttö |
+| Havainnoitava | Vaihekohtainen tila näkyy | Ajohistorian näyttökuva |
 
-## Tips / Hints
+## Vinkit
 
 <details>
-<summary>Run on demand; schedule as evidence</summary>
+<summary>Suorita pyynnöstä; käytä ajastusta näyttönä</summary>
 
-Trigger the pipeline manually so you can prove it in the room. A schedule shows intent, but
-the **manual run** is your proof — don't wait for cron.
+Käynnistä putki manuaalisesti, jotta voit todistaa sen paikan päällä. Ajastus näyttää aikomuksen, mutta **manuaalinen ajo** on todisteesi — älä odota cron-ajoa.
 
 </details>
 
 <details>
-<summary>Keep the AI step capped in automation</summary>
+<summary>Pidä AI-vaihe rajattuna automaatiossa</summary>
 
-A scheduled pipeline that re-enriches the full dataset every night gets expensive fast. Keep
-C3's row cap parameterised and modest in the automated path.
+Ajastettu putki, joka rikastaa koko datajoukon joka yö uudelleen, käy nopeasti kalliiksi. Pidä H3:n riviraja parametrisoituna ja maltillisena automatisoidussa polussa.
 
 </details>
 
-## Watch Out
+## Huomioi nämä
 
-- Don't let the pipeline re-enrich everything each run if your data is large — cost spikes.
-- Don't rely on a schedule firing during the event; run manually.
-- Don't skip evidence — the run ID and per-stage status are the deliverable.
+- Älä anna putken rikastaa kaikkea jokaisella ajolla, jos datasi on suurta — kustannukset kasvavat nopeasti.
+- Älä luota siihen, että ajastus käynnistyy tapahtuman aikana; suorita käsin.
+- Älä ohita näyttöä — ajon tunnus ja vaihekohtainen tila todistavat toimivuuden.
 
-## Artifact Handoff
+## Tuotosten luovutus
 
-| Item | Value |
+| Kohta | Arvo |
 | --- | --- |
-| **Input from** | bronze→silver→gold notebooks (C2–C4) |
-| **Your output** | Data Pipeline + `pipeline_run_evidence.md` |
-| **Next challenge uses** | C6 features the orchestrated run as the operational proof |
+| **Lähtötieto** | bronze→silver→gold-notebookit (H2–H4) |
+| **Sinun tuotoksesi** | Toimiva Data Pipeline ja onnistunut päästä päähän -ajo |
+| **Seuraava vaihe** | H6 käyttää orkestroitua ajoa operatiivisena todisteena |
 
-## Next Step
+## Seuraava vaihe
 
-The medallion runs as one pipeline. **C6** packages the story for a crisp demo.
+Medallion toimii yhtenä putkena. **H6** paketoi tarinan napakaksi demoksi.

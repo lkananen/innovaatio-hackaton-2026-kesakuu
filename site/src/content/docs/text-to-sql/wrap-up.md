@@ -1,58 +1,58 @@
 ---
-title: Wrap-up & demos
-description: Team demos, award categories, and takeaways from the Text-to-SQL Agent track.
+title: Yhteenveto ja demot
+description: Tiimidemot, palkintokategoriat ja opit Text-to-SQL-agentti-polulta.
 sidebar:
   order: 9
-  label: Wrap-up
+  label: Yhteenveto
   badge:
     text: Showcase
     variant: success
 prev:
   link: ../challenge-6-demo/
-  label: "C6: Demo prep"
+  label: "H6: Demon valmistelu"
 ---
 
-## You built a safe, measurable Text-to-SQL agent
+## Rakensit turvallisen ja mitattavan Text-to-SQL-agentin
 
-From a database and five questions, your team built an agent that turns plain English into
-**grounded, read-only, bounded** SQL — and proved its accuracy with an eval harness instead
-of vibes.
+Tietokannasta ja viidestä kysymyksestä tiimisi rakensi agentin, joka muuttaa luonnollisen kielen kysymykset
+**ankkuroiduksi, vain luku -tilassa ajettavaksi ja rajatuksi** SQL:ksi — ja todisti tarkkuutensa arviointikehyksellä
+pelkän tuntuman sijaan.
 
 ```mermaid
 flowchart LR
-  A[schema_profile.json] --> B[business_glossary.md]
-  B --> C[prompt_contract.md]
-  C --> D[sql_guardrails.py]
-  D --> E[eval_cases.json]
-  E --> F[demo_questions.md]
+  A[Skeemakäsitys] --> B[Liiketoimintasanasto]
+  B --> C[NL→SQL-silmukka]
+  C --> D[SQL-turvarajat]
+  D --> E[Arviointikehys]
+  E --> F[Harjoiteltu demo]
 ```
 
-## Demo format
+## Demon muoto
 
-- **3 minutes per team**, then 1 minute of questions.
-- Show **one hard question answered** (with the SQL) and **one unsafe query refused**.
-- If you ran the eval, state your **pass rate** up front.
+- **Lyhyt demo per tiimi**, sitten aikaa muutamalle kysymykselle.
+- Näytä **yksi vaikea kysymys vastattuna** (SQL:n kanssa) ja **yksi vaarallinen kysely torjuttuna**.
+- Jos ajoit arvioinnin, kerro **läpäisyaste** heti alussa.
 
-## Award categories
+## Palkintokategoriat
 
-| Award | What it recognises |
+| Palkinto | Mitä se tunnistaa |
 | --- | --- |
-| 🎯 **Highest accuracy** | Best golden-question pass rate |
-| 🛡️ **Toughest guardrails** | Most thorough safety against adversarial input |
-| 🧠 **Best domain modelling** | Clearest, most useful business glossary |
-| 🔬 **Best eval discipline** | Most rigorous, fair evaluation harness |
+| 🎯 **Korkein tarkkuus** | Paras kultaisten kysymysten läpäisyaste |
+| 🛡️ **Vahvimmat turvarajat** | Perusteellisin turvallisuus hyökkäävää syötettä vastaan |
+| 🧠 **Paras toimialamallinnus** | Selkein ja hyödyllisin liiketoimintasanasto |
+| 🔬 **Paras arviointikuri** | Tiukin ja reiluin arviointikehys |
 
-## What to take home
+## Mitä viet mukanasi
 
-- **Read-only at the database** is the strongest guardrail — defence in depth on top.
-- **Grade on result sets**, not SQL strings; many queries are equally correct.
-- A glossary that pins **metric definitions and enums** is what makes NL→SQL trustworthy.
-- An eval harness turns prompt-tweaking from guesswork into a measured loop.
+- **Vain luku tietokannassa** on vahvin turvaraja — syvyyssuuntainen puolustus sen päälle.
+- **Arvioi tulosjoukkoja**, älä SQL-merkkijonoja; moni kysely voi olla yhtä oikein.
+- Sanasto, joka lukitsee **mittarimääritelmät ja enumit**, tekee NL→SQL:stä luotettavaa.
+- Arviointikehys muuttaa kehotteen säätämisen arvailusta mitatuksi silmukaksi.
 
-## Keep going after the event
+## Jatka tapahtuman jälkeen
 
-- Add row-level result explanations ("here's *why* these rows").
-- Expand the golden set and track accuracy over time in CI.
-- Add a `sqlglot`-based parser to enforce table allow-lists, not just SELECT-only.
+- Lisää rivitason tulosselitykset ("tästä syystä *nämä* rivit").
+- Laajenna kultaista joukkoa ja seuraa tarkkuutta ajan myötä CI:ssä.
+- Lisää `sqlglot`-pohjainen jäsennin pakottamaan taulujen sallittujen listat, ei pelkkää SELECT-only-sääntöä.
 
-Thanks for hacking. 🎉
+Kiitos osallistumisesta. 🎉

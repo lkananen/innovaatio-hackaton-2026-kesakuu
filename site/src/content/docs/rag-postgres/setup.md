@@ -1,39 +1,38 @@
 ---
-title: "Setup & Pre-work"
-description: Complete this readiness checklist 7 days before the event so Block 1 is building, not waiting.
+title: "Valmistelu ja valmiustarkistus"
+description: Tarkista, että ympäristö ja Azure OpenAI -kiintiö ovat valmiina, jotta lohko 1 on rakentamista eikä odottelua.
 sidebar:
   order: 2
 ---
 
-:::danger[Do this **7 days** before the event]
-The single most common reason a team loses the morning is **Azure OpenAI quota**. A fresh
-subscription can have **zero** quota, and an increase can take **1–3 business days** to
-approve. **Do not** show up planning to request quota on the day.
+:::caution[Vaatimukset — tarkista ennen aloitusta]
+Tämän polun edellytys on toimiva **Azure OpenAI -kiintiö**. Uudessa tilauksessa kiintiö voi olla **nolla**, eikä korotusta ehdi saada samana päivänä (hyväksyntä kestää **1–3 arkipäivää**). Tarkista siksi, että kiintiö on jo myönnetty — sen puuttuminen on yleisin syy siihen, että tiimi menettää aamun.
 :::
 
-## 1. Pre-work checklist
+:::note[Maksuton vs. maksullinen taso]
+- **Maksuton:** Paikallinen Postgres (Docker) ja kehitystyökalut ovat ilmaisia. Uusi Azure-tili sisältää käyttöhyvityksiä, ja Container Apps sekä PostgreSQL Flexible Server tarjoavat maksuttomia aloitustasoja.
+- **Vaadittu maksullinen taso:** **Azure OpenAI** laskutetaan käytön mukaan (token-kulutus) — sille ei ole maksutonta tasoa, ja se vaatii myönnetyn kiintiön.
+- **Mitä maksullinen taso tuo:** chat- ja upotusmallit RAG-hakuun. Ilman omaa kiintiötä käytä fasilitaattorin jaettua Azure OpenAI -päätepistettä (ainoa hyväksytty varavaihtoehto).
+:::
 
-Tick every box **before** the event:
+## 1. Valmiustarkistuslista
 
-```text
-☐ az login && az account show            # subscription access confirmed
-☐ azd installed: winget install microsoft.azd   (or: brew install azure/azd/azd)
-☐ Docker Desktop running (azd uses it to build the container image)
-☐ GitHub Copilot active in your IDE
-☐ Azure OpenAI quota in your target region:
-      • chat: gpt-4o-mini (or gpt-4.1-mini)  ≥ 30K TPM
-      • embeddings: text-embedding-3-small   ≥ 120K TPM
-☐ If quota = 0  →  request TODAY at https://aka.ms/oai/quotaincrease
-☐ Register resource providers (see §4)
-☐ Ran `azd init` + `azd provision` on the base repo to validate auth (recommended)
-☐ A non-sensitive dataset ready (see §3)
-```
+Käy lista läpi ja varmista, että jokainen kohta on kunnossa ennen kuin aloitat rakentamisen:
 
-:::note[No quota in time? Fallback]
-The facilitator hosts a **shared Azure OpenAI endpoint** as the only sanctioned fallback.
-You'll get the endpoint + key at the event. The template defaults to **managed identity**
-(keyless) against an OpenAI resource it deploys; to point it at the shared endpoint instead,
-set the env vars **before `azd up`** and tell it not to deploy its own OpenAI:
+- [ ] `az login && az account show` — tilauksen käyttöoikeus varmistettu
+- [ ] `azd` asennettu (`winget install microsoft.azd` tai `brew install azure/azd/azd`)
+- [ ] Docker Desktop käynnissä (azd rakentaa sillä konttikuvan)
+- [ ] GitHub Copilot aktiivinen IDE:ssä
+- [ ] Azure OpenAI -kiintiö kohdealueellasi:
+  - chat: `gpt-4o-mini` (tai `gpt-4.1-mini`) ≥ 30K TPM
+  - upotukset: `text-embedding-3-small` ≥ 120K TPM
+- [ ] Jos kiintiö = 0 → polku ei toimi ilman korotusta (hyväksyntä 1–3 arkipäivää): https://aka.ms/oai/quotaincrease
+- [ ] Resurssintarjoajat rekisteröity (katso §4)
+- [ ] `azd init` + `azd provision` ajettu perusrepositoriossa tunnistautumisen varmistamiseksi (suositus)
+- [ ] Ei-arkaluonteinen datajoukko valmiina (katso §3)
+
+:::note[Eikö kiintiö ehdi? Varavaihtoehto]
+Fasilitaattori ylläpitää **jaettua Azure OpenAI -päätepistettä** ainoana hyväksyttynä varavaihtoehtona. Saat päätepisteen ja avaimen tapahtumassa. Mallipohja käyttää oletuksena **Managed Identity** -tunnistautumista (ilman avaimia) itse käyttöön ottamaansa OpenAI-resurssiin. Jos haluat ohjata sen sen sijaan jaettuun päätepisteeseen, aseta ympäristömuuttujat **ennen `azd up`** -komentoa ja kerro, ettei sen pidä ottaa omaa OpenAI-resurssia käyttöön:
 
 ```bash
 azd env set DEPLOY_AZURE_OPENAI false
@@ -44,60 +43,47 @@ azd env set AZURE_OPENAI_CHAT_DEPLOYMENT <chat-deployment-name>
 azd env set AZURE_OPENAI_EMBED_DEPLOYMENT <embed-deployment-name>
 ```
 
-This is a safety net, **not** a substitute for doing the pre-work. (Exact variable names can
-change between template versions — confirm against your `azure.yaml` / `infra/main.bicep`.)
+Tämä on turvaverkko, **ei** etukäteisvalmistelun korvike. (Tarkat muuttujien nimet voivat muuttua mallipohjan versioiden välillä — varmista ne omista `azure.yaml` / `infra/main.bicep` -tiedostoistasi.)
 :::
 
-## 2. The base repository
+## 2. Perusrepositorio
 
-You build on
-[`Azure-Samples/rag-postgres-openai-python`](https://github.com/Azure-Samples/rag-postgres-openai-python).
-**Create your own copy** (Use this template / fork) so you can commit freely — this docs
-site is your guide, not the project you build in.
+Rakennat [`Azure-Samples/rag-postgres-openai-python`](https://github.com/Azure-Samples/rag-postgres-openai-python) -repositorioon pohjautuen. **Luo siitä oma kopio** (käytä mallipohjaa tai forkkaa), jotta voit tehdä committeja vapaasti — tämä dokumentaatiosivusto on oppaasi, ei projekti, johon rakennat.
 
 ```bash
 azd init -t Azure-Samples/rag-postgres-openai-python
 ```
 
-:::caution[Pin the template + check the model defaults]
-This sample evolves upstream. The chat/embedding **model names and deployment env-var
-names can drift** from what's shown in §1 (e.g. the template may default to a newer chat
-model or `text-embedding-3-large`). Two safeguards:
+:::caution[Kiinnitä mallipohja ja tarkista mallien oletukset]
+Tämä esimerkki kehittyy upstreamissa. Chat- ja upotus (embedding) -**mallien nimet sekä käyttöönoton ympäristömuuttujien nimet voivat muuttua** verrattuna §1:ssä näytettyihin (esimerkiksi mallipohja voi oletuksena käyttää uudempaa chat-mallia tai `text-embedding-3-large` -mallia). Kaksi varmistusta:
 
-- **Pin a known-good commit** right after `azd init` (`git log -1` to record the SHA, or
-  check out a tag) so everyone at your table builds the same thing.
-- **Confirm the model defaults** in `infra/main.bicep` / `azure.yaml` match the quota you
-  requested in §1. If they differ, either request quota for the template's models or
-  override them: `azd env set AZURE_OPENAI_CHAT_MODEL ...`,
-  `AZURE_OPENAI_CHAT_DEPLOYMENT`, `AZURE_OPENAI_EMBED_MODEL`,
-  `AZURE_OPENAI_EMBED_DEPLOYMENT` (exact names per your template version).
+- **Kiinnitä tunnetusti toimiva commit** heti `azd init` -komennon jälkeen (`git log -1` tallentaaksesi SHA:n, tai ota tagi käyttöön), jotta kaikki pöytäsi jäsenet rakentavat samaa versiota.
+- **Varmista mallien oletukset** tiedostoista `infra/main.bicep` / `azure.yaml` ja tarkista, että ne vastaavat §1:ssä pyytämääsi kiintiötä. Jos ne eroavat, pyydä kiintiö mallipohjan malleille tai ohita asetukset: `azd env set AZURE_OPENAI_CHAT_MODEL ...`, `AZURE_OPENAI_CHAT_DEPLOYMENT`, `AZURE_OPENAI_EMBED_MODEL`, `AZURE_OPENAI_EMBED_DEPLOYMENT` (tarkat nimet mallipohjasi version mukaan).
 :::
 
-## 3. Bring your own data (or use a fallback)
+## 3. Tuo oma data (tai käytä varavaihtoehtoa)
 
-**Eligibility for this track:** RAG tolerates messy text. Good inputs are **documents,
-PDFs, Markdown, web pages, or CSVs** — anything you can chunk into passages.
+**Soveltuvuus tälle polulle:** RAG sietää sotkuista tekstiä. Hyviä syötteitä ovat **dokumentit, PDF:t, Markdown, verkkosivut tai CSV:t** — kaikki, minkä voit pilkkoa tekstikatkelmiksi.
 
-**Rules:**
+**Säännöt:**
 
-- **Non-sensitive only** — public, synthetic, or company-approved data. No customer PII.
-- **Keep it small** — aim for **≤ 50 MB** and **cap ingestion at ~50–200 chunks** for the
-  event so embedding stays fast and cheap.
-- Have **2–3 questions in mind** that the data should be able to answer (you'll use these
-  to verify retrieval in C2).
+- **Vain ei-arkaluonteista dataa** — julkista, synteettistä tai organisaation hyväksymää dataa. Ei asiakkaiden henkilötietoja.
+- **Pidä koko pienenä** — tavoittele **≤ 50 MB** ja **rajaa ingestio noin 50–200 tekstikatkelmaan** tapahtuman ajaksi, jotta upotus (embedding) pysyy nopeana ja edullisena.
+- Mieti valmiiksi **2–3 kysymystä**, joihin datan pitäisi pystyä vastaamaan (käytät näitä haun varmistamiseen H2:ssa).
 
-**No data? Pick one of these open datasets:**
+**Eikö sinulla ole dataa? Suosi suomalaisia avoimia datalähteitä — yleisö on suomalainen:**
 
-| Dataset | Why it fits | Source |
+| Datajoukko | Miksi se sopii | Lähde |
 |---------|-------------|--------|
-| **EU open-data document set** (e.g. policy briefs / reports) | Real prose, clear Q&A targets, public | <https://data.europa.eu/> |
-| **A public GitHub repo's `/docs` folder** (Markdown) | Already chunk-friendly; great for "ask the docs" | any OSS repo |
-| **Wikipedia article export** (a handful of related articles) | Dense, factual, easy to write questions for | <https://en.wikipedia.org/wiki/Special:Export> |
+| **Avoindata.suomi.fi dokumentit** (politiikkamuistiot, raportit) | Suomenkielistä proosaa, selkeitä Q&A-kohteita, julkista | <https://avoindata.suomi.fi/> |
+| **Tilastokeskuksen julkaisut ja katsaukset** | Faktapohjaista suomenkielistä tekstiä, helppo laatia kysymyksiä | <https://stat.fi/> |
+| **EU:n avoimen datan dokumenttijoukko** (esim. politiikkamuistiot / raportit) | Aitoa proosaa, selkeitä Q&A-kohteita, julkista | <https://data.europa.eu/> |
+| **Julkisen GitHub-repositorion `/docs`-kansio** (Markdown) | Valmiiksi helppo pilkkoa; erinomainen “kysy dokumenteista” -tapauksiin | mikä tahansa OSS-repo |
+| **Wikipedia-artikkelien vienti** (kourallinen liittyviä artikkeleita) | Tiivistä, faktapohjaista, helppo laatia kysymyksiä | <https://en.wikipedia.org/wiki/Special:Export> |
 
-## 4. Resource providers & regions
+## 4. Resurssipalvelut ja alueet
 
-`azd up` provisions Container Apps, PostgreSQL Flexible Server, Azure OpenAI, Log
-Analytics, and a managed identity. If provisioning fails with a provider error:
+`azd up` ottaa käyttöön Container Apps, PostgreSQL Flexible Server, Azure OpenAI, Log Analytics sekä Managed Identity -tunnisteen. Jos käyttöönotto epäonnistuu resurssipalveluvirheeseen:
 
 ```bash
 az provider register --namespace Microsoft.App
@@ -106,19 +92,17 @@ az provider register --namespace Microsoft.CognitiveServices
 az provider register --namespace Microsoft.OperationalInsights
 ```
 
-- Pick a region where you **have OpenAI quota** for both models (often `swedencentral`,
-  `eastus2`, or `westeurope`).
-- You need **Contributor** on the subscription/resource group. If the template assigns
-  roles, you may also need **User Access Administrator**.
+- Valitse alue, jossa sinulla **on OpenAI-kiintiö** molemmille malleille (usein `swedencentral`, `eastus2` tai `westeurope`).
+- Tarvitset tilaukseen tai resurssiryhmään **Contributor**-oikeuden. Jos mallipohja määrittää rooleja, saatat tarvita myös **User Access Administrator** -oikeuden.
 
-## 5. Known failure modes
+## 5. Tunnetut virhetilanteet
 
-| Symptom | Fix |
+| Oire | Korjaus |
 |---------|-----|
-| `azd up` hangs ~20 min then fails on OpenAI | No quota in region → request increase or change region |
-| `MissingSubscriptionRegistration` | Run the `az provider register` commands above |
-| Container build fails | Docker Desktop not running |
-| PostgreSQL firewall / auth error | Re-run `azd provision`; confirm your IP is allowed |
-| Role assignment denied | You lack User Access Administrator — ask subscription owner |
+| `azd up` jumittuu noin 20 min ja epäonnistuu sitten OpenAI-vaiheessa | Alueella ei ole kiintiötä → pyydä korotusta tai vaihda aluetta |
+| `MissingSubscriptionRegistration` | Aja yllä olevat `az provider register` -komennot |
+| Kontin koonti epäonnistuu | Docker Desktop ei ole käynnissä |
+| PostgreSQL-palomuuri- / todennusvirhe | Aja `azd provision` uudelleen; varmista, että IP-osoitteesi on sallittu |
+| Roolimääritys estetty | Sinulta puuttuu User Access Administrator — pyydä tilauksen omistajaa apuun |
 
-Once every box in §1 is ticked, you're ready for **C1**.
+Kun jokainen §1:n kohta on merkitty tehdyksi, olet valmis **H1**:een.

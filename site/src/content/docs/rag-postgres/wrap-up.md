@@ -1,58 +1,55 @@
 ---
-title: Wrap-up & demos
-description: Team demos, award categories, and what to take home from the RAG-on-PostgreSQL track.
+title: Yhteenveto ja demot
+description: Tiimidemot, palkintokategoriat ja mitä RAG-on-PostgreSQL-polusta kannattaa viedä kotiin.
 sidebar:
   order: 9
-  label: Wrap-up
+  label: Yhteenveto
   badge:
     text: Showcase
     variant: success
 prev:
   link: ../challenge-6-demo/
-  label: "C6: Demo prep"
+  label: "H6: Demon valmistelu"
 ---
 
-## You built a self-refreshing knowledge base
+## Rakensit itse päivittyvän tietopohjan
 
-Starting from an idea and a base app, your team provisioned infrastructure, loaded its own
-data, tuned retrieval, and — the payoff — stood up an **agentic ingestion loop** that keeps
-the knowledge base fresh and proves it didn't break anything.
+Ideasta ja perussovelluksesta lähtien tiimisi otti käyttöön infrastruktuurin, latasi oman datansa, viritti haun ja — palkintona — pystytti **agenttisen ingestiosilmukan**, joka pitää tietopohjan ajan tasalla ja todistaa, ettei se rikkonut mitään.
 
 ```mermaid
 flowchart LR
-  A[infra-output.json] --> B[dataset_manifest.json]
-  B --> C[retrieval_config.md]
-  C --> D[dataops_agent.py]
-  D --> E[dataops.yml]
-  E --> F[demo_script.md]
+  A[Käyttöön otettu RAG-sovellus] --> B[Oma data haettavissa]
+  B --> C[Viritetty hakukokemus]
+  C --> D[Itseään testaava ingestioagentti]
+  D --> E[Ajastettu CI-ajo]
+  E --> F[Ytimekäs demo]
 ```
 
-## Demo format
+## Demon muoto
 
-- **3 minutes per team**, then 1 minute of questions.
-- Lead with your **wow moment** (ideally the C4 ingest-then-answer arc).
-- Name one limitation and one next step. Honesty scores.
+- **Lyhyt demo per tiimi**, sitten aikaa muutamalle kysymykselle.
+- Aloita **wow-hetkelläsi** (mieluiten H4:n ingestoi-sitten-vastaa-kaari).
+- Nimeä yksi rajoite ja yksi seuraava vaihe. Rehellisyys tuo pisteitä.
 
-## Award categories
+## Palkintokategoriat
 
-| Award | What it recognises |
+| Palkinto | Mitä se tunnistaa |
 | --- | --- |
-| 🌐 **Most domains ingested** | Breadth of sources the agent handled |
-| 🧪 **Best test coverage** | Strongest regression / smoke-test discipline |
-| 💡 **Most creative prompt** | Cleverest retrieval / prompt engineering |
-| 🔁 **Best DataOps loop** | Cleanest, most idempotent operational pipeline |
+| 🌐 **Eniten ingestoituja toimialoja** | Lähteiden laajuus, jonka agentti käsitteli |
+| 🧪 **Paras testikattavuus** | Vahvin regressio- / smoke-testikuri |
+| 💡 **Luovin kehote** | Nokkelin haku- / kehotesuunnittelu |
+| 🔁 **Paras DataOps-silmukka** | Siistein ja idempotentein operointiputki |
 
-## What to take home
+## Mitä viet kotiin
 
-- The **artifact chain** is a reusable DataOps pattern: manifest → config → agent → CI → demo.
-- Agentic coding shines when you **own the contract** (inputs, outputs, assertions) and let
-  the agent write the glue.
-- An ingestion loop without a **regression check** is a liability, not a feature.
+- **Kyvykkyysketju** on uudelleenkäytettävä DataOps-malli: käyttöönotto → oma data → viritetty haku → agentti → CI → demo.
+- Agenttinen koodaus loistaa, kun **omistat sopimuksen** (syötteet, tulokset, tarkistukset) ja annat agentin kirjoittaa liimakoodin.
+- Ingestiosilmukka ilman **regressiotarkistusta** on riski, ei ominaisuus.
 
-## Keep going after the event
+## Jatka tapahtuman jälkeen
 
-- Add more source types (PDF tables, HTML, transcripts) to `dataops_agent.py`.
-- Promote the smoke test into a small **eval set** with scored answers.
-- Move secrets to a managed identity + Key Vault instead of Actions secrets.
+- Lisää `dataops_agent.py`-tiedostoon lisää lähdetyyppejä (PDF-taulukot, HTML, transkriptit).
+- Nosta smoke-testi pieneksi **arviointijoukoksi**, jossa vastaukset pisteytetään.
+- Siirrä salaisuudet Managed Identity + Key Vault -ratkaisuun Actions secrets -salaisuuksien sijaan.
 
-Thanks for hacking. 🎉
+Kiitos hackathonista. 🎉

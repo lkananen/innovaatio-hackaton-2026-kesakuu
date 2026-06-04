@@ -1,85 +1,81 @@
 ---
-title: "C6: Demo prep"
-description: Package your RAG DataOps story into a 3-slide README and a 60-second recording.
+title: "H6: Demon valmistelu"
+description: Paketoi RAG DataOps -tarinasi tiiviiksi demoksi ja lyhyeksi tallenteeksi.
 sidebar:
   order: 8
-  label: "C6: Demo prep"
+  label: "H6: Demon valmistelu"
   badge:
     text: 15 min
     variant: tip
 prev:
   link: ../challenge-5-operationalise/
-  label: "C5: Operationalise"
+  label: "H5: Vie tuotantokuntoon"
 next:
   link: ../wrap-up/
-  label: Wrap-up
+  label: Yhteenveto
 ---
 
-:::note[Challenge Info]
-⏱️ **15 min** · 🧩 **Optional (but do it)** · 🤖 agent: storyteller · 📄 output: `demo_script.md`
+:::note[Haasteen tiedot]
+⏱️ **15 min** · 🧩 **Valinnainen (mutta tee se)** · 🤖 agentti: tarinankertoja
 :::
 
-:::tip[This is a checklist, not a build]
-Don't write new features now. Assemble what you already have into a tight story.
+:::tip[Tämä on tarkistuslista, ei rakennustehtävä]
+Älä kirjoita uusia ominaisuuksia nyt. Kokoa se, mitä sinulla jo on, tiiviiksi tarinaksi.
 :::
 
-## Objective
+## Tavoite
 
-- **Do now:** Prepare a 60-second team demo.
-- **Input:** Everything from C1–C5 (whatever you completed).
-- **Output:** `demo_script.md` + a short screen recording.
-- **Required to move on:** You can demo without fumbling.
-- **Decisions now:** The single "wow" moment to lead with.
-- **Next:** Wrap-up and team demos.
+- **Tee nyt:** Valmistele lyhyt ja ytimekäs tiimidemo.
+- **Lähtötiedot:** Kaikki H1–H5:stä (sen mukaan, mitä ehdit tehdä).
+- **Tulos:** Sujuva demotarina ja lyhyt ruututallenne kohokohdasta.
+- **Vaaditaan etenemiseen:** Pystyt demoamaan kompastelematta.
+- **Päätökset nyt:** Yksi “wow”-hetki, jolla aloitat.
+- **Seuraavaksi:** Yhteenveto ja tiimidemo.
 
-## Your Tasks
+## Tehtäväsi
 
-1. Ask your agent to draft a **3-slide README** from your artifacts: **Problem → What we
-   built → How it's agentic/operational**.
-2. Write `demo_script.md`: a 60-second run order naming who clicks what.
-3. Record a **60-second** screen capture of the highlight — ideally the C4 agent ingesting
-   a new source and the app answering a question it couldn't before.
-4. Pick your **one wow moment** and lead with it.
+1. Pyydä agenttiasi luonnostelemaan rakentamastanne ratkaisusta **kolmen kohdan demotarina**: **Ongelma → Mitä rakensimme → Miten se on agenttinen/operoitava**.
+2. Sovi ytimekäs suoritusjärjestys, jossa kerrotaan kuka klikkaa mitä.
+3. Tallenna lyhyt ruutukaappaus kohokohdasta — mieluiten H4-agentti ingestoi uuden lähteen ja sovellus vastaa kysymykseen, johon se ei aiemmin pystynyt vastaamaan.
+4. Valitse **yksi wow-hetkesi** ja aloita sillä.
 
-## Deliverables
+## Tuotokset
 
-- `demo_script.md` — 60-second run order.
-- A 3-slide README (problem / solution / agentic-ops).
-- A ≤ 60s recording.
+- Ytimekäs suoritusjärjestys, jossa tiimi tietää kuka tekee mitä.
+- Kolmen kohdan demotarina (ongelma / ratkaisu / agenttinen operointi).
+- Lyhyt tallenne.
 
-## Success Criteria
+## Onnistumisen kriteerit
 
-| Focus | What good looks like | Evidence |
+| Painopiste | Miltä hyvä näyttää | Näyttö |
 | --- | --- | --- |
-| Clarity | A stranger understands it in 60s | Demo script |
-| Proof | The agentic loop is shown live or recorded | Recording |
-| Honesty | Limitations named, not hidden | One "what's next" line |
+| Selkeys | Tuntematon ymmärtää idean nopeasti | Demo |
+| Todiste | Agenttinen silmukka näytetään livenä tai tallenteella | Tallenne |
+| Rehellisyys | Rajoitteet nimetään, ei piiloteta | Yksi “mitä seuraavaksi” -rivi |
 
-## Tips / Hints
+## Vinkit
 
 <details>
-<summary>Lead with the loop</summary>
+<summary>Aloita silmukalla</summary>
 
-The most compelling 20 seconds: ask a question the app **can't** answer → run
-`dataops_agent.py` on a new source → ask again → it answers, with a citation. That single
-arc tells the whole DataOps story.
+Vakuuttavin kaari: kysy kysymys, johon sovellus **ei** osaa vastata → aja `dataops_agent.py` uudella lähteellä → kysy uudelleen → se vastaa ja näyttää viittauksen. Tämä yksi kaari kertoo koko DataOps-tarinan.
 
 </details>
 
-## Watch Out
+## Huomioi nämä
 
-- Don't demo the build process; demo the **outcome**.
-- Don't exceed 60 seconds — practice once.
-- Don't hide that quota/networking bit you faked around; judges respect honesty.
+- Älä demoa koontiprosessia; demoa **lopputulos**.
+- Pidä demo lyhyenä ja ytimekkäänä — harjoittele kerran.
+- Älä piilota kiintiö-/verkkoasiaa, jonka kiersit; tuomarit arvostavat rehellisyyttä.
 
-## Artifact Handoff
+## Tuotosten luovutus
 
-| Item | Value |
+| Kohta | Arvo |
 | --- | --- |
-| **Input from** | C1–C5 artifacts |
-| **Your output** | `demo_script.md` + recording |
-| **Next challenge uses** | The wrap-up showcase |
+| **Lähtötieto** | H1–H5:ssä rakennetut toimivat kyvykkyydet |
+| **Sinun tuotoksesi** | Sujuva demotarina ja lyhyt tallenne |
+| **Seuraava vaihe** | Yhteenvetonäytös |
 
-## Next Step
+## Seuraava vaihe
 
-Head to the [Wrap-up](../wrap-up/) for team demos and awards.
+Siirry [Yhteenvetoon](../wrap-up/) tiimidemoja ja palkintoja varten.

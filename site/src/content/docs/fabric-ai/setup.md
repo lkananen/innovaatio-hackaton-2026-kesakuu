@@ -1,87 +1,86 @@
 ---
-title: "Setup & Pre-work"
-description: Provision a paid Fabric F2+ capacity and enable AI Functions — the hard prerequisites — before the event.
+title: "Valmistelu ja valmiustarkistus"
+description: Maksullinen Fabric F2+ -kapasiteetti ja käytössä oleva AI Functions ovat tämän polun pakolliset vaatimukset — tarkista, että ne ovat kunnossa ennen aloitusta.
 sidebar:
   order: 2
 ---
 
-:::danger[This track will not work without pre-work]
-AI Functions require a **paid Fabric capacity (F2+)** and a **tenant where the feature is
-enabled**. Cross-company attendees often **lack capacity-admin rights**, and a tenant switch
-can disable AI Functions even on F2+. Resolve all of this **days before** the event — it
-cannot be fixed in the room.
+:::caution[Vaatimukset — tarkista ennen aloitusta]
+AI Functions vaatii **maksullisen Fabric-kapasiteetin (F2+)** ja **tenantin, jossa ominaisuus on käytössä**. Eri organisaatioista tulevilla osallistujilla ei usein ole **kapasiteetin ylläpitäjän oikeuksia**, ja tenantin vaihto voi poistaa AI Functions -toiminnot käytöstä myös F2+:ssa. Näitä ei voi korjata paikan päällä, joten tarkista, että ne ovat kunnossa ennen aloitusta.
 :::
 
-## 1. Pre-work checklist
-
-```text
-☐ A Microsoft Fabric capacity, SKU F2 or higher, in RUNNING state
-      • Trial capacity is NOT sufficient for AI Functions
-☐ You (or a colleague) have Capacity Admin rights, OR a workspace already bound to F2+
-☐ Tenant admin has enabled the relevant settings (see §3)
-☐ A Fabric workspace assigned to that F2+ capacity
-☐ You can create a Lakehouse in that workspace
-☐ A Fabric notebook runs a trivial PySpark cell successfully
-☐ A non-sensitive tabular dataset ready (see §4)
-☐ You've identified ONE AI enrichment you want (classify / summarise / extract)
-```
-
-## 2. Why F2+ and not trial
-
-AI Functions are a **paid capacity feature**. Fabric **trial** capacities and the free tier
-**cannot** run them. If your only access is a trial, you must either get a colleague to bind
-a workspace to a paid F2+ capacity, or plan to use the **PySpark rule-based fallback** in C3
-(still a valid completion of the track).
-
-## 3. Tenant admin settings (get these confirmed)
-
-Have your **Fabric/Power BI tenant admin** confirm these are **on** for your group:
-
-- **Copilot and AI features** are enabled for the tenant / your capacity.
-- The capacity region **supports** the AI features (some features are region-limited).
-- Any **"data sent to Azure OpenAI"** governance switch your org requires is approved.
-
-:::note[Cross-company reality]
-Attendees come from different companies/tenants. **Each person verifies their own tenant.**
-Don't assume a teammate's working setup means yours works — tenant switches are per-tenant.
+:::note[Maksuton vs. maksullinen taso]
+- **Maksuton (Fabric Trial):** Voit luoda työtiloja ja Lakehouseja, ajaa PySpark-notebookeja ja rakentaa koko medallion-arkkitehtuurin. **AI Functions ei toimi** kokeilukapasiteetilla.
+- **Vaadittu maksullinen taso:** **F2** (pienin maksullinen Fabric-SKU) tai suurempi.
+- **Mitä F2 tuo lisää:** avaa **AI Functions** -toiminnot (`ai.classify`, `ai.summarize`, `ai.extract`) silver-rikastukseen — tämän polun ydin. Ilman F2:ta käytä H3:ssa PySpark-sääntöpohjaista fallbackia.
 :::
 
-## 4. Bring your own data (or use a fallback)
+## 1. Valmiustarkistuslista
 
-**Eligibility for this track:** **tabular** data (CSV / Parquet) with a column worth
-**AI-enriching** — free-text to classify, long text to summarise, or fields to extract.
+Käy lista läpi ja varmista, että jokainen kohta on kunnossa ennen kuin aloitat:
 
-**Rules:**
+- [ ] Microsoft Fabric -kapasiteetti, SKU F2 tai suurempi, RUNNING-tilassa
+  - Kokeilukapasiteetti **ei** riitä AI Functions -toimintoihin
+- [ ] Sinulla (tai kollegallasi) on kapasiteetin ylläpitäjän oikeudet TAI työtila on jo liitetty F2+:aan
+- [ ] Tenant-ylläpitäjä on ottanut tarvittavat asetukset käyttöön (katso §3)
+- [ ] Fabric-työtila liitetty kyseiseen F2+-kapasiteettiin
+- [ ] Voit luoda Lakehousen kyseiseen työtilaan
+- [ ] Fabric-notebook ajaa yksinkertaisen PySpark-solun onnistuneesti
+- [ ] Ei-arkaluonteinen taulukkomuotoinen datajoukko valmiina (katso §4)
+- [ ] Olet valinnut **yhden** tekoälyrikastuksen (luokittelu / tiivistys / poiminta)
 
-- **Non-sensitive only** — public, synthetic, or company-approved. No customer PII.
-- **Modest size** — thousands of rows; cap if larger so AI calls stay fast/cheap.
-- At least one **text column** that benefits from AI enrichment (the whole point of silver).
+## 2. Miksi F2+ eikä kokeiluversio
 
-**No data? Pick one of these:**
+AI Functions on **maksullisen kapasiteetin ominaisuus**. Fabricin **kokeilukapasiteetit** ja maksuton taso **eivät** voi käyttää niitä. Jos käytössäsi on vain kokeiluversio, pyydä kollegaa liittämään workspace maksulliseen F2+-kapasiteettiin tai suunnittele käyttäväsi H3:ssa **PySpark-sääntöpohjaista fallbackia** (se on edelleen hyväksytty tapa suorittaa polku loppuun).
 
-| Dataset | Why it fits | Source |
+## 3. Tenantin ylläpitoasetukset (varmista nämä)
+
+Pyydä **Fabric/Power BI -tenant-ylläpitäjääsi** vahvistamaan, että nämä ovat **käytössä** ryhmällesi:
+
+- **Copilot ja AI-ominaisuudet** on otettu käyttöön tenantissa / kapasiteetissasi.
+- Kapasiteetin alue **tukee** AI-ominaisuuksia (osa ominaisuuksista on aluerajoitettuja).
+- Organisaatiosi vaatima **"data sent to Azure OpenAI"** -hallintakytkin on hyväksytty.
+
+:::note[Eri organisaatioiden todellisuus]
+Osallistujat tulevat eri yrityksistä ja tenanteista. **Jokainen varmistaa oman tenantinsa.** Älä oleta, että tiimikaverin toimiva ympäristö tarkoittaa oman ympäristösi toimivan — tenant-kytkimet ovat tenant-kohtaisia.
+:::
+
+## 4. Tuo oma data (tai käytä fallbackia)
+
+**Soveltuvuus tälle polulle:** **taulukkomuotoinen** data (CSV / Parquet), jossa on **AI-rikastukseen** sopiva sarake — vapaatekstiä luokiteltavaksi, pitkää tekstiä tiivistettäväksi tai kenttiä poimittavaksi.
+
+**Säännöt:**
+
+- **Vain ei-arkaluonteista dataa** — julkista, synteettistä tai yrityksen hyväksymää. Ei asiakkaiden henkilötietoja.
+- **Kohtuullinen koko** — tuhansia rivejä; rajaa suuremmat aineistot, jotta AI-kutsut pysyvät nopeina ja edullisina.
+- Vähintään yksi **tekstisarake**, joka hyötyy AI-rikastuksesta (koko silver-vaiheen tarkoitus).
+
+**Eikö sinulla ole dataa? Suosi suomalaisia avoimia datalähteitä — yleisö on suomalainen:**
+
+| Datajoukko | Miksi se sopii | Lähde |
 |---------|-------------|--------|
-| **NYC Taxi** (Fabric built-in sample) | One click in Fabric; large, tabular, well-known | Fabric → Sample data |
-| **Eurostat CSV extract** | Public, tabular, multilingual text to enrich | <https://ec.europa.eu/eurostat/data/database> |
-| **Any public reviews / support-ticket CSV** | Rich free text → ideal for classify/summarise | public Kaggle/Gov data |
+| **Tilastokeskuksen avoin data** (StatFin / PxWeb) | Suomalaista tilastodataa taulukkomuodossa; suomenkielistä tekstiä rikastettavaksi | <https://stat.fi/> · <https://pxdata.stat.fi/> |
+| **Avoindata.suomi.fi** | Suomen julkishallinnon avoimen datan portaali; runsaasti CSV-aineistoja | <https://avoindata.suomi.fi/> |
+| **NYC Taxi** (Fabricin sisäinen esimerkki) | Yksi napsautus Fabricissa; suuri, taulukkomuotoinen ja tunnettu | Fabric → Sample data |
+| **Eurostat CSV extract** | Julkinen, taulukkomuotoinen, monikielistä tekstiä rikastettavaksi | <https://ec.europa.eu/eurostat/data/database> |
+| **Mikä tahansa julkinen arvostelu- / tukipyyntö-CSV** | Runsaasti vapaatekstiä → ihanteellinen luokitteluun/tiivistämiseen | julkinen Kaggle/Gov data |
 
-## 5. The AI enrichment you'll build
+## 5. Rakennettava AI-rikastus
 
-Decide your **one** enrichment now so C3 is execution, not ideation. Good first choices:
+Päätä **yksi** rikastus nyt, jotta H3 on toteutusta eikä ideointia. Hyviä ensimmäisiä valintoja:
 
-- **Classify** a free-text column into categories (`ai.classify`).
-- **Summarise** long text into one sentence (`ai.summarize`).
-- **Extract** a structured field (e.g. sentiment, entity) from text.
+- **Luokittele** vapaatekstisarake kategorioihin (`ai.classify`).
+- **Tiivistä** pitkä teksti yhdeksi virkkeeksi (`ai.summarize`).
+- **Poimi** rakenteinen kenttä (esim. sentimentti, entiteetti) tekstistä.
 
-## 6. Known failure modes
+## 6. Tunnetut virhetilanteet
 
-| Symptom | Fix |
+| Oire | Korjaus |
 |---------|-----|
-| AI Functions don't appear in the notebook | Capacity not F2+, or tenant switch off → §1–§3 |
-| `Capacity not found` / throttled | Capacity paused or under-sized → resume/upsize, or use fallback |
-| Notebook won't attach to lakehouse | Workspace not on the F2+ capacity → reassign workspace |
-| AI calls error on region | Feature not available in capacity region → §3, or fallback |
-| No capacity-admin rights | Use a colleague's F2+ workspace, or do the PySpark fallback |
+| AI Functions ei näy notebookissa | Kapasiteetti ei ole F2+ tai tenant-kytkin on pois päältä → §1–§3 |
+| `Capacity not found` / rajoitus | Kapasiteetti on keskeytetty tai alimitoitettu → jatka/suurenna tai käytä fallbackia |
+| Notebook ei liity lakehouseen | Workspace ei ole F2+-kapasiteetissa → määritä workspace uudelleen |
+| AI-kutsut epäonnistuvat alueen vuoksi | Ominaisuus ei ole käytettävissä kapasiteetin alueella → §3 tai fallback |
+| Ei kapasiteetin ylläpitäjän oikeuksia | Käytä kollegan F2+-workspacea tai tee PySpark fallback |
 
-Once every box in §1 is ticked — and ideally after a quick AI Functions smoke test — you're
-ready for **C1**, which formally verifies all of this.
+Kun jokainen kohta §1:ssä on merkitty valmiiksi — ja mieluiten nopean AI Functions -savukokeen jälkeen — olet valmis **H1**:een, jossa tämä kaikki varmistetaan virallisesti.

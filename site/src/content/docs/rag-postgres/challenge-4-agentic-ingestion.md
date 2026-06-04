@@ -1,104 +1,95 @@
 ---
-title: "C4: Agentic ingestion"
-description: Build a DataOps agent loop that fetches, chunks, embeds, upserts, and self-tests new content.
+title: "H4: Agenttinen ingestio"
+description: Rakenna DataOps-agenttisilmukka, joka hakee, pilkkoo, upottaa, tekee upsertin ja testaa itse uuden sisällön.
 sidebar:
   order: 6
-  label: "C4: Agentic ingestion"
+  label: "H4: Agenttinen ingestio"
   badge:
     text: 40 min
     variant: note
 prev:
   link: ../challenge-3-customise-retrieval/
-  label: "C3: Customise retrieval"
+  label: "H3: Mukauta hakua"
 next:
   link: ../challenge-5-operationalise/
-  label: "C5: Operationalise"
+  label: "H5: Vie tuotantokuntoon"
 ---
 
-:::note[Challenge Info]
-⏱️ **40 min** · 🧩 **Core (the payoff)** · 🤖 agent: pipeline builder · 📄 output: `dataops_agent.py`
+:::note[Haasteen tiedot]
+⏱️ **40 min** · 🧩 **Ydin (palkinto)** · 🤖 agentti: putken rakentaja
 :::
 
-## Objective
+## Tavoite
 
-- **Do now:** Automate keeping the knowledge base fresh.
-- **Input:** Tuned app + `retrieval_config.md` (C3).
-- **Output:** `dataops_agent.py` that ingests a **new** source and proves it worked.
-- **Required to move on:** Add one new URL/file → it becomes answerable → a regression question passes.
-- **Decisions now:** Idempotency, failure handling, what "success" means.
-- **Next:** C5 (optional) runs this on a schedule.
+- **Tee nyt:** Automatisoi tietopohjan pitäminen ajan tasalla.
+- **Lähtötiedot:** Viritetty sovellus ja sen toimivat hakuvalinnat (H3).
+- **Tulos:** Agenttinen ingestiosilmukka ingestoi **uuden** lähteen ja todistaa, että se toimi.
+- **Vaaditaan etenemiseen:** Lisää yksi uusi URL/tiedosto → siitä tulee vastattavissa oleva → regressiokysymys läpäisee.
+- **Päätökset nyt:** Idempotenssi, virheenkäsittely ja mitä “onnistuminen” tarkoittaa.
+- **Seuraavaksi:** H5 (valinnainen) ajaa tämän ajastetusti.
 
-## The Business Challenge
+## Liiketoimintahaaste
 
-Real knowledge bases drift. The agentic part of DataOps is a **loop** that can take a new
-document and integrate it **without a human babysitting each step** — and verify it didn't
-break anything. This is the centrepiece of the track.
+Todelliset tietopohjat muuttuvat. DataOpsin agenttinen osa on **silmukka**, joka voi ottaa uuden dokumentin ja integroida sen **ilman että ihminen vahtii jokaista vaihetta** — ja varmistaa, ettei mikään rikkoutunut. Tämä on polun keskipiste.
 
-## Your Tasks
+## Tehtäväsi
 
-1. With your agent, write `dataops_agent.py` that performs, end to end:
-   **fetch → chunk → embed → upsert → run smoke test → log pass/fail**.
-2. Make it **idempotent** — re-running on the same source must not create duplicate chunks
-   (upsert on a stable key / content hash).
-3. Run it against **one new source** that introduces a fact your app currently can't
-   answer. Confirm the app can answer it afterwards.
-4. Add a **regression question** (an older known-good fact) to the run so the agent fails
-   loudly if ingestion corrupted existing retrieval.
+1. Kirjoita agenttisi kanssa `dataops_agent.py`, joka suorittaa päästä päähän:
+   **haku → pilkkominen → upotus (embedding) → upsert → smoke-testin ajo → läpäisy/hylkäys lokiin**.
+2. Tee siitä **idempotentti** — saman lähteen uudelleenajo ei saa luoda duplikaattikatkelmia (upsert vakaalla avaimella / sisältöhashilla).
+3. Aja se **yhtä uutta lähdettä** vasten, joka tuo faktan, johon sovellus ei tällä hetkellä osaa vastata. Varmista, että sovellus osaa vastata siihen ajon jälkeen.
+4. Lisää ajoon **regressiokysymys** (vanhempi tunnetusti toimiva fakta), jotta agentti epäonnistuu näkyvästi, jos ingestio korruptoi nykyistä hakua.
 
-## Key Decisions
+## Keskeiset päätökset
 
-- **Idempotency key:** content hash, source URL, or document ID?
-- **Failure policy:** if embedding fails midway, does the run roll back or mark partial?
-- **Success definition:** new question answerable **and** regression question still passes.
-- How much should the agent **decide** vs. you hard-code? (e.g. chunk size by content type)
+- **Idempotenssiavain:** sisältöhash, lähde-URL vai dokumentti-ID?
+- **Virhekäytäntö:** jos upotus epäonnistuu puolivälissä, perutaanko ajo vai merkitäänkö se osittaiseksi?
+- **Onnistumisen määritelmä:** uusi kysymys on vastattavissa **ja** regressiokysymys läpäisee edelleen.
+- Kuinka paljon agentin pitäisi **päättää** ja kuinka paljon kovakoodaat? (esim. tekstikatkelman koko sisältötyypin mukaan)
 
-## Deliverables
+## Tuotokset
 
-- `dataops_agent.py` — runnable, idempotent, self-testing.
-- A run log showing: new source ingested, new question answered, regression passed.
+- Ajettava, idempotentti ja itseään testaava ingestiosilmukka.
+- Ajon loki, joka näyttää: uusi lähde ingestioitu, uuteen kysymykseen vastattu, regressio läpäisty.
 
-## Success Criteria
+## Onnistumisen kriteerit
 
-| Focus | What good looks like | Evidence |
+| Painopiste | Miltä hyvä näyttää | Näyttö |
 | --- | --- | --- |
-| End-to-end loop | One command ingests + verifies a new source | Run log |
-| Idempotent | Re-running doesn't duplicate data | Row counts stable on 2nd run |
-| Safe | Regression question still passes after ingest | Test output in log |
+| Päästä päähän -silmukka | Yksi komento ingestoi ja varmistaa uuden lähteen | Ajon loki |
+| Idempotentti | Uudelleenajo ei duplikoi dataa | Rivimäärät pysyvät vakaina 2. ajolla |
+| Turvallinen | Regressiokysymys läpäisee edelleen ingestion jälkeen | Testituloste lokissa |
 
-## Tips / Hints
+## Vinkit
 
 <details>
-<summary>Keep it concrete</summary>
+<summary>Pidä se konkreettisena</summary>
 
-Don't build an abstract "framework." Make it do exactly: **one new URL/file → chunk →
-embed → upsert → ask the new question → ask one old question → print PASS/FAIL.** Concrete
-and demoable beats clever and unfinished.
+Älä rakenna abstraktia “kehystä”. Tee siitä juuri tämä: **yksi uusi URL/tiedosto → pilkkominen → upotus (embedding) → upsert → kysy uusi kysymys → kysy yksi vanha kysymys → tulosta PASS/FAIL.** Konkreettinen ja demoamiskelpoinen voittaa nokkelan mutta keskeneräisen.
 
 </details>
 
 <details>
-<summary>Let the agent scaffold, you steer the contract</summary>
+<summary>Anna agentin luonnostella, sinä ohjaat sopimusta</summary>
 
-Tell Copilot the **inputs, outputs, and the two assertions** you want, then let it write
-the glue. Review the upsert logic yourself — that's where idempotency bugs hide.
+Kerro Copilotille haluamasi **syötteet, tulokset ja kaksi tarkistusta**, ja anna sen kirjoittaa liimakoodi. Tarkista upsert-logiikka itse — idempotenssivirheet piilevät siellä.
 
 </details>
 
-## Watch Out
+## Huomioi nämä
 
-- Don't skip idempotency — duplicate chunks quietly degrade retrieval quality.
-- Don't let the loop "succeed" while only checking the new fact; always re-run a regression.
-- Don't hard-code your one demo URL so deeply the script can't take a second source.
+- Älä ohita idempotenssia — duplikaattikatkelmat heikentävät hakulaatua hiljaisesti.
+- Älä anna silmukan “onnistua”, jos se tarkistaa vain uuden faktan; aja aina regressio uudelleen.
+- Älä kovakoodaa yhtä demo-URL:ia niin syvälle, ettei komentosarja voi ottaa toista lähdettä.
 
-## Artifact Handoff
+## Tuotosten luovutus
 
-| Item | Value |
+| Kohta | Arvo |
 | --- | --- |
-| **Input from** | Tuned app + `retrieval_config.md` (C3) |
-| **Your output** | `dataops_agent.py` + run log |
-| **Next challenge uses** | C5 schedules this agent in GitHub Actions |
+| **Lähtötieto** | Viritetty sovellus ja sen toimivat hakuvalinnat (H3) |
+| **Sinun tuotoksesi** | Itseään testaava ingestiosilmukka ja onnistuneen ajon näyttö |
+| **Seuraava vaihe** | H5 ajastaa tämän agentin GitHub Actionsissa |
 
-## Next Step
+## Seuraava vaihe
 
-You have a self-testing ingestion agent — the core deliverable. If time allows, C5 puts it
-on a schedule; otherwise jump to **C6** to prep your demo.
+Sinulla on itseään testaava ingestioagentti — ydinkyvykkyys. Jos aikaa jää, H5 laittaa sen ajastukseen; muuten siirry **H6**:een valmistelemaan demo.

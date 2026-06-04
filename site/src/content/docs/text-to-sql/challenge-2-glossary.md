@@ -1,99 +1,99 @@
 ---
-title: "C2: Glossary & golden questions"
-description: Capture business meaning the schema can't express, and lock in five golden questions as your target.
+title: "H2: Sanasto ja kultaiset kysymykset"
+description: Määritä liiketoimintamerkitys, jota skeema ei voi ilmaista, ja lukitse viisi kultaista kysymystä tavoitteeksi.
 sidebar:
   order: 4
-  label: "C2: Glossary & golden Qs"
+  label: "H2: Sanasto ja kultaiset kysymykset"
   badge:
     text: 30 min
     variant: note
 prev:
   link: ../challenge-1-database/
-  label: "C1: Database & profile"
+  label: "H1: Tietokanta ja profiili"
 next:
   link: ../challenge-3-nl-to-sql/
-  label: "C3: NL→SQL contract"
+  label: "H3: NL→SQL-sopimus"
 ---
 
-:::note[Challenge Info]
-⏱️ **30 min** · 🧩 **Core** · 🤖 agent: domain modeller · 📄 output: `business_glossary.md` + 5 golden questions
+:::note[Haasteen tiedot]
+⏱️ **30 min** · 🧩 **Ydin** · 🤖 agentti: toimialamallintaja
 :::
 
-## Objective
+## Tavoite
 
-- **Do now:** Encode the domain knowledge the schema alone can't convey.
-- **Input:** `schema_profile.json` (C1).
-- **Output:** `business_glossary.md` + a frozen list of **5 golden questions** with expected answers.
-- **Required to move on:** Each golden question has a known-correct answer you computed by hand/SQL.
-- **Decisions now:** What "active customer", "revenue", "last quarter" actually mean in your data.
-- **Next:** C3 feeds glossary + profile into the NL→SQL prompt.
+- **Tee nyt:** Koodaa toimialatieto, jota pelkkä skeema ei välitä.
+- **Lähtötiedot:** Tarkistettu skeemakäsitys (H1).
+- **Tulos:** Agentti tuntee keskeiset liiketoimintatermit, ja sinulla on jäädytetty lista **5 kultaisesta kysymyksestä** odotettuine vastauksineen.
+- **Vaaditaan etenemiseen:** Jokaisella kultaisella kysymyksellä on tunnetusti oikea vastaus, jonka laskit käsin/SQL:llä.
+- **Päätökset nyt:** Mitä "active customer", "revenue" ja "last quarter" oikeasti tarkoittavat datassasi.
+- **Seuraavaksi:** H3 syöttää sanaston + profiilin NL→SQL-kehotteeseen.
 
-## The Business Challenge
+## Liiketoimintahaaste
 
-A column named `status = 'A'` means nothing to an LLM. **Business meaning** — what counts as
-revenue, which flag means active, how a fiscal period is defined — lives in people's heads.
-Capturing it is what separates a toy from a useful agent.
+Sarake nimeltä `status = 'A'` ei tarkoita LLM:lle mitään. **Liiketoimintamerkitys** — mikä lasketaan
+mukaan, mikä lippu tarkoittaa aktiivista, miten tilikausi määritellään — elää ihmisten päissä.
+Sen talteen ottaminen erottaa lelun hyödyllisestä agentista.
 
-## Your Tasks
+## Tehtäväsi
 
-1. With your agent, draft `business_glossary.md`: key terms, metric definitions, enum
-   meanings (`status` codes), and any non-obvious join paths.
-2. Finalise your **5 golden questions** (from pre-work). Range from simple to multi-table.
-3. For **each** golden question, compute the **correct answer yourself** (write the SQL by
-   hand) and record it. This is your ground truth for C5's eval.
-4. Note any question the data **can't** answer and adjust — golden questions must be answerable.
+1. Määritä agenttisi avulla keskeiset termit, mittarimääritelmät, enum-arvojen merkitykset
+   (`status`-koodit) ja ei-ilmeiset liitospolut.
+2. Viimeistele **5 kultaista kysymystäsi** (valmisteltu etukäteen). Kata kysymyksillä vaikeustaso helpoista monen taulun kysymyksiin.
+3. Laske **jokaiselle** kultaiselle kysymykselle **oikea vastaus itse** (kirjoita SQL
+   käsin) ja kirjaa se. Tämä on H5:n arvioinnin vertailuarvo.
+4. Merkitse kysymykset, joihin data **ei** voi vastata, ja muokkaa niitä — kultaisten kysymysten täytyy olla vastattavissa.
 
-## Key Decisions
+## Keskeiset päätökset
 
-- **Metric definitions:** pin exact formulas (e.g. revenue = `sum(qty * unit_price)` excluding refunds).
-- **Time semantics:** what calendar do "last month/quarter" use?
-- **Ambiguity:** if a term maps to two columns, decide which is canonical.
+- **Mittarimääritelmät:** lukitse tarkat kaavat (esim. revenue = `sum(qty * unit_price)` ilman hyvityksiä).
+- **Ajan semantiikka:** mitä kalenteria "last month/quarter" käyttää?
+- **Monitulkintaisuus:** jos termi vastaa kahta saraketta, päätä kumpi on kanoninen.
 
-## Deliverables
+## Tuotokset
 
-- `business_glossary.md` — terms, metrics, enums, join hints.
-- 5 golden questions, each with a hand-verified expected answer + the reference SQL.
+- Yhteinen liiketoimintasanasto: termit, mittarit, enumit ja liitosvinkit.
+- 5 kultaista kysymystä, joista jokaisella on käsin varmistettu odotettu vastaus + viite-SQL.
 
-## Success Criteria
+## Onnistumisen kriteerit
 
-| Focus | What good looks like | Evidence |
+| Painopiste | Miltä hyvä näyttää | Näyttö |
 | --- | --- | --- |
-| Glossary useful | Defines every non-obvious term a question needs | Glossary covers golden Qs |
-| Golden Qs sound | All 5 are answerable and span difficulty | The 5 questions |
-| Ground truth | Each has a verified expected answer | Reference SQL + result |
+| Sanasto hyödyllinen | Määrittelee jokaisen ei-ilmeisen termin, jota kysymys tarvitsee | Sanasto kattaa kultaiset kysymykset |
+| Kultaiset kysymykset toimivia | Kaikki 5 ovat vastattavissa ja kattavat vaikeustasoja | 5 kysymystä |
+| Totuusarvo | Jokaisella on varmistettu odotettu vastaus | Viite-SQL + tulos |
 
-## Tips / Hints
+## Vinkit
 
 <details>
-<summary>Write the reference SQL now — you'll thank yourself in C5</summary>
+<summary>Kirjoita viite-SQL nyt — kiität itseäsi H5:ssä</summary>
 
-The reference SQL you write here **is** your eval ground truth. Spend the time to get it
-right; everything downstream measures against it.
+Tässä kirjoittamasi viite-SQL **on** arvioinnin vertailuarvo. Käytä aikaa sen
+saamiseen oikein; kaikki myöhempi mitataan sitä vasten.
 
 </details>
 
 <details>
-<summary>Span the difficulty curve</summary>
+<summary>Kata vaikeuskäyrä</summary>
 
-Aim for ~2 simple (single table, filter/count), ~2 medium (one join + aggregate), ~1 hard
-(multi-join or window). This surfaces where the agent breaks.
+Tavoittele noin 2 helppoa (yksi taulu, suodatus/laskenta), noin 2 keskitasoa (yksi liitos + aggregointi) ja noin 1 vaikea
+(moniliitos tai ikkuna). Tämä paljastaa, missä agentti rikkoutuu.
 
 </details>
 
-## Watch Out
+## Huomioi nämä
 
-- Don't pick golden questions the data can't actually answer — you'll fight ghosts in C5.
-- Don't leave metric definitions fuzzy; the agent will pick a different interpretation each run.
-- Don't skip the hand-written reference SQL — without it there's nothing to grade against.
+- Älä valitse kultaisia kysymyksiä, joihin data ei oikeasti voi vastata — muuten taistelet aaveita vastaan H5:ssä.
+- Älä jätä mittarimääritelmiä epämääräisiksi; agentti valitsee eri tulkinnan joka ajolla.
+- Älä ohita käsin kirjoitettua viite-SQL:ää — ilman sitä ei ole mitään, mitä arvioida.
 
-## Artifact Handoff
+## Tuotosten luovutus
 
-| Item | Value |
+| Kohta | Arvo |
 | --- | --- |
-| **Input from** | `schema_profile.json` (C1) |
-| **Your output** | `business_glossary.md` + 5 golden questions (+ reference SQL) |
-| **Next challenge uses** | C3 injects both into the prompt; C5 grades against the answers |
+| **Lähtötieto** | Tarkistettu skeemakäsitys (H1) |
+| **Sinun tuotoksesi** | Liiketoimintasanasto + 5 kultaista kysymystä (+ viite-SQL) |
+| **Seuraava vaihe** | H3 syöttää molemmat kehotteeseen; H5 arvioi vastaukset näitä vasten |
 
-## Next Step
+## Seuraava vaihe
 
-You have meaning and a target. In **C3** you build the agent that turns questions into SQL.
+Sinulla on merkitys ja tavoite. **H3**:ssa rakennat agentin, joka muuttaa kysymykset SQL:ksi.
